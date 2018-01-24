@@ -23,7 +23,7 @@ namespace Gcode.Entity {
 	/// Первый (а в некоторых случаях ещё и последний) кадр содержит только один символ «%». 
 	/// Завершается программа командой M02 или M30. 
 	/// </summary>
-	public struct GcodeFrame {
+	public struct GcodeCommand {
 		/// <summary>
 		/// Stepper A position or angle
 		/// </summary>
