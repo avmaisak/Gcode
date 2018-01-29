@@ -15,6 +15,9 @@ namespace Gcode.Utils {
 		/// If they differ, it requests a repeat transmission of the line.
 		/// Checking Example
 		/// N123 [...G Code in here...] *71
+		/// The RepRap firmware checks the line number and the checksum. 
+		/// You can leave both of these out - RepRap will still work, but it won't do checking. 
+		/// You have to have both or neither though. If only one appears, it produces an error.
 		/// </summary>
 		/// <param name="line">порядковый номер строки</param>
 		/// <param name="frame">Кадр</param>

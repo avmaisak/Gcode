@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gcode.TestSuite", "..\..\to
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gcode.Utils", "..\..\src\Gcode.Utils\Gcode.Utils.csproj", "{29BFBB05-86D1-4A83-B870-7C5EBFE545E0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{B22665F5-5C15-4AE1-85D0-87A65BAB9530}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{50CC568E-8CD4-4082-A79A-DAF2E14FC2AB} = {B22665F5-5C15-4AE1-85D0-87A65BAB9530}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6ECD3F50-79D9-4FE0-94C0-41754CDFE45D}
