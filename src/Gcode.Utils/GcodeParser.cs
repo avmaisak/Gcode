@@ -1,23 +1,20 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 using Gcode.Entity;
 using Gcode.Utils.Infrastructure;
 using Gcode.Utils.Interfaces;
 
-namespace Gcode.Utils
-{
+namespace Gcode.Utils {
 	/// <summary>
 	/// парсер 
 	/// </summary>
-	public class GcodeParser : IGcodeParser<GcodeCommandFrame>
-	{
+	public class GcodeParser : IGcodeParser<GcodeCommandFrame> {
 		private string _rawFrame;
 		private readonly string _commentChar;
-		private void InitRawFrame(string rawFrame)
-		{
+		private void InitRawFrame(string rawFrame) {
 			_rawFrame = rawFrame.TrimString();
 		}
-		public GcodeParser(string rawFrame, string commentChar = ";")
-		{
+		public GcodeParser(string rawFrame, string commentChar = ";") {
 			InitRawFrame(rawFrame);
 			_commentChar = commentChar;
 		}
@@ -37,13 +34,11 @@ namespace Gcode.Utils
 		/// <returns></returns>
 		public bool ContainsComment {
 			get {
-				if (IsNullOrErorFrame)
-				{
+				if (IsNullOrErorFrame) {
 					return false;
 				}
 
-				if (!_rawFrame.StartsWith(_commentChar) && !_rawFrame.Contains(_commentChar))
-				{
+				if (!_rawFrame.StartsWith(_commentChar) && !_rawFrame.Contains(_commentChar)) {
 					return true;
 				}
 
@@ -58,33 +53,26 @@ namespace Gcode.Utils
 		/// Deserialize
 		/// </summary>
 		/// <returns></returns>
-		public GcodeCommandFrame DeserializeObject()
-		{
+		public GcodeCommandFrame DeserializeObject() {
 			//нет информации о кадре
-			if (IsNullOrErorFrame)
-			{
+			if (IsNullOrErorFrame) {
 				return null;
 			}
 			//пустой комментарий
-			if (EmptyComment)
-			{
+			if (EmptyComment) {
 				return null;
 			}
 			//инициализация кадра
 			var gcodeCommandFrame = new GcodeCommandFrame();
 			//является комментарием
-			if (IsComment)
-			{
+			if (IsComment) {
 				gcodeCommandFrame.Comment = _rawFrame.Replace(_commentChar, string.Empty);
 			}
-			else
-			{
+			else {
 				//содержит комментарий
-				if (ContainsComment)
-				{
+				if (ContainsComment) {
 					var r = _rawFrame.Split(_commentChar);
-					if (r.Length == 2)
-					{
+					if (r.Length == 2) {
 						_rawFrame = r[0].Trim();
 						gcodeCommandFrame.Comment = r[1].Trim();
 					}
@@ -101,8 +89,7 @@ namespace Gcode.Utils
 		/// </summary>
 		/// <param name="raw"></param>
 		/// <returns></returns>
-		public GcodeCommandFrame DeserializeObject(string raw)
-		{
+		public GcodeCommandFrame DeserializeObject(string raw) {
 			throw new System.NotImplementedException();
 		}
 		/// <inheritdoc />
@@ -111,38 +98,35 @@ namespace Gcode.Utils
 		/// </summary>
 		/// <param name="gcodeCommandFrame"></param>
 		/// <returns></returns>
-		public string SerializeObject(GcodeCommandFrame gcodeCommandFrame)
-		{
+		public string SerializeObject(GcodeCommandFrame gcodeCommandFrame) {
 			throw new System.NotImplementedException();
 		}
 		/// <summary>
 		/// Normalize frame
 		/// </summary>
 		/// <returns></returns>
-		public string NormalizeRawFrame()
-		{
-			
-			var currentRawFrame = new StringBuilder(_rawFrame);
+		public string NormalizeRawFrame() {
 
-			for (var i = 0; i < _rawFrame.Length; i++)
-			{
+			var resultFrame = new List<string>();
+
+			for (var i = 0; i < _rawFrame.Length; i++) {
 				var charRawFrame = _rawFrame[i];
-				
+
 				var isIntPrev = false;
 				if (i > 0) {
 					isIntPrev = char.IsNumber(_rawFrame[i - 1]);
 				}
 
 				var isLetter = char.IsLetter(charRawFrame);
+				var res = charRawFrame.ToString();
 
-				if (isLetter && isIntPrev)
-				{
-					currentRawFrame.Insert(i, " ");
+				if (isLetter && isIntPrev) {
+					res = $" {res}";
 				}
-
+				resultFrame.Add(res);
 			}
 
-			return currentRawFrame.ToString();
+			return string.Join(string.Empty, resultFrame.ToArray());
 		}
 	}
 }
