@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using Gcode.Entity;
 using Gcode.Utils.Infrastructure;
+using Gcode.Utils.Interfaces;
 
 namespace Gcode.Utils
 {
@@ -91,7 +92,6 @@ namespace Gcode.Utils
 			}
 
 
-			var currentRawFrame = new StringBuilder(_rawFrame);
 
 			return null;
 		}
@@ -114,6 +114,35 @@ namespace Gcode.Utils
 		public string SerializeObject(GcodeCommandFrame gcodeCommandFrame)
 		{
 			throw new System.NotImplementedException();
+		}
+		/// <summary>
+		/// Normalize frame
+		/// </summary>
+		/// <returns></returns>
+		public string NormalizeRawFrame()
+		{
+			
+			var currentRawFrame = new StringBuilder(_rawFrame);
+
+			for (var i = 0; i < _rawFrame.Length; i++)
+			{
+				var charRawFrame = _rawFrame[i];
+				
+				var isIntPrev = false;
+				if (i > 0) {
+					isIntPrev = char.IsNumber(_rawFrame[i - 1]);
+				}
+
+				var isLetter = char.IsLetter(charRawFrame);
+
+				if (isLetter && isIntPrev)
+				{
+					currentRawFrame.Insert(i, " ");
+				}
+
+			}
+
+			return currentRawFrame.ToString();
 		}
 	}
 }

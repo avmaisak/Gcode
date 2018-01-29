@@ -1,4 +1,4 @@
-﻿namespace Gcode.Utils
+﻿namespace Gcode.Utils.Interfaces
 {
 	public interface IGcodeParser<T>
 	{
