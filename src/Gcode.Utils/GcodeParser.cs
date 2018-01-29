@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Gcode.Entity;
+using Gcode.Utils.Infrastructure;
 
 namespace Gcode.Utils
 {
@@ -8,66 +9,108 @@ namespace Gcode.Utils
 	/// </summary>
 	public class GcodeParser : IGcodeParser<GcodeCommandFrame>
 	{
-		private GcodeCommandFrame _gcodeCommandFrame;
+		private string _rawFrame;
+		private readonly string _commentChar;
+		private void InitRawFrame(string rawFrame)
+		{
+			_rawFrame = rawFrame.TrimString();
+		}
+		public GcodeParser(string rawFrame, string commentChar = ";")
+		{
+			InitRawFrame(rawFrame);
+			_commentChar = commentChar;
+		}
+		/// <summary>
+		/// IsNullOrEror
+		/// </summary>
+		/// <returns></returns>
+		private bool IsNullOrErorFrame => string.IsNullOrWhiteSpace(_rawFrame);
 		/// <summary>
 		/// Кадр является комментарием
 		/// </summary>
-		/// <param name="rawFrame"></param>
-		/// <param name="commentChar"></param>
 		/// <returns></returns>
-		public static bool IsComment(string rawFrame, string commentChar = ";")
-		{
-			if (rawFrame == null)
-			{
+		public bool IsComment => !IsNullOrErorFrame && _rawFrame.StartsWith(_commentChar);
+		/// <summary>
+		/// ContainsComment
+		/// </summary>
+		/// <returns></returns>
+		public bool ContainsComment {
+			get {
+				if (IsNullOrErorFrame)
+				{
+					return false;
+				}
+
+				if (!_rawFrame.StartsWith(_commentChar) && !_rawFrame.Contains(_commentChar))
+				{
+					return true;
+				}
+
 				return false;
 			}
-
-			if (!rawFrame.Contains(commentChar))
-			{
-				return false;
-			}
-
-			if (string.IsNullOrWhiteSpace(rawFrame))
-			{
-				return false;
-			}
-
-			rawFrame = rawFrame.Trim();
-
-			if (rawFrame.StartsWith(commentChar))
-			{
-				return true;
-			}
-
-			return false;
 		}
+		/// <summary>
+		/// EmptyComment
+		/// </summary>
+		public bool EmptyComment => _rawFrame.Length == 1 && _rawFrame == _commentChar;
 		/// <summary>
 		/// Deserialize
 		/// </summary>
-		/// <param name="rawFrame">Сырой кадр</param>
 		/// <returns></returns>
-		public GcodeCommandFrame DeserializeObject(string rawFrame)
+		public GcodeCommandFrame DeserializeObject()
 		{
 			//нет информации о кадре
-			if (string.IsNullOrWhiteSpace(rawFrame))
+			if (IsNullOrErorFrame)
 			{
 				return null;
 			}
-
-			rawFrame = rawFrame.Trim();
-			_gcodeCommandFrame = new GcodeCommandFrame();
-
-
-			if (rawFrame.StartsWith(";"))
+			//пустой комментарий
+			if (EmptyComment)
 			{
-				_gcodeCommandFrame.Comment = rawFrame.Replace(";", null);
-				return _gcodeCommandFrame;
+				return null;
+			}
+			//инициализация кадра
+			var gcodeCommandFrame = new GcodeCommandFrame();
+			//является комментарием
+			if (IsComment)
+			{
+				gcodeCommandFrame.Comment = _rawFrame.Replace(_commentChar, string.Empty);
+			}
+			else
+			{
+				//содержит комментарий
+				if (ContainsComment)
+				{
+					var r = _rawFrame.Split(_commentChar);
+					if (r.Length == 2)
+					{
+						_rawFrame = r[0].Trim();
+						gcodeCommandFrame.Comment = r[1].Trim();
+					}
+				}
 			}
 
-			var currentRawFrame = new StringBuilder(rawFrame);
-			return _gcodeCommandFrame;
+
+			var currentRawFrame = new StringBuilder(_rawFrame);
+
+			return null;
 		}
 		/// <inheritdoc />
+		/// <summary>
+		/// Deserialize
+		/// </summary>
+		/// <param name="raw"></param>
+		/// <returns></returns>
+		public GcodeCommandFrame DeserializeObject(string raw)
+		{
+			throw new System.NotImplementedException();
+		}
+		/// <inheritdoc />
+		/// <summary>
+		/// Serialize
+		/// </summary>
+		/// <param name="gcodeCommandFrame"></param>
+		/// <returns></returns>
 		public string SerializeObject(GcodeCommandFrame gcodeCommandFrame)
 		{
 			throw new System.NotImplementedException();

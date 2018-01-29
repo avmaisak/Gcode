@@ -20,7 +20,9 @@ namespace Gcode.TestSuite
 			for (var i = 1; i < gcodeCommands.Length; i++)
 			{
 				var frame = gcodeCommands[i];
-				if (!GcodeParser.IsComment(frame))
+				var parser = new GcodeParser(frame);
+
+				if (!parser.IsComment)
 				{
 					var frameCrc = GcodeCrc.FrameCrc(i, frame);
 					Assert.IsInstanceOfType(frameCrc, typeof(int));
@@ -40,7 +42,9 @@ namespace Gcode.TestSuite
 			for (var i = 1; i < gcodeCommands.Length; i++)
 			{
 				var frame = gcodeCommands[i];
-				if (!GcodeParser.IsComment(frame))
+				var parser = new GcodeParser(frame);
+
+				if (!parser.IsComment)
 				{
 					var frameCrc = GcodeCrc.FrameCrc(i, frame);
 					Assert.IsTrue(frameCrc > 0, $"CRC: {frameCrc} Failed at {i},frame: {frame} ");
@@ -61,7 +65,9 @@ namespace Gcode.TestSuite
 			for (var i = 1; i < gcodeCommands.Length; i++)
 			{
 				var frame = gcodeCommands[i];
-				if (!GcodeParser.IsComment(frame))
+				var parser = new GcodeParser(frame);
+
+				if (!parser.IsComment)
 				{
 					var frameCrc = GcodeCrc.FrameCrc(i, frame);
 					Assert.IsTrue(frameCrc > 0, $"CRC: {frameCrc} Failed at {i},frame: {frame} ");

@@ -8,5 +8,21 @@ namespace Gcode.Utils.Infrastructure
 		{
 			return str.Split(new[] { splitter }, StringSplitOptions.None);
 		}
+		public static string TrimString(this string str)
+		{
+			var res = string.Empty;
+
+			if (str == null)
+			{
+				return string.Empty;
+			}
+
+			if (!string.IsNullOrWhiteSpace(str))
+			{
+				res = str.Trim();
+			}
+
+			return res;
+		}
 	}
 }
