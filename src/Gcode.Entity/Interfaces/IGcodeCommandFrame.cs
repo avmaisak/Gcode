@@ -15,7 +15,7 @@
 	усмотрению.
  */
 
-namespace Gcode.Entity {
+namespace Gcode.Entity.Interfaces {
 	/// <summary>
 	/// Программа, написанная с использованием G-кода, имеет жесткую структуру. 
 	/// Все команды управления объединяются в кадры — группы, состоящие из одной или более команд. 
@@ -23,7 +23,7 @@ namespace Gcode.Entity {
 	/// Первый (а в некоторых случаях ещё и последний) кадр содержит только один символ «%». 
 	/// Завершается программа командой M02 или M30. 
 	/// </summary>
-	public interface IGcodeCommand {
+	public interface IGcodeCommandFrame {
 		/// <summary>
 		/// Stepper A position or angle
 		/// </summary>

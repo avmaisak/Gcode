@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using Gcode.Entity.Interfaces;
 
 namespace Gcode.Entity.Base {
 	/// <inheritdoc />
-	public abstract class GCodeCommandSetBase : IGCodeCommandSet<IGcodeCommand> {
+	public abstract class GcodeCommandSetBase : IGcodeCommandSet<GcodeCommandFrameBase> {
 		/// <inheritdoc />
-		public ICollection<IGcodeCommand> GCodeCommandFrameSet { get; set; }
+		public ICollection<GcodeCommandFrameBase> GCodeCommandFrameSet { get; set; }
 	}
 }

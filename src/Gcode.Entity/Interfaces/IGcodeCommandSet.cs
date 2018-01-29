@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace Gcode.Entity {
+namespace Gcode.Entity.Interfaces {
 	/// <summary>
 	/// Набор команд
 	/// </summary>
-	public interface IGCodeCommandSet<T> {
+	public interface IGcodeCommandSet<T> where T : IGcodeCommandFrame {
 		/// <summary>
 		/// Набор кадров
 		/// </summary>

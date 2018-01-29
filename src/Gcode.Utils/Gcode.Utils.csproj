@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Gcode.Entity\Gcode.Entity.csproj" />
+  </ItemGroup>
+
 </Project>
