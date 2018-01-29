@@ -23,101 +23,101 @@ namespace Gcode.Entity {
 	/// Первый (а в некоторых случаях ещё и последний) кадр содержит только один символ «%». 
 	/// Завершается программа командой M02 или M30. 
 	/// </summary>
-	public struct GcodeCommand {
+	public interface IGcodeCommand {
 		/// <summary>
 		/// Stepper A position or angle
 		/// </summary>
-		public double? A { get; set; }
+		double? A { get; set; }
 		/// <summary>
 		/// Stepper B position or angle
 		/// </summary>
-		public double? B { get; set; }
+		 double? B { get; set; }
 		/// <summary>
 		/// Stepper C position or angle
 		/// </summary>
-		public double? C { get; set; }
+		 double? C { get; set; }
 		/// <summary>
 		/// линейное перемещение
 		/// </summary>
-		public int? G { get; set; }
+		 int? G { get; set; }
 		/// <summary>
 		/// Координата X
 		/// </summary>
-		public double? X { get; set; }
+		 double? X { get; set; }
 		/// <summary>
 		/// Координата Y
 		/// </summary>
-		public double? Y { get; set; }
+		 double? Y { get; set; }
 		/// <summary>
 		/// Координата Z
 		/// </summary>
-		public double? Z { get; set; }
+		 double? Z { get; set; }
 		/// <summary>
 		/// Параметр команды. time in milliseconds; proportional (Kp) in PID Tuning
 		/// </summary>
-		public double? P { get; set; }
+		 double? P { get; set; }
 		/// <summary>
 		/// Скорость рабочей подачи.
 		/// Для фрезерных станков это дюймы в минуту(IPM) или миллиметры в минуту(mm/min),
 		/// Для токарных станков это дюймы за оборот(IPR) или миллиметры за оборот(mm/rev).
 		/// для RepRap Скорость подачи (mm per minute.) Скорость движения печатающей головки
 		/// </summary>
-		public double? F { get; set; }
+		 double? F { get; set; }
 		/// <summary>
 		/// Скорость вращения шпинделя, время в секундах, температура, напряжение для отправки на двигатель
 		/// </summary>
-		public double? S { get; set; }
+		 double? S { get; set; }
 		/// <summary>
 		/// Температуры
 		/// </summary>
-		public double? R { get; set; }
+		 double? R { get; set; }
 		/// <summary>
 		/// Параметр коррекции выбранного инструмента
 		/// </summary>
-		public int? D { get; set; }
+		 int? D { get; set; }
 		/// <summary>
 		/// Параметр дуги при круговой интерполяции. Инкрементальное расстояние от начальной точки до центра дуги по оси X ( integral (Ki) in PID Tuning)
 		/// </summary>
-		public double? I { get; set; }
+		 double? I { get; set; }
 		/// <summary>
 		///  used for diameter; derivative (Kd) in PID Tuning / Параметр дуги при круговой интерполяции. Инкрементальное расстояние от начального
 		/// </summary>
-		public double? J { get; set; }
+		 double? J { get; set; }
 		/// <summary>
 		/// Параметр дуги при круговой интерполяции. Инкрементальное расстояние дуги по оси Z.
 		/// </summary>
-		public double? K { get; set; }
+		 double? K { get; set; }
 		/// <summary>
 		/// Число вызовов подпрограммы, Вызов подпрограммы с данной меткой
 		/// </summary>
-		public double? L { get; set; }
+		 double? L { get; set; }
 		/// <summary>
 		/// Вспомогательные (технологические) команды. Rep Rap - например, включение вентилятора
 		/// </summary>
-		public int? M { get; set; }
+		 int? M { get; set; }
 		/// <summary>
 		/// Выбор инструмента . В RepRap, инструменты - экструдеры
 		/// </summary>
-		public double? T { get; set; }
+		 double? T { get; set; }
 		/// <summary>
 		/// Нагреватель. (Parameter - used for heater number in PID Tuning)
 		/// </summary>
-		public double? H { get; set; }
+		 double? H { get; set; }
 		/// <summary>
 		/// Длина экструдата. Это так же, как X, Y и Z, но по длине нити, чтобы выдавить. 
 		/// Она является общей для системы на основе новее шаговые интерпретировать ... Лучше: Skeinforge 40 и до интерпретирует 
 		/// это как абсолютная длина входного волокна к потреблению, а не по длине экструдированной продукции.
 		/// </summary>
-		public double? E { get; set; }
+		 double? E { get; set; }
 		/// <summary>
 		/// Номер строки. 
 		/// Используется для запроса повторной передачи 
 		/// в случае возникновения ошибок связи.
 		/// </summary>
-		public long? N { get; set; }
+		 long? N { get; set; }
 		/// <summary>
 		/// Комментарий
 		/// </summary>
-		public string Comment { get; set; }
+		 string Comment { get; set; }
 	}
 }
