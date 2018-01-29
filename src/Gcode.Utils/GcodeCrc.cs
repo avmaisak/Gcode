@@ -4,7 +4,7 @@ namespace Gcode.Utils {
 	/// <summary>
 	/// Проверка checksum
 	/// </summary>
-	public class GcodeCrc {
+	public static class GcodeCrc {
 		/// <summary>
 		/// Контрольная сумма кадра
 		/// http://reprap.org/wiki/G-code#.2A:_Checksum
