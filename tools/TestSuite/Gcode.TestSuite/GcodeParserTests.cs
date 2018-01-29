@@ -151,13 +151,14 @@ namespace Gcode.TestSuite {
 		{
 			var data = TestSuiteDataSource.ReadTextFromFile("pattern_blade_fp_piece2_v1.gcode").Split("\r\n");
 			foreach (var d in data) {
-				if (!d.Contains(";"))
+				var parser = new GcodeParser(d);
+				if (!parser.IsComment)
 				{
-					var parser = new GcodeParser(d);
 					var res = parser.NormalizeRawFrame();
 					Assert.AreEqual(d, res);
 				}
 				
+
 			}
 			
 		}
@@ -166,14 +167,12 @@ namespace Gcode.TestSuite {
 		public void NormalizeRawFrameTestReal2() {
 			var data = TestSuiteDataSource.ReadTextFromFile("28.gcode.modified.gcode").Split("\r\n");
 			foreach (var d in data) {
-				if (!d.Contains(";")) {
-					var parser = new GcodeParser(d);
+				var parser = new GcodeParser(d);
+				if (!parser.IsComment) {
 					var res = parser.NormalizeRawFrame();
 					Assert.AreEqual(d, res);
 				}
-
 			}
-
 		}
 		
 	}
