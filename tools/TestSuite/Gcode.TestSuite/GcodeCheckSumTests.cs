@@ -48,5 +48,26 @@ namespace Gcode.TestSuite
 
 			}
 		}
+
+		[TestMethod]
+		public void GcodeCheckSumTest3()
+		{
+			var gcodeCommands = TestSuiteDataSource.ReadTextFromFile("100.gcode").Split("\r\n");
+			if (gcodeCommands == null || gcodeCommands.Length == 0)
+			{
+				return;
+			}
+
+			for (var i = 1; i < gcodeCommands.Length; i++)
+			{
+				var frame = gcodeCommands[i];
+				if (!GcodeParser.IsComment(frame))
+				{
+					var frameCrc = GcodeCrc.FrameCrc(i, frame);
+					Assert.IsTrue(frameCrc > 0, $"CRC: {frameCrc} Failed at {i},frame: {frame} ");
+				}
+
+			}
+		}
 	}
 }
