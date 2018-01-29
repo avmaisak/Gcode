@@ -55,6 +55,7 @@
     <Compile Include="GcodeGcodeParserTests.cs" />
     <Compile Include="GcodeCommandFrameTests.cs" />
     <Compile Include="GcodeCommandSetTests.cs" />
+    <Compile Include="GcodeParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestSuiteDataSource.cs" />
   </ItemGroup>
