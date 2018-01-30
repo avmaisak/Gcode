@@ -47,7 +47,7 @@ namespace Gcode.TestSuite
 				if (!parser.IsComment)
 				{
 					var frameCrc = GcodeCrc.FrameCrc(i, frame);
-					Assert.IsTrue(frameCrc > 0, $"CRC: {frameCrc} Failed at {i},frame: {frame} ");
+					Assert.IsTrue(frameCrc >= 0, $"CRC: {frameCrc} Failed at {i},frame: {frame} ");
 				}
 
 			}
@@ -70,7 +70,7 @@ namespace Gcode.TestSuite
 				if (!parser.IsComment)
 				{
 					var frameCrc = GcodeCrc.FrameCrc(i, frame);
-					Assert.IsTrue(frameCrc > 0, $"CRC: {frameCrc} Failed at {i},frame: {frame} ");
+					Assert.IsTrue(frameCrc >= 0, $"CRC: {frameCrc} Failed at {i},frame: {frame} ");
 				}
 
 			}

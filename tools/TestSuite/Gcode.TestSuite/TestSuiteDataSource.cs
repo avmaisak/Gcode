@@ -7,8 +7,8 @@ namespace Gcode.TestSuite
 		//28.gcode.modified
 		public static string ReadTextFromFile(string fileName)
 		{
-			var filePath = $"C:\\Users\\User\\Documents\\Proj\\Gcode\\misc\\gcode\\{fileName}";
-			if (File.Exists(fileName))
+			var filePath = $"C:\\Users\\User\\Documents\\Projects\\Github\\!Rb\\Gcode\\misc\\gcode\\{fileName}";
+			if (File.Exists(filePath))
 			{
 				var fileContent = File.ReadAllText(filePath);
 				return fileContent;
