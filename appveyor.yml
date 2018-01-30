@@ -24,7 +24,6 @@ test_script:
 
 artifacts:
     - path: '**\*.nupkg'
-    name: NuGet Package
 
   - path: coverage.xml
     name: Coverage Report
