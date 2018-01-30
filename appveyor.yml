@@ -25,5 +25,5 @@ test_script:
 artifacts:
     - path: '**\*.nupkg'
 
-  - path: coverage.xml
-    name: Coverage Report
+    - path: coverage.xml
+      name: Coverage Report
