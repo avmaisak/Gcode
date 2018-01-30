@@ -1,0 +1,29 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+build:
+  parallel: true                  # enable MSBuild parallel builds
+  project: misc\vs\Gcode.sln      # path to Visual Studio solution or project
+  publish_wap: false              # package Web Application Projects (WAP) for Web Deploy
+  publish_wap_xcopy: false        # package Web Application Projects (WAP) for XCopy deployment
+  publish_azure: false            # package Azure Cloud Service projects and push to artifacts
+  publish_nuget: false            # package projects with .nuspec files and push to artifacts
+  publish_nuget_symbols: false    # generate and publish NuGet symbol packages
+  include_nuget_references: true  # add -IncludeReferencedProjects option while packaging NuGet artifacts
+# MSBuild verbosity level
+  verbosity: detailed
+install:
+  - choco install opencover codecov
+before_build:
+  - nuget restore -Verbosity quiet
+build_script:
+  - msbuild misc\vs\Gcode.sln /verbosity:minimal /p:DebugType=full /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+test_script:
+  - OpenCover.Console.exe -register:user -target:"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe" -targetargs:"/logger:Appveyor Gcode.TestSuite\bin\Debug\Gcode.TestSuite.dll" -filter:"+[Gcode]* -[Gcode.TestSuite]*" -output:".\coverage.xml"
+  - codecov -f coverage.xml
+
+
+artifacts:
+    - path: '**\*.nupkg'
+
+    - path: coverage.xml
+      name: Coverage Report
