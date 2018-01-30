@@ -1,7 +1,16 @@
 version: 1.0.{build}
 image: Visual Studio 2017
 build:
-  verbosity: minimal
+  parallel: true                  # enable MSBuild parallel builds
+  project: misc\vs\Gcode.sln      # path to Visual Studio solution or project
+  publish_wap: false              # package Web Application Projects (WAP) for Web Deploy
+  publish_wap_xcopy: false        # package Web Application Projects (WAP) for XCopy deployment
+  publish_azure: false            # package Azure Cloud Service projects and push to artifacts
+  publish_nuget: false            # package projects with .nuspec files and push to artifacts
+  publish_nuget_symbols: false    # generate and publish NuGet symbol packages
+  include_nuget_references: true  # add -IncludeReferencedProjects option while packaging NuGet artifacts
+# MSBuild verbosity level
+  verbosity: detailed
 install:
   - choco install opencover codecov
 before_build:
@@ -14,7 +23,7 @@ test_script:
 
 
 artifacts:
-  - path: 'MongoFramework\bin\Debug\*.nupkg'
+    - path: '**\*.nupkg'
     name: NuGet Package
 
   - path: coverage.xml
