@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Gcode.Entity;
 using Gcode.Utils.Infrastructure;
@@ -12,20 +14,18 @@ namespace Gcode.Utils
 	public class GcodeParser : IGcodeParser<GcodeCommandFrame>
 	{
 		#region private
-
+		/// <summary>
+		/// Культура
+		/// </summary>
+		private static readonly CultureInfo Culture = CultureInfo.InvariantCulture;
 		private string _rawFrame;
 		private readonly string _commentChar;
 		private void InitRawFrame(string rawFrame)
 		{
 			_rawFrame = rawFrame.TrimString();
 		}
-
 		#endregion
 
-		public string GetRawFrame()
-		{
-			return _rawFrame;
-		}
 		/// <summary>
 		/// парсер
 		/// </summary>
@@ -70,71 +70,67 @@ namespace Gcode.Utils
 		/// </summary>
 		public bool EmptyComment => _rawFrame.Length == 1 && _rawFrame == _commentChar;
 		/// <summary>
+		/// Перебор сегментов
+		/// </summary>
+		public ICollection<KeyValuePair<string, string>> HandleSegments()
+		{
+			//сегмент кадра. разделитель пробел
+			var frameSegments = _rawFrame.Split(" ");
+
+			//Перебор сегментов
+			return (
+					from frameSegment in frameSegments
+					let frameSegmentLength = frameSegment.Length
+					let frameSegmentCommandName = frameSegment.Substring(0, 1)
+					let frameSegmentCommandValue = frameSegment.Substring(1, frameSegmentLength - 1)
+					select new KeyValuePair<string, string>(
+							frameSegmentCommandName, frameSegmentCommandValue)
+				).ToList();
+		}
+		/// <summary>
 		/// Deserialize
 		/// </summary>
 		/// <returns></returns>
 		public GcodeCommandFrame DeserializeObject()
 		{
+			//инициализация кадра
+			var gcodeCommandFrame = new GcodeCommandFrame();
 			//нет информации о кадре
 			if (IsNullOrErorFrame)
 			{
 				return null;
 			}
+
 			//пустой комментарий
 			if (EmptyComment)
 			{
-				return null;
+				gcodeCommandFrame.Comment = string.Empty;
+				return gcodeCommandFrame;
 			}
-			//инициализация кадра
-			var gcodeCommandFrame = new GcodeCommandFrame();
+
 			//является комментарием
 			if (IsComment)
 			{
 				gcodeCommandFrame.Comment = _rawFrame.Replace(_commentChar, string.Empty);
+				return gcodeCommandFrame;
 			}
-			else
+
+			//содержит комментарий
+			if (ContainsComment)
 			{
-				//содержит комментарий
-				if (ContainsComment)
+				var r = _rawFrame.Split(_commentChar);
+				if (r.Length == 2)
 				{
-					var r = _rawFrame.Split(_commentChar);
-					if (r.Length == 2)
-					{
-						_rawFrame = r[0].Trim();
-						gcodeCommandFrame.Comment = r[1].Trim();
-					}
+					_rawFrame = r[0].Trim();
+					gcodeCommandFrame.Comment = r[1].Trim();
 				}
 			}
 
 			NormalizeRawFrame();
+			var segments = HandleSegments();
 
-
-			return null;
-		}
-		/// <summary>
-		/// Перебор сегментов
-		/// </summary>
-		public ICollection<KeyValuePair<string, string>> HandleSegments()
-		{
-			var res = new List<KeyValuePair<string, string>>();
-			//сегмент кадра. разделитель пробел
-			var frameSegments = _rawFrame.Split(" ");
-
-			//Перебор сегментов
-			for (var i = 0; i < frameSegments.Length; i++)
-			{
-				//Сегмент кадра
-				var frameSegment = frameSegments[i];
-				//Длина сегмента
-				var frameSegmentLength = frameSegment.Length;
-				//команда сегмента
-				var frameSegmentCommandName = frameSegment.Substring(0, 1);
-				//значение команды сегмента
-				var frameSegmentCommandValue = frameSegment.Substring(1, frameSegmentLength - 1);
-				res.Add(new KeyValuePair<string, string>(frameSegmentCommandName, frameSegmentCommandValue));
-			}
-
-			return res;
+			gcodeCommandFrame = ToGcodeCommandFrame(segments);
+			return gcodeCommandFrame;
 		}
 		/// <inheritdoc />
 		/// <summary>
@@ -144,11 +140,22 @@ namespace Gcode.Utils
 		/// <returns></returns>
 		public GcodeCommandFrame DeserializeObject(string raw)
 		{
-			throw new System.NotImplementedException();
+			_rawFrame = raw.TrimString();
+			return DeserializeObject();
 		}
 		/// <inheritdoc />
 		/// <summary>
 		/// Serialize
+		/// Команды в каждом кадре выполняются одновременно, 
+		/// поэтому порядок команд в кадре строго не оговаривается, 
+		/// но традиционно предполагается, 
+		/// что первыми указываются подготовительные команды 
+		/// (например, выбор рабочей плоскости, скоростей перемещений по осям и др.), 
+		/// затем задание координат перемещения, 
+		/// затем выбора режимов обработки и технологические команды.
+		/// Максимальное число элементарных команд и заданий координат в одном кадре 
+		/// зависит от конкретного интерпретатора языка управления станками, 
+		/// но для большинства популярных интерпретаторов (стоек управления) не превышает 6.
 		/// </summary>
 		/// <param name="gcodeCommandFrame"></param>
 		/// <returns></returns>
@@ -211,6 +218,42 @@ namespace Gcode.Utils
 			}
 
 			return resultFrameStr;
+		}
+		/// <summary>
+		/// ToGcodeCommandFrame
+		/// </summary>
+		/// <returns></returns>
+		public static GcodeCommandFrame ToGcodeCommandFrame(IEnumerable<KeyValuePair<string, string>> frameSegments)
+		{
+			var gcodeCommandFrame = new GcodeCommandFrame();
+			foreach (var frameSegment in frameSegments)
+			{
+				//команда
+				var key = frameSegment.Key;
+				//значение
+				var value = frameSegment.Value;
+				//получить свойство кадра
+				var fieldInfo = gcodeCommandFrame.GetType().GetProperty(key);
+				//свойство есть
+				if (fieldInfo != null)
+				{
+					//получить информацию свойства поля кадра
+					var fileldInfoType = fieldInfo.PropertyType;
+					// тип универсален, и универсальный тип - Nullable
+					if (fileldInfoType.IsGenericType && fileldInfoType.GetGenericTypeDefinition() == typeof(Nullable<>))
+					{
+						//объект назначения
+						var obj = gcodeCommandFrame;
+						//значение поля
+						var fieldValue = value;
+						//свойства поля кадра
+						fileldInfoType = fileldInfoType.GetGenericArguments()[0];
+						//указание значения сегмента кадра
+						fieldInfo.SetValue(obj, Convert.ChangeType(fieldValue, fileldInfoType, Culture));
+					}
+				}
+			}
+			return gcodeCommandFrame;
 		}
 	}
 }

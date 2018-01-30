@@ -1,4 +1,7 @@
-﻿using Gcode.Utils;
+﻿using System;
+using System.Collections.Generic;
+using Gcode.Entity;
+using Gcode.Utils;
 using Gcode.Utils.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -143,7 +146,6 @@ namespace Gcode.TestSuite
 
 			Assert.AreEqual(def, res);
 		}
-
 		[TestMethod]
 		public void NormalizeRawFrameTestSynthetic2()
 		{
@@ -258,6 +260,139 @@ namespace Gcode.TestSuite
 					var rawSplited = res.Split(" ");
 					var items = parser.HandleSegments();
 					Assert.IsTrue(items.Count == rawSplited.Length);
+				}
+			}
+		}
+		[TestMethod]
+		public void ToGcodeCommandFrameTest1()
+		{
+			var rawFrame = "G1 X602.368 Y348.476 E0.23255";
+			var parser = new GcodeParser(rawFrame);
+			var items = parser.HandleSegments();
+			var gcode = GcodeParser.ToGcodeCommandFrame(items);
+			Assert.IsNotNull(gcode);
+		}
+		[TestMethod]
+		public void ToGcodeCommandFrameTest2()
+		{
+			var rawFrame = "G1 X602.368 Y348.476 E0.23255";
+			var parser = new GcodeParser(rawFrame);
+			var items = parser.HandleSegments();
+			var gcode = GcodeParser.ToGcodeCommandFrame(items);
+			Assert.IsTrue(gcode.G == 1);
+			Assert.IsNotNull(gcode.X);
+			Assert.IsNotNull(gcode.Y);
+			Assert.IsNotNull(gcode.E);
+		}
+		[TestMethod]
+		public void ToGcodeCommandFrameTest3()
+		{
+			var data = TestSuiteDataSource.ReadTextFromFile("100.gcode").Split("\r\n");
+			foreach (var d in data)
+			{
+				var parser = new GcodeParser(d);
+				if (!parser.IsComment && !parser.ContainsComment && !parser.IsNullOrErorFrame)
+				{
+					var items = parser.HandleSegments();
+					var gcode = GcodeParser.ToGcodeCommandFrame(items);
+					Assert.IsNotNull(gcode);
+				}
+			}
+		}
+		[TestMethod]
+		public void ToGcodeCommandFrameTest4()
+		{
+			var data = TestSuiteDataSource.ReadTextFromFile("28.gcode.modified.gcode").Split("\r\n");
+			foreach (var d in data)
+			{
+				var parser = new GcodeParser(d);
+				if (!parser.IsComment && !parser.ContainsComment && !parser.IsNullOrErorFrame)
+				{
+					var items = parser.HandleSegments();
+					var gcode = GcodeParser.ToGcodeCommandFrame(items);
+					Assert.IsNotNull(gcode);
+				}
+			}
+		}
+		[TestMethod]
+		public void ToGcodeCommandFrameTest5()
+		{
+			var data = TestSuiteDataSource.ReadTextFromFile("pattern_blade_fp_piece2_v1.gcode").Split("\r\n");
+			foreach (var d in data)
+			{
+				var parser = new GcodeParser(d);
+				if (!parser.IsComment && !parser.ContainsComment && !parser.IsNullOrErorFrame)
+				{
+					var items = parser.HandleSegments();
+					var gcode = GcodeParser.ToGcodeCommandFrame(items);
+					Assert.IsNotNull(gcode);
+				}
+			}
+		}
+		[TestMethod]
+		public void DeserializeObjectTestSynthetic1()
+		{
+			var raw = "; ^   203D20313230302E300A4D323036205433205031343920583730302E";
+			var parser = new GcodeParser(raw);
+			var res = parser.DeserializeObject();
+			Assert.IsNotNull(res);
+		}
+
+		[TestMethod]
+		public void DeserializeObjectTestSynthetic2()
+		{
+			var raw = "; ^   203D20313230302E300A4D323036205433205031343920583730302E";
+			var parser = new GcodeParser(raw);
+			var res = parser.DeserializeObject();
+			Assert.AreEqual($";{res.Comment}", raw.Trim());
+		}
+
+		[TestMethod]
+		public void DeserializeObjectTestReal1()
+		{
+			var data = TestSuiteDataSource.ReadTextFromFile("100.gcode").Split("\r\n");
+			var i = -1;
+			foreach (var d in data)
+			{
+				i++;
+				
+				if(d != String.Empty){
+					var g = new GcodeParser(d);
+					var obj = g.DeserializeObject();
+					Assert.IsNotNull(obj, $"nullable at raw frame : {d} line {i}");
+				}
+			}
+		}
+
+		[TestMethod]
+		public void DeserializeObjectTestReal2()
+		{
+			var data = TestSuiteDataSource.ReadTextFromFile("28.gcode.modified.gcode").Split("\r\n");
+			var i = -1;
+			foreach (var d in data)
+			{
+				i++;
+				
+				if(d != String.Empty){
+					var g = new GcodeParser(d);
+					var obj = g.DeserializeObject();
+					Assert.IsNotNull(obj, $"nullable at raw frame : {d} line {i}");
+				}
+			}
+		}
+		[TestMethod]
+		public void DeserializeObjectTestReal3()
+		{
+			var data = TestSuiteDataSource.ReadTextFromFile("pattern_blade_fp_piece2_v1.gcode").Split("\r\n");
+			var i = -1;
+			foreach (var d in data)
+			{
+				i++;
+				
+				if(d != String.Empty){
+					var g = new GcodeParser(d);
+					var obj = g.DeserializeObject();
+					Assert.IsNotNull(obj, $"nullable at raw frame : {d} line {i}");
 				}
 			}
 		}
