@@ -56,6 +56,7 @@
     <Compile Include="GcodeCommandFrameTests.cs" />
     <Compile Include="GcodeCommandSetTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReflectionTests.cs" />
     <Compile Include="StringExtensionsTests.cs" />
     <Compile Include="TestSuiteDataSource.cs" />
   </ItemGroup>
@@ -63,6 +64,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Common.Utils\Common.Utils.csproj">
+      <Project>{3FA7B5EF-5CF4-4291-A518-2D643BA10099}</Project>
+      <Name>Common.Utils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\src\Gcode.Entity\Gcode.Entity.csproj">
       <Project>{8E5EE2D8-FC1E-4409-B70D-1B86BF42262E}</Project>
       <Name>Gcode.Entity</Name>

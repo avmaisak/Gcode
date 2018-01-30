@@ -25,13 +25,12 @@ namespace Gcode.Utils
 			_rawFrame = rawFrame.TrimString();
 		}
 		#endregion
-
 		/// <summary>
 		/// парсер
 		/// </summary>
 		/// <param name="rawFrame"></param>
 		/// <param name="commentChar"></param>
-		public GcodeParser(string rawFrame, string commentChar = ";")
+		public GcodeParser(string rawFrame = null, string commentChar = ";")
 		{
 			InitRawFrame(rawFrame);
 			_commentChar = commentChar;
@@ -161,7 +160,23 @@ namespace Gcode.Utils
 		/// <returns></returns>
 		public string SerializeObject(GcodeCommandFrame gcodeCommandFrame)
 		{
-			throw new System.NotImplementedException();
+			var o = gcodeCommandFrame;
+			var fieldInfo = o.GetType();
+			var properties = fieldInfo.GetProperties();
+			var propsCount = properties.Length;
+			var res = string.Empty;
+			if (propsCount > 0)
+			{
+				foreach (var prop in properties)
+				{
+					var propType = prop.PropertyType;
+					var propFullName = propType.FullName;
+
+				}
+			}
+
+
+			return res;
 		}
 		/// <summary>
 		/// Normalize frame

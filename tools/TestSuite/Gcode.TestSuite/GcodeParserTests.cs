@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Gcode.Entity;
 using Gcode.Utils;
 using Gcode.Utils.Infrastructure;
@@ -165,7 +164,6 @@ namespace Gcode.TestSuite
 
 			Assert.AreEqual(def.Trim(), res);
 		}
-
 		[TestMethod]
 		public void NormalizeRawFrameTestSynthetic4()
 		{
@@ -175,7 +173,6 @@ namespace Gcode.TestSuite
 
 			Assert.AreEqual(def, res);
 		}
-
 		[TestMethod]
 		public void NormalizeRawFrameTestSynthetic5()
 		{
@@ -337,16 +334,18 @@ namespace Gcode.TestSuite
 			var res = parser.DeserializeObject();
 			Assert.IsNotNull(res);
 		}
-
 		[TestMethod]
 		public void DeserializeObjectTestSynthetic2()
 		{
-			var raw = "; ^   203D20313230302E300A4D323036205433205031343920583730302E";
+			var raw = "G1 X550.361 Y347.617 E0.15691";
 			var parser = new GcodeParser(raw);
 			var res = parser.DeserializeObject();
-			Assert.AreEqual($";{res.Comment}", raw.Trim());
-		}
+			Assert.AreEqual(res.G, 1);
+			Assert.AreEqual(res.X, 550.361);
+			Assert.AreEqual(res.Y, 347.617);
+			Assert.AreEqual(res.E, 0.15691);
 
+		}
 		[TestMethod]
 		public void DeserializeObjectTestReal1()
 		{
@@ -355,15 +354,15 @@ namespace Gcode.TestSuite
 			foreach (var d in data)
 			{
 				i++;
-				
-				if(d != String.Empty){
+
+				if (d != String.Empty)
+				{
 					var g = new GcodeParser(d);
 					var obj = g.DeserializeObject();
 					Assert.IsNotNull(obj, $"nullable at raw frame : {d} line {i}");
 				}
 			}
 		}
-
 		[TestMethod]
 		public void DeserializeObjectTestReal2()
 		{
@@ -372,8 +371,9 @@ namespace Gcode.TestSuite
 			foreach (var d in data)
 			{
 				i++;
-				
-				if(d != String.Empty){
+
+				if (d != String.Empty)
+				{
 					var g = new GcodeParser(d);
 					var obj = g.DeserializeObject();
 					Assert.IsNotNull(obj, $"nullable at raw frame : {d} line {i}");
@@ -388,13 +388,28 @@ namespace Gcode.TestSuite
 			foreach (var d in data)
 			{
 				i++;
-				
-				if(d != String.Empty){
+
+				if (d != String.Empty)
+				{
 					var g = new GcodeParser(d);
 					var obj = g.DeserializeObject();
 					Assert.IsNotNull(obj, $"nullable at raw frame : {d} line {i}");
 				}
 			}
+		}
+		[TestMethod]
+		public void SerializeTestSynthetic1()
+		{
+			var g = new GcodeCommandFrame
+			{
+				G = 1,
+				X = 5,
+				Y = -3,
+				Z = 0
+			};
+
+			var p = new GcodeParser();
+			var res = p.SerializeObject(g);
 		}
 	}
 }
