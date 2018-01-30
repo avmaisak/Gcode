@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace Common.Utils
 {
-	public class ReflectionUtils
+	public static class ReflectionUtils
 	{
 		public static List<KeyValuePair<string, string>> GetProperties(object item) //where T : class
 		{

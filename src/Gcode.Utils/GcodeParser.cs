@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Common.Utils;
 using Gcode.Entity;
 using Gcode.Utils.Infrastructure;
 using Gcode.Utils.Interfaces;
@@ -161,20 +162,38 @@ namespace Gcode.Utils
 		public string SerializeObject(GcodeCommandFrame gcodeCommandFrame)
 		{
 			var o = gcodeCommandFrame;
-			var fieldInfo = o.GetType();
-			var properties = fieldInfo.GetProperties();
-			var propsCount = properties.Length;
 			var res = string.Empty;
-			if (propsCount > 0)
+			var objectProperties = ReflectionUtils.GetProperties(o);
+			var commentString = string.Empty;
+			var addedLines = 0;
+			foreach (var objProp in objectProperties)
 			{
-				foreach (var prop in properties)
-				{
-					var propType = prop.PropertyType;
-					var propFullName = propType.FullName;
+				var commandSeparator = " ";
+				var isEmpty = objProp.Value != null && !string.IsNullOrWhiteSpace(objProp.Value.Trim());
 
+				if (isEmpty)
+				{
+					if (objProp.Key != "Comment")
+					{
+						if (addedLines == 0)
+						{
+							commandSeparator = string.Empty;
+						}
+
+						res += $"{commandSeparator}{objProp.Key.ToUpper()}{objProp.Value}";
+						addedLines++;
+					}
+					else
+					{
+						commentString = objProp.Value;
+					}
 				}
 			}
 
+			if (!string.IsNullOrWhiteSpace(commentString))
+			{
+				return $"{res} ;{commentString}";
+			}
 
 			return res;
 		}

@@ -410,6 +410,40 @@ namespace Gcode.TestSuite
 
 			var p = new GcodeParser();
 			var res = p.SerializeObject(g);
+			Assert.AreEqual(res,"G1 X5 Y-3 Z0");
+		}
+		[TestMethod]
+		public void SerializeTestSynthetic2()
+		{
+			var g = new GcodeCommandFrame
+			{
+				G = 1,
+				X = 5,
+				Y = -3,
+				Z = 0,
+				Comment = "LALALAL"
+			};
+
+			var p = new GcodeParser();
+			var res = p.SerializeObject(g);
+			Assert.AreEqual("G1 X5 Y-3 Z0 ;LALALAL",res);
+		}
+		[TestMethod]
+		public void SerializeTestSynthetic3()
+		{
+
+			var g = new GcodeCommandFrame
+			{
+				M = 206,
+				T = 3,
+				P = 200,
+				X = 89,
+				Comment = "extruder normal steps per mm"
+			};
+
+			var p = new GcodeParser();
+			var res = p.SerializeObject(g);
+			Assert.AreEqual("M206 T3 P200 X89 ;extruder normal steps per mm",res);
 		}
 	}
 }
