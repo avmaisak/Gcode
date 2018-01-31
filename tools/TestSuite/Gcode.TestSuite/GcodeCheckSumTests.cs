@@ -1,5 +1,5 @@
-﻿using Gcode.Utils;
-using Gcode.Utils.Infrastructure;
+﻿using Common.Utils;
+using Gcode.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Gcode.TestSuite

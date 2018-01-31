@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Gcode.Utils.Infrastructure
+namespace Common.Utils
 {
 	public static class StringExtensions
 	{

@@ -1,4 +1,4 @@
-﻿using Gcode.Utils.Infrastructure;
+﻿using Common.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Gcode.TestSuite {
