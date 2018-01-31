@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Common.Utils;
 using Gcode.Entity;
@@ -57,12 +56,12 @@ namespace Gcode.TestSuite {
 		}
 		[TestMethod]
 		public void FrameSetIsCommentTest8() {
-			var res = new GcodeParser(null).IsComment;
+			var res = new GcodeParser().IsComment;
 			Assert.IsFalse(res);
 		}
 		[TestMethod]
 		public void FrameSetContainsCommentTest1() {
-			var res = new GcodeParser(null).ContainsComment;
+			var res = new GcodeParser().ContainsComment;
 			Assert.IsFalse(res);
 		}
 		[TestMethod]
@@ -98,7 +97,7 @@ namespace Gcode.TestSuite {
 		}
 		[TestMethod]
 		public void FrameSetIsNullOrErorFrameTest1() {
-			var res = new GcodeParser(null).ContainsComment;
+			var res = new GcodeParser().ContainsComment;
 			Assert.IsFalse(res);
 		}
 		[TestMethod]
@@ -303,7 +302,7 @@ namespace Gcode.TestSuite {
 			foreach (var d in data) {
 				i++;
 
-				if (d != String.Empty) {
+				if (d != string.Empty) {
 					var g = new GcodeParser(d);
 					var obj = g.DeserializeObject();
 					Assert.IsNotNull(obj, $"nullable at raw frame : {d} line {i}");
@@ -316,8 +315,8 @@ namespace Gcode.TestSuite {
 			var i = -1;
 			foreach (var d in data) {
 				i++;
-
-				if (d != String.Empty) {
+				
+				if (d != string.Empty) {
 					var g = new GcodeParser(d);
 					var obj = g.DeserializeObject();
 					Assert.IsNotNull(obj, $"nullable at raw frame : {d} line {i}");
@@ -331,7 +330,7 @@ namespace Gcode.TestSuite {
 			foreach (var d in data) {
 				i++;
 
-				if (d != String.Empty) {
+				if (d != string.Empty) {
 					var g = new GcodeParser(d);
 					var obj = g.DeserializeObject();
 					Assert.IsNotNull(obj, $"nullable at raw frame : {d} line {i}");

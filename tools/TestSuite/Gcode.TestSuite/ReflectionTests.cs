@@ -28,10 +28,6 @@ namespace Gcode.TestSuite
 			};
 
 			var props = ReflectionUtils.GetProperties(s);
-			foreach (var VARIABLE in props)
-			{
-
-			}
 			Assert.IsTrue(props.Count == 2);
 		}
 		[TestMethod]
