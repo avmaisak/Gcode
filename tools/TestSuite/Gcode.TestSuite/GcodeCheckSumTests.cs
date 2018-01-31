@@ -11,7 +11,7 @@ namespace Gcode.TestSuite
 		[TestMethod]
 		public void GcodeCheckSumTest1()
 		{
-			var gcodeCommands = TestSuiteDataSource.ReadTextFromFile("pattern_blade_fp_piece2_v1.gcode").Split("\r\n");
+			var gcodeCommands = TestSuiteDataSource.GetDataSource("pattern_blade_fp_piece2_v1.gcode").Split("\r\n");
 			if (gcodeCommands == null || gcodeCommands.Length == 0)
 			{
 				return;
@@ -33,7 +33,7 @@ namespace Gcode.TestSuite
 		[TestMethod]
 		public void GcodeCheckSumTest2()
 		{
-			var gcodeCommands = TestSuiteDataSource.ReadTextFromFile("pattern_blade_fp_piece2_v1.gcode").Split("\r\n");
+			var gcodeCommands = TestSuiteDataSource.GetDataSource("pattern_blade_fp_piece2_v1.gcode").Split("\r\n");
 			if (gcodeCommands == null || gcodeCommands.Length == 0)
 			{
 				return;
@@ -56,7 +56,7 @@ namespace Gcode.TestSuite
 		[TestMethod]
 		public void GcodeCheckSumTest3()
 		{
-			var gcodeCommands = TestSuiteDataSource.ReadTextFromFile("100.gcode").Split("\r\n");
+			var gcodeCommands = TestSuiteDataSource.GetDataSource("100.gcode").Split("\r\n");
 			if (gcodeCommands == null || gcodeCommands.Length == 0)
 			{
 				return;

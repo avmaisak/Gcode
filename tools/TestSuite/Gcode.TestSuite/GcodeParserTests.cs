@@ -160,7 +160,7 @@ namespace Gcode.TestSuite {
 		}
 		[TestMethod]
 		public void NormalizeRawFrameTestReal_Real_Cube() {
-			var data = TestSuiteDataSource.ReadTextFromFile("100.gcode").Split("\r\n");
+			var data = TestSuiteDataSource.GetDataSource("100.gcode").Split("\r\n");
 			foreach (var d in data) {
 				var parser = new GcodeParser(d);
 				var res = parser.NormalizeRawFrame();
@@ -169,7 +169,7 @@ namespace Gcode.TestSuite {
 		}
 		[TestMethod]
 		public void NormalizeRawFrameTestReal1() {
-			var data = TestSuiteDataSource.ReadTextFromFile("pattern_blade_fp_piece2_v1.gcode").Split("\r\n");
+			var data = TestSuiteDataSource.GetDataSource("pattern_blade_fp_piece2_v1.gcode").Split("\r\n");
 			foreach (var d in data) {
 				var parser = new GcodeParser(d);
 				var res = parser.NormalizeRawFrame();
@@ -179,7 +179,7 @@ namespace Gcode.TestSuite {
 		}
 		[TestMethod]
 		public void NormalizeRawFrameTestReal2() {
-			var data = TestSuiteDataSource.ReadTextFromFile("28.gcode.modified.gcode").Split("\r\n");
+			var data = TestSuiteDataSource.GetDataSource("28.gcode.modified.gcode").Split("\r\n");
 			foreach (var d in data) {
 				var parser = new GcodeParser(d);
 				if (!parser.IsComment) {
@@ -212,7 +212,7 @@ namespace Gcode.TestSuite {
 		}
 		[TestMethod]
 		public void HandleSegmentsTestRealData1() {
-			var data = TestSuiteDataSource.ReadTextFromFile("pattern_blade_fp_piece2_v1.gcode").Split("\r\n");
+			var data = TestSuiteDataSource.GetDataSource("pattern_blade_fp_piece2_v1.gcode").Split("\r\n");
 			foreach (var d in data) {
 				var parser = new GcodeParser(d);
 				if (!parser.IsComment && !parser.ContainsComment && !parser.IsNullOrErorFrame) {
@@ -244,7 +244,7 @@ namespace Gcode.TestSuite {
 		}
 		[TestMethod]
 		public void ToGcodeCommandFrameTest3() {
-			var data = TestSuiteDataSource.ReadTextFromFile("100.gcode").Split("\r\n");
+			var data = TestSuiteDataSource.GetDataSource("100.gcode").Split("\r\n");
 			foreach (var d in data) {
 				var parser = new GcodeParser(d);
 				if (!parser.IsComment && !parser.ContainsComment && !parser.IsNullOrErorFrame) {
@@ -256,7 +256,7 @@ namespace Gcode.TestSuite {
 		}
 		[TestMethod]
 		public void ToGcodeCommandFrameTest4() {
-			var data = TestSuiteDataSource.ReadTextFromFile("28.gcode.modified.gcode").Split("\r\n");
+			var data = TestSuiteDataSource.GetDataSource("28.gcode.modified.gcode").Split("\r\n");
 			foreach (var d in data) {
 				var parser = new GcodeParser(d);
 				if (!parser.IsComment && !parser.ContainsComment && !parser.IsNullOrErorFrame) {
@@ -268,7 +268,7 @@ namespace Gcode.TestSuite {
 		}
 		[TestMethod]
 		public void ToGcodeCommandFrameTest5() {
-			var data = TestSuiteDataSource.ReadTextFromFile("pattern_blade_fp_piece2_v1.gcode").Split("\r\n");
+			var data = TestSuiteDataSource.GetDataSource("pattern_blade_fp_piece2_v1.gcode").Split("\r\n");
 			foreach (var d in data) {
 				var parser = new GcodeParser(d);
 				if (!parser.IsComment && !parser.ContainsComment && !parser.IsNullOrErorFrame) {
@@ -298,7 +298,7 @@ namespace Gcode.TestSuite {
 		}
 		[TestMethod]
 		public void DeserializeObjectTestReal1() {
-			var data = TestSuiteDataSource.ReadTextFromFile("100.gcode").Split("\r\n");
+			var data = TestSuiteDataSource.GetDataSource("100.gcode").Split("\r\n");
 			var i = -1;
 			foreach (var d in data) {
 				i++;
@@ -312,7 +312,7 @@ namespace Gcode.TestSuite {
 		}
 		[TestMethod]
 		public void DeserializeObjectTestReal2() {
-			var data = TestSuiteDataSource.ReadTextFromFile("28.gcode.modified.gcode").Split("\r\n");
+			var data = TestSuiteDataSource.GetDataSource("28.gcode.modified.gcode").Split("\r\n");
 			var i = -1;
 			foreach (var d in data) {
 				i++;
@@ -326,7 +326,7 @@ namespace Gcode.TestSuite {
 		}
 		[TestMethod]
 		public void DeserializeObjectTestReal3() {
-			var data = TestSuiteDataSource.ReadTextFromFile("pattern_blade_fp_piece2_v1.gcode").Split("\r\n");
+			var data = TestSuiteDataSource.GetDataSource("pattern_blade_fp_piece2_v1.gcode").Split("\r\n");
 			var i = -1;
 			foreach (var d in data) {
 				i++;
@@ -365,27 +365,12 @@ namespace Gcode.TestSuite {
 			var res = p.SerializeObject(g);
 			Assert.AreEqual("G1 X5 Y-3 Z0 ;LALALAL", res);
 		}
-		[TestMethod]
-		public void SerializeTestSynthetic3() {
-
-			var g = new GcodeCommandFrame {
-				M = 206,
-				T = 3,
-				P = 200,
-				X = 89,
-				Comment = "extruder normal steps per mm"
-			};
-
-			var p = new GcodeParser();
-			var res = p.SerializeObject(g);
-			Assert.AreEqual("M206 T3 P200 X89 ;extruder normal steps per mm", res);
-		}
 
 
 		[TestMethod]
 		public void SerializeTestSyntheticResearch4() {
 			var cmds = new List<GcodeCommandFrame>();
-			var gcodeCommands = TestSuiteDataSource.ReadTextFromFile("100.gcode").Split("\r\n");
+			var gcodeCommands = TestSuiteDataSource.GetDataSource("100.gcode").Split("\r\n");
 
 			foreach (var fr in gcodeCommands) {
 				var parser = new GcodeParser(fr);
