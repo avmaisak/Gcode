@@ -15,14 +15,10 @@ namespace Common.Utils
 				foreach (var pi in properties)
 				{
 					var selfValue = type.GetProperty(pi.Name).GetValue(item, null);
-					if (selfValue != null)
-					{
-						result.Add(new KeyValuePair<string, string>(pi.Name, selfValue.ToString()));
-					}
-					else
-					{
-						result.Add(new KeyValuePair<string, string>(pi.Name, null));
-					}
+					result.Add(
+						selfValue != null
+						? new KeyValuePair<string, string>(pi.Name, selfValue.ToString())
+						: new KeyValuePair<string, string>(pi.Name, null));
 				}
 			}
 			return result;

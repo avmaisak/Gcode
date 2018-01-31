@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using Common.Utils;
 using Gcode.Entity;
 using Gcode.Utils.Interfaces;
@@ -160,6 +161,7 @@ namespace Gcode.Utils
 		/// <returns></returns>
 		public string SerializeObject(GcodeCommandFrame gcodeCommandFrame)
 		{
+
 			var o = gcodeCommandFrame;
 			var res = string.Empty;
 			var objectProperties = ReflectionUtils.GetProperties(o);
@@ -179,7 +181,7 @@ namespace Gcode.Utils
 							commandSeparator = string.Empty;
 						}
 
-						res += $"{commandSeparator}{objProp.Key.ToUpper()}{objProp.Value}";
+						res += $"{commandSeparator}{objProp.Key.ToUpper()}{objProp.Value.Replace(',', '.')}";
 						addedLines++;
 					}
 					else
