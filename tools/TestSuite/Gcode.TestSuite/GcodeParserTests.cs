@@ -302,7 +302,7 @@ namespace Gcode.TestSuite {
 			foreach (var d in data) {
 				i++;
 
-				if (d != string.Empty) {
+				if (!string.IsNullOrWhiteSpace(d)) {
 					var g = new GcodeParser(d);
 					var obj = g.DeserializeObject();
 					Assert.IsNotNull(obj, $"nullable at raw frame : {d} line {i}");
@@ -316,7 +316,7 @@ namespace Gcode.TestSuite {
 			foreach (var d in data) {
 				i++;
 				
-				if (d != string.Empty) {
+				if (!string.IsNullOrWhiteSpace(d)) {
 					var g = new GcodeParser(d);
 					var obj = g.DeserializeObject();
 					Assert.IsNotNull(obj, $"nullable at raw frame : {d} line {i}");
@@ -330,7 +330,7 @@ namespace Gcode.TestSuite {
 			foreach (var d in data) {
 				i++;
 
-				if (d != string.Empty) {
+				if (!string.IsNullOrWhiteSpace(d)) {
 					var g = new GcodeParser(d);
 					var obj = g.DeserializeObject();
 					Assert.IsNotNull(obj, $"nullable at raw frame : {d} line {i}");
