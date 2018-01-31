@@ -470,7 +470,6 @@ namespace Gcode.TestSuite
 			var res = p.SerializeObject(g);
 			Assert.AreEqual("G92 Z12", res);
 		}
-		
 		[TestMethod]
 		public void SerializeTestSyntheticResearchIgnoreComments()
 		{
@@ -485,7 +484,7 @@ namespace Gcode.TestSuite
 			};
 			var parser = new GcodeParser();
 			var res = parser.SerializeObject(f, true);
-			Assert.IsTrue(res == "M206 T3 P200 X89");
+			Assert.AreEqual("M206 T3 P200 X89",res);
 		}
 		[TestMethod]
 		public void SerializeTestSyntheticResearchIgnoreComments1()

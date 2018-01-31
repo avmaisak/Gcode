@@ -200,7 +200,7 @@ namespace Gcode.Utils
 				}
 			}
 
-			if (!string.IsNullOrWhiteSpace(commentString) || !ignoreComments)
+			if (!string.IsNullOrWhiteSpace(commentString))
 			{
 				return $"{res} ;{commentString}";
 			}
