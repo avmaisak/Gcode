@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Common.Utils;
 using Gcode.Entity;
@@ -319,7 +320,15 @@ namespace Gcode.TestSuite {
 				if (!string.IsNullOrWhiteSpace(d)) {
 					var g = new GcodeParser(d);
 					var obj = g.DeserializeObject();
-					Assert.IsNotNull(obj, $"nullable at raw frame : {d} line {i}");
+					try
+					{
+						Assert.IsNotNull(obj, $"nullable at raw frame : {d} line {i}");
+					}
+					catch 
+					{
+						throw new Exception( $"failed at code: {d}");
+					}
+					
 				}
 			}
 		}
