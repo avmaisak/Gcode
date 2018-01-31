@@ -386,7 +386,6 @@ namespace Gcode.TestSuite {
 			var res = p.SerializeObject(g);
 			Assert.AreEqual("G92 Z12", res);
 		}
-
 		[TestMethod]
 		public void SerializeTestSyntheticResearch4() {
 			var cmds = new List<GcodeCommandFrame>();

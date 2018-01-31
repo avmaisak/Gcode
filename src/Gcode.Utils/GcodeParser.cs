@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Threading;
 using Common.Utils;
 using Gcode.Entity;
 using Gcode.Utils.Interfaces;
