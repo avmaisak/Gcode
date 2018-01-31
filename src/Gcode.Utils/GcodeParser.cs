@@ -142,6 +142,7 @@ namespace Gcode.Utils
 			_rawFrame = raw.TrimString();
 			return DeserializeObject();
 		}
+
 		/// <inheritdoc />
 		/// <summary>
 		/// Serialize
@@ -157,8 +158,9 @@ namespace Gcode.Utils
 		/// но для большинства популярных интерпретаторов (стоек управления) не превышает 6.
 		/// </summary>
 		/// <param name="gcodeCommandFrame"></param>
+		/// <param name="ignoreComments"></param>
 		/// <returns></returns>
-		public string SerializeObject(GcodeCommandFrame gcodeCommandFrame)
+		public string SerializeObject(GcodeCommandFrame gcodeCommandFrame, bool ignoreComments = false)
 		{
 
 			var o = gcodeCommandFrame;
@@ -169,9 +171,9 @@ namespace Gcode.Utils
 			foreach (var objProp in objectProperties)
 			{
 				var commandSeparator = " ";
-				var isEmpty = objProp.Value != null && !string.IsNullOrWhiteSpace(objProp.Value.Trim());
+				var isNotEmpty = objProp.Value != null && !string.IsNullOrWhiteSpace(objProp.Value.Trim());
 
-				if (isEmpty)
+				if (isNotEmpty)
 				{
 					if (objProp.Key != "Comment")
 					{
@@ -180,17 +182,25 @@ namespace Gcode.Utils
 							commandSeparator = string.Empty;
 						}
 
-						res += $"{commandSeparator}{objProp.Key.ToUpper()}{objProp.Value.Replace(',', '.')}";
+						if (objProp.Value.Contains(","))
+						{
+							objProp.Value.Replace(',', '.');
+						}
+
+						res += $"{commandSeparator}{objProp.Key.ToUpper()}{objProp.Value}";
 						addedLines++;
 					}
 					else
 					{
-						commentString = objProp.Value;
+						if (!ignoreComments)
+						{
+							commentString = objProp.Value;
+						}
 					}
 				}
 			}
 
-			if (!string.IsNullOrWhiteSpace(commentString))
+			if (!string.IsNullOrWhiteSpace(commentString) || !ignoreComments)
 			{
 				return $"{res} ;{commentString}";
 			}
@@ -283,7 +293,7 @@ namespace Gcode.Utils
 						//свойства поля кадра
 						fileldInfoType = fileldInfoType.GetGenericArguments()[0];
 						//указание значения сегмента кадра
-						
+
 						fieldInfo.SetValue(obj, Convert.ChangeType(fieldValue, fileldInfoType, Culture));
 					}
 				}

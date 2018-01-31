@@ -3,6 +3,6 @@
 	public interface IGcodeParser<T>
 	{
 		T DeserializeObject(string raw);
-		string SerializeObject(T gcodeCommandFrame);
+		string SerializeObject(T gcodeCommandFrame,  bool ignoreComments = false);
 	}
 }
