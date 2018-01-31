@@ -25,6 +25,47 @@ namespace Gcode.Entity.Interfaces {
 	/// </summary>
 	public interface IGcodeCommandFrame {
 		/// <summary>
+		/// Номер строки. 
+		/// Используется для запроса повторной передачи 
+		/// в случае возникновения ошибок связи.
+		/// </summary>
+		long? N { get; set; }
+		/// <summary>
+		/// Вспомогательные (технологические) команды. Rep Rap - например, включение вентилятора
+		/// </summary>
+		int? M { get; set; }
+		/// <summary>
+		/// линейное перемещение
+		/// </summary>
+		int? G { get; set; }
+		/// <summary>
+		/// Выбор инструмента . В RepRap, инструменты - экструдеры
+		/// </summary>
+		double? T { get; set; }
+		/// <summary>
+		/// Параметр команды. time in milliseconds; proportional (Kp) in PID Tuning
+		/// </summary>
+		double? P { get; set; }
+		/// <summary>
+		/// Координата X
+		/// </summary>
+		double? X { get; set; }
+		/// <summary>
+		/// Координата Y
+		/// </summary>
+		double? Y { get; set; }
+		/// <summary>
+		/// Координата Z
+		/// </summary>
+		double? Z { get; set; }
+		/// <summary>
+		/// Скорость рабочей подачи.
+		/// Для фрезерных станков это дюймы в минуту(IPM) или миллиметры в минуту(mm/min),
+		/// Для токарных станков это дюймы за оборот(IPR) или миллиметры за оборот(mm/rev).
+		/// для RepRap Скорость подачи (mm per minute.) Скорость движения печатающей головки
+		/// </summary>
+		double? F { get; set; }
+		/// <summary>
 		/// Stepper A position or angle
 		/// </summary>
 		double? A { get; set; }
@@ -36,33 +77,6 @@ namespace Gcode.Entity.Interfaces {
 		/// Stepper C position or angle
 		/// </summary>
 		 double? C { get; set; }
-		/// <summary>
-		/// линейное перемещение
-		/// </summary>
-		 int? G { get; set; }
-		/// <summary>
-		/// Координата X
-		/// </summary>
-		 double? X { get; set; }
-		/// <summary>
-		/// Координата Y
-		/// </summary>
-		 double? Y { get; set; }
-		/// <summary>
-		/// Координата Z
-		/// </summary>
-		 double? Z { get; set; }
-		/// <summary>
-		/// Параметр команды. time in milliseconds; proportional (Kp) in PID Tuning
-		/// </summary>
-		 double? P { get; set; }
-		/// <summary>
-		/// Скорость рабочей подачи.
-		/// Для фрезерных станков это дюймы в минуту(IPM) или миллиметры в минуту(mm/min),
-		/// Для токарных станков это дюймы за оборот(IPR) или миллиметры за оборот(mm/rev).
-		/// для RepRap Скорость подачи (mm per minute.) Скорость движения печатающей головки
-		/// </summary>
-		 double? F { get; set; }
 		/// <summary>
 		/// Скорость вращения шпинделя, время в секундах, температура, напряжение для отправки на двигатель
 		/// </summary>
@@ -91,14 +105,7 @@ namespace Gcode.Entity.Interfaces {
 		/// Число вызовов подпрограммы, Вызов подпрограммы с данной меткой
 		/// </summary>
 		 double? L { get; set; }
-		/// <summary>
-		/// Вспомогательные (технологические) команды. Rep Rap - например, включение вентилятора
-		/// </summary>
-		 int? M { get; set; }
-		/// <summary>
-		/// Выбор инструмента . В RepRap, инструменты - экструдеры
-		/// </summary>
-		 double? T { get; set; }
+		
 		/// <summary>
 		/// Нагреватель. (Parameter - used for heater number in PID Tuning)
 		/// </summary>
@@ -109,12 +116,7 @@ namespace Gcode.Entity.Interfaces {
 		/// это как абсолютная длина входного волокна к потреблению, а не по длине экструдированной продукции.
 		/// </summary>
 		 double? E { get; set; }
-		/// <summary>
-		/// Номер строки. 
-		/// Используется для запроса повторной передачи 
-		/// в случае возникновения ошибок связи.
-		/// </summary>
-		 long? N { get; set; }
+		
 		/// <summary>
 		/// Комментарий
 		/// </summary>
