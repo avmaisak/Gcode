@@ -7,33 +7,29 @@ namespace Gcode.TestSuite
 	[TestClass]
 	public class GcodeCheckSumTests
 	{
-
+		private static string _ds100Gcode => TestSuiteDataSource.GetDataSource("100.gcode");
+		private static string _bigFile => TestSuiteDataSource.GetDataSource("pattern_blade_fp_piece2_v1.gcode");
+		
 		[TestMethod]
 		public void GcodeCheckSumTest1()
 		{
-			var gcodeCommands = TestSuiteDataSource.GetDataSource("pattern_blade_fp_piece2_v1.gcode").Split("\n");
-			if (gcodeCommands == null || gcodeCommands.Length == 0)
-			{
-				return;
-			}
+			var gcodeCommands = _bigFile.Split("\n");
 
 			for (var i = 1; i < gcodeCommands.Length; i++)
 			{
 				var frame = gcodeCommands[i];
 				var parser = new GcodeParser(frame);
 
-				if (!parser.IsComment)
-				{
-					var frameCrc = GcodeCrc.FrameCrc(i, frame);
-					Assert.IsInstanceOfType(frameCrc, typeof(int));
-				}
+				if (parser.IsComment) continue;
+				var frameCrc = GcodeCrc.FrameCrc(i, frame);
+				Assert.IsInstanceOfType(frameCrc, typeof(int));
 
 			}
 		}
 		[TestMethod]
 		public void GcodeCheckSumTest2()
 		{
-			var gcodeCommands = TestSuiteDataSource.GetDataSource("pattern_blade_fp_piece2_v1.gcode").Split("\n");
+			var gcodeCommands = _bigFile.Split("\n");
 			if (gcodeCommands == null || gcodeCommands.Length == 0)
 			{
 				return;
@@ -52,11 +48,10 @@ namespace Gcode.TestSuite
 
 			}
 		}
-
 		[TestMethod]
 		public void GcodeCheckSumTest3()
 		{
-			var gcodeCommands = TestSuiteDataSource.GetDataSource("100.gcode").Split("\n");
+			var gcodeCommands = _ds100Gcode.Split("\n");
 			if (gcodeCommands == null || gcodeCommands.Length == 0)
 			{
 				return;

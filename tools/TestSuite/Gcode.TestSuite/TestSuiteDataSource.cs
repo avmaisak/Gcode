@@ -13,16 +13,6 @@ namespace Gcode.TestSuite
 #pragma warning restore SecurityIntelliSenseCS // MS Security rules violation
 
 			return wc;
-
-			//var filePath = $"{Directory.GetCurrentDirectory()}\\..\\..\\..\\..\\..\\misc\\gcode\\{fileName}";
-
-			//if (File.Exists(filePath))
-			//{
-			//	var fileContent = File.ReadAllText(filePath);
-			//	return fileContent;
-			//}
-			//return string.Empty;
 		}
-
 	}
 }

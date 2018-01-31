@@ -52,5 +52,21 @@ namespace Gcode.TestSuite
 			Assert.IsTrue(props[2].Value == "999");
 
 		}
+		[TestMethod]
+		public void ReflectionTests4() {
+
+			for (var i = 0; i < 100500; i++)
+			{
+				var s = new {
+					Name = $"Name obj {i}"
+				};
+
+				var props = ReflectionUtils.GetProperties(s);
+				Assert.IsNotNull(props);
+				Assert.IsTrue(props[0].Key == "Name");
+				Assert.IsTrue(props[0].Value == $"Name obj {i}");
+
+			}
+		}
 	}
 }
