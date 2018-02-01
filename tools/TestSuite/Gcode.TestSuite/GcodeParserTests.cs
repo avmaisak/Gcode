@@ -100,16 +100,6 @@ namespace Gcode.TestSuite {
 			Assert.IsFalse(res);
 		}
 		[TestMethod]
-		public void FrameSetIsNullOrErorFrameTest1() {
-			var res = new GcodeParser().ContainsComment;
-			Assert.IsFalse(res);
-		}
-		[TestMethod]
-		public void FrameSetIsNullOrErorFrameTest2() {
-			var res = new GcodeParser("").ContainsComment;
-			Assert.IsFalse(res);
-		}
-		[TestMethod]
 		public void FrameSetIsEmptyCommentTest1() {
 			var res = new GcodeParser(";").EmptyComment;
 			Assert.IsTrue(res);
