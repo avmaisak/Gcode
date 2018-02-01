@@ -4,20 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Description>Утилиты для работы с файлами формата G-code для платформы .NET
-
-Комплект:
-
-Парсер G-code
-Проверка контрольной суммы кадра
-Возможности:
-
-Преобразование сырого кадра в структурированный тип GcodeCommandFrame
-Преобразование типа GcodeCommandFrame в строку
-Поддержка платформ:
-
-MS Windows
-Linux</Description>
+    <Description>Утилиты для работы с файлами формата G-code для платформы .NET</Description>
     <Authors>Anton Maisak</Authors>
     <Company>Rus-Bit</Company>
     <PackageLicenseUrl>https://github.com/rus-bit/Gcode/blob/master/LICENSE</PackageLicenseUrl>
@@ -25,6 +12,7 @@ Linux</Description>
     <RepositoryUrl>https://github.com/rus-bit/Gcode.git</RepositoryUrl>
     <PackageTags>csharp gcode 3d-printing reprap reprap-3d-printer marlin marlin-firmware repitier repitier-firmware</PackageTags>
     <RepositoryType>git</RepositoryType>
+    <Copyright>Rus-Bit</Copyright>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
