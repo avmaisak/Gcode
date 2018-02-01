@@ -70,16 +70,16 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Common.Utils\Common.Utils.csproj">
-      <Project>{3FA7B5EF-5CF4-4291-A518-2D643BA10099}</Project>
-      <Name>Common.Utils</Name>
+    <ProjectReference Include="..\..\..\src\Gcode.Common.Utils\Gcode.Common.Utils.csproj">
+      <Project>{02a99b7a-4e42-4c8d-80c4-988a0e217bc3}</Project>
+      <Name>Gcode.Common.Utils</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\src\Gcode.Entity\Gcode.Entity.csproj">
       <Project>{8E5EE2D8-FC1E-4409-B70D-1B86BF42262E}</Project>
       <Name>Gcode.Entity</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\src\Gcode.Utils\Gcode.Utils.csproj">
-      <Project>{a3027e9f-550e-4c1e-b10e-718ce4aaf89e}</Project>
+      <Project>{A3027E9F-550E-4C1E-B10E-718CE4AAF89E}</Project>
       <Name>Gcode.Utils</Name>
     </ProjectReference>
   </ItemGroup>

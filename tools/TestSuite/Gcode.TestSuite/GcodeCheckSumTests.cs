@@ -1,4 +1,4 @@
-﻿using Common.Utils;
+﻿using Gcode.Common.Utils;
 using Gcode.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -40,11 +40,9 @@ namespace Gcode.TestSuite
 				var frame = gcodeCommands[i];
 				var parser = new GcodeParser(frame);
 
-				if (!parser.IsComment)
-				{
-					var frameCrc = GcodeCrc.FrameCrc(i, frame);
-					Assert.IsTrue(frameCrc >= 0, $"CRC: {frameCrc} Failed at {i},frame: {frame} ");
-				}
+				if (parser.IsComment) continue;
+				var frameCrc = GcodeCrc.FrameCrc(i, frame);
+				Assert.IsTrue(frameCrc >= 0, $"CRC: {frameCrc} Failed at {i},frame: {frame} ");
 
 			}
 		}
@@ -62,11 +60,9 @@ namespace Gcode.TestSuite
 				var frame = gcodeCommands[i];
 				var parser = new GcodeParser(frame);
 
-				if (!parser.IsComment)
-				{
-					var frameCrc = GcodeCrc.FrameCrc(i, frame);
-					Assert.IsTrue(frameCrc >= 0, $"CRC: {frameCrc} Failed at {i},frame: {frame} ");
-				}
+				if (parser.IsComment) continue;
+				var frameCrc = GcodeCrc.FrameCrc(i, frame);
+				Assert.IsTrue(frameCrc >= 0, $"CRC: {frameCrc} Failed at {i},frame: {frame} ");
 
 			}
 		}

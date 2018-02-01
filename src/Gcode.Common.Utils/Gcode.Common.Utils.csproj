@@ -2,15 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Product>Gcode</Product>
-    <Company>Rus-Bit</Company>
-    <Authors>Anton Maisak</Authors>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageLicenseUrl>https://github.com/rus-bit/Gcode/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/rus-bit/Gcode</PackageProjectUrl>
     <RepositoryUrl>https://github.com/rus-bit/Gcode.git</RepositoryUrl>
     <PackageTags>csharp gcode 3d-printing reprap reprap-3d-printer marlin marlin-firmware repitier repitier-firmware</PackageTags>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Anton Maisak</Authors>
+    <Company>Rus-Bit</Company>
+    <Product>Gcode</Product>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 

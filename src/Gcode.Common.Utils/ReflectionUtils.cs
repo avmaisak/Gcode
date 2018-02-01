@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 
-namespace Common.Utils {
+namespace Gcode.Common.Utils {
 	public static class ReflectionUtils {
 		public static List<KeyValuePair<string, string>> GetProperties(object item) {
 			

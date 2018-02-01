@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Common.Utils;
+using Gcode.Common.Utils;
 using Gcode.Entity;
 using Gcode.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -17,38 +17,38 @@ namespace Gcode.TestSuite {
 		private static string Middle => TestSuiteDataSource.GetDataSource("28.gcode.modified.gcode");
 		[TestMethod]
 		public void FrameSetIsCommentTest1() {
-			var s = "; head speed 63.800003, filament speed 0.000000, preload 0.000000";
+			const string s = "; head speed 63.800003, filament speed 0.000000, preload 0.000000";
 			var res = new GcodeParser(s).IsComment;
 			Assert.IsTrue(res);
 		}
 		[TestMethod]
 		public void FrameSetIsCommentTest2() {
-			var s = "   ; head speed 63.800003, filament speed 0.000000, preload 0.000000";
+			const string s = "   ; head speed 63.800003, filament speed 0.000000, preload 0.000000";
 
 			var res = new GcodeParser(s).IsComment;
 			Assert.IsTrue(res);
 		}
 		[TestMethod]
 		public void FrameSetIsCommentTest3() {
-			var s = " head speed 63.800003, filament speed 0.000000, preload 0.000000";
+			const string s = " head speed 63.800003, filament speed 0.000000, preload 0.000000";
 			var res = new GcodeParser(s).IsComment;
 			Assert.IsFalse(res);
 		}
 		[TestMethod]
 		public void FrameSetIsCommentTest4() {
-			var s = "; 'Destring/Wipe/Jump Path', 0.0 [feed mm/s], 63.8 [head mm/s]";
+			const string s = "; 'Destring/Wipe/Jump Path', 0.0 [feed mm/s], 63.8 [head mm/s]";
 			var res = new GcodeParser(s).IsComment;
 			Assert.IsTrue(res);
 		}
 		[TestMethod]
 		public void FrameSetIsCommentTest5() {
-			var s = ";";
+			const string s = ";";
 			var res = new GcodeParser(s).IsComment;
 			Assert.IsTrue(res);
 		}
 		[TestMethod]
 		public void FrameSetIsCommentTest6() {
-			var s = "     ;     ";
+			const string s = "     ;     ";
 			var res = new GcodeParser(s).IsComment;
 			Assert.IsTrue(res);
 		}
@@ -182,21 +182,21 @@ namespace Gcode.TestSuite {
 		}
 		[TestMethod]
 		public void HandleSegmentsTest1() {
-			var rawFrame = "G1 X602.368 Y348.476 E0.23255";
+			const string rawFrame = "G1 X602.368 Y348.476 E0.23255";
 			var parser = new GcodeParser(rawFrame);
 			var items = parser.HandleSegments();
 			Assert.IsNotNull(items);
 		}
 		[TestMethod]
 		public void HandleSegmentsTest2() {
-			var rawFrame = "G1 X602.368 Y348.476 E0.23255";
+			const string rawFrame = "G1 X602.368 Y348.476 E0.23255";
 			var parser = new GcodeParser(rawFrame);
 			var items = parser.HandleSegments();
 			Assert.IsTrue(items.Count > 0);
 		}
 		[TestMethod]
 		public void HandleSegmentsTest3() {
-			var rawFrame = "G1 X602.368 Y348.476 E0.23255";
+			const string rawFrame = "G1 X602.368 Y348.476 E0.23255";
 			var rawSplited = rawFrame.Split(" ");
 			var parser = new GcodeParser(rawFrame);
 			var items = parser.HandleSegments();
@@ -207,17 +207,16 @@ namespace Gcode.TestSuite {
 			var data = BigFile.Split("\n");
 			foreach (var d in data) {
 				var parser = new GcodeParser(d);
-				if (!parser.IsComment && !parser.ContainsComment && !parser.IsNullOrErorFrame) {
-					var res = parser.NormalizeRawFrame();
-					var rawSplited = res.Split(" ");
-					var items = parser.HandleSegments();
-					Assert.IsTrue(items.Count == rawSplited.Length);
-				}
+				if (parser.IsComment || parser.ContainsComment || parser.IsNullOrErorFrame) continue;
+				var res = parser.NormalizeRawFrame();
+				var rawSplited = res.Split(" ");
+				var items = parser.HandleSegments();
+				Assert.IsTrue(items.Count == rawSplited.Length);
 			}
 		}
 		[TestMethod]
 		public void ToGcodeCommandFrameTest1() {
-			var rawFrame = "G1 X602.368 Y348.476 E0.23255";
+			const string rawFrame = "G1 X602.368 Y348.476 E0.23255";
 			var parser = new GcodeParser(rawFrame);
 			var items = parser.HandleSegments();
 			var gcode = GcodeParser.ToGcodeCommandFrame(items);
@@ -225,7 +224,7 @@ namespace Gcode.TestSuite {
 		}
 		[TestMethod]
 		public void ToGcodeCommandFrameTest2() {
-			var rawFrame = "G1 X602.368 Y348.476 E0.23255";
+			const string rawFrame = "G1 X602.368 Y348.476 E0.23255";
 			var parser = new GcodeParser(rawFrame);
 			var items = parser.HandleSegments();
 			var gcode = GcodeParser.ToGcodeCommandFrame(items);
@@ -239,11 +238,10 @@ namespace Gcode.TestSuite {
 			var data = Ds100Gcode.Split("\n");
 			foreach (var d in data) {
 				var parser = new GcodeParser(d);
-				if (!parser.IsComment && !parser.ContainsComment && !parser.IsNullOrErorFrame) {
-					var items = parser.HandleSegments();
-					var gcode = GcodeParser.ToGcodeCommandFrame(items);
-					Assert.IsNotNull(gcode);
-				}
+				if (parser.IsComment || parser.ContainsComment || parser.IsNullOrErorFrame) continue;
+				var items = parser.HandleSegments();
+				var gcode = GcodeParser.ToGcodeCommandFrame(items);
+				Assert.IsNotNull(gcode);
 			}
 		}
 		[TestMethod]
@@ -262,23 +260,22 @@ namespace Gcode.TestSuite {
 			var data = BigFile.Split("\n");
 			foreach (var d in data) {
 				var parser = new GcodeParser(d);
-				if (!parser.IsComment && !parser.ContainsComment && !parser.IsNullOrErorFrame) {
-					var items = parser.HandleSegments();
-					var gcode = GcodeParser.ToGcodeCommandFrame(items);
-					Assert.IsNotNull(gcode);
-				}
+				if (parser.IsComment || parser.ContainsComment || parser.IsNullOrErorFrame) continue;
+				var items = parser.HandleSegments();
+				var gcode = GcodeParser.ToGcodeCommandFrame(items);
+				Assert.IsNotNull(gcode);
 			}
 		}
 		[TestMethod]
 		public void DeserializeObjectTestSynthetic1() {
-			var raw = "; ^   203D20313230302E300A4D323036205433205031343920583730302E";
+			const string raw = "; ^   203D20313230302E300A4D323036205433205031343920583730302E";
 			var parser = new GcodeParser(raw);
 			var res = parser.DeserializeObject();
 			Assert.IsNotNull(res);
 		}
 		[TestMethod]
 		public void DeserializeObjectTestSynthetic2() {
-			var raw = "G1 X550.361 Y347.617 E0.15691";
+			const string raw = "G1 X550.361 Y347.617 E0.15691";
 			var parser = new GcodeParser(raw);
 			var res = parser.DeserializeObject();
 			Assert.AreEqual(res.G, 1);
@@ -294,11 +291,10 @@ namespace Gcode.TestSuite {
 			foreach (var d in data) {
 				i++;
 
-				if (!string.IsNullOrWhiteSpace(d)) {
-					var g = new GcodeParser(d);
-					var obj = g.DeserializeObject();
-					Assert.IsNotNull(obj, $"nullable at raw frame : {d} line {i}");
-				}
+				if (string.IsNullOrWhiteSpace(d)) continue;
+				var g = new GcodeParser(d);
+				var obj = g.DeserializeObject();
+				Assert.IsNotNull(obj, $"nullable at raw frame : {d} line {i}");
 			}
 		}
 		[TestMethod]
@@ -308,11 +304,10 @@ namespace Gcode.TestSuite {
 			foreach (var d in data) {
 				i++;
 
-				if (!string.IsNullOrWhiteSpace(d)) {
-					var g = new GcodeParser(d);
-					var obj = g.DeserializeObject();
-					Assert.IsNotNull(obj, $"nullable at raw frame : {d} line {i}");
-				}
+				if (string.IsNullOrWhiteSpace(d)) continue;
+				var g = new GcodeParser(d);
+				var obj = g.DeserializeObject();
+				Assert.IsNotNull(obj, $"nullable at raw frame : {d} line {i}");
 			}
 		}
 		[TestMethod]
@@ -322,22 +317,17 @@ namespace Gcode.TestSuite {
 			foreach (var d in data) {
 				i++;
 
-				if (!string.IsNullOrWhiteSpace(d)) {
-					var g = new GcodeParser(d);
-					var obj = g.DeserializeObject();
-					Assert.IsNotNull(obj, $"nullable at raw frame : {d} line {i}");
-				}
+				if (string.IsNullOrWhiteSpace(d)) continue;
+				var g = new GcodeParser(d);
+				var obj = g.DeserializeObject();
+				Assert.IsNotNull(obj, $"nullable at raw frame : {d} line {i}");
 			}
 		}
 		[TestMethod]
 		public void DeserializeTestSyntheticResearch() {
-			var cmds = new List<GcodeCommandFrame>();
 			var gcodeCommands = Ds100Gcode.Split("\n");
 
-			foreach (var fr in gcodeCommands) {
-				var parser = new GcodeParser(fr);
-				cmds.Add(parser.DeserializeObject());
-			}
+			var cmds = gcodeCommands.Select(fr => new GcodeParser(fr)).Select(parser => parser.DeserializeObject()).ToList();
 
 			var x = cmds.Min(s => s?.X ?? 0);
 			Assert.AreEqual(x, -70);
