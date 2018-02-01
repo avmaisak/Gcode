@@ -12,6 +12,7 @@
     <Company>Rus-Bit</Company>
     <Product>Gcode</Product>
     <RepositoryType>git</RepositoryType>
+    <AssemblyVersion>1.0.0.*</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
