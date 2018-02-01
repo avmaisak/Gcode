@@ -7,13 +7,13 @@ namespace Gcode.TestSuite
 	[TestClass]
 	public class GcodeCheckSumTests
 	{
-		private static string _ds100Gcode => TestSuiteDataSource.GetDataSource("100.gcode");
-		private static string _bigFile => TestSuiteDataSource.GetDataSource("pattern_blade_fp_piece2_v1.gcode");
+		private static string Ds100Gcode => TestSuiteDataSource.GetDataSource("100.gcode");
+		private static string BigFile => TestSuiteDataSource.GetDataSource("pattern_blade_fp_piece2_v1.gcode");
 		
 		[TestMethod]
 		public void GcodeCheckSumTest1()
 		{
-			var gcodeCommands = _bigFile.Split("\n");
+			var gcodeCommands = BigFile.Split("\n");
 
 			for (var i = 1; i < gcodeCommands.Length; i++)
 			{
@@ -29,7 +29,7 @@ namespace Gcode.TestSuite
 		[TestMethod]
 		public void GcodeCheckSumTest2()
 		{
-			var gcodeCommands = _bigFile.Split("\n");
+			var gcodeCommands = BigFile.Split("\n");
 			if (gcodeCommands == null || gcodeCommands.Length == 0)
 			{
 				return;
@@ -51,7 +51,7 @@ namespace Gcode.TestSuite
 		[TestMethod]
 		public void GcodeCheckSumTest3()
 		{
-			var gcodeCommands = _ds100Gcode.Split("\n");
+			var gcodeCommands = Ds100Gcode.Split("\n");
 			if (gcodeCommands == null || gcodeCommands.Length == 0)
 			{
 				return;

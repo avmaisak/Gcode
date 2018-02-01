@@ -1,4 +1,5 @@
-﻿using Common.Utils;
+﻿using System;
+using Common.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Gcode.TestSuite
@@ -65,6 +66,26 @@ namespace Gcode.TestSuite
 				Assert.IsNotNull(props);
 				Assert.IsTrue(props[0].Key == "Name");
 				Assert.IsTrue(props[0].Value == $"Name obj {i}");
+
+			}
+		}
+
+		[TestMethod]
+		public void ReflectionTests5() {
+
+			for (var i = 0; i < 100500; i++)
+			{
+				var s = new {
+					Name = Convert.ToDouble(0.15)
+				};
+
+				var props = ReflectionUtils.GetProperties(s);
+				Assert.IsNotNull(props);
+				var key = props[0].Key;
+				var value = props[0].Value;
+
+				Assert.AreEqual(key, "Name");
+				Assert.AreEqual("0.15",value);
 
 			}
 		}

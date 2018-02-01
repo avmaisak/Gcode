@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Net;
 
 namespace Gcode.TestSuite
@@ -7,12 +8,13 @@ namespace Gcode.TestSuite
 	{
 		public static string GetDataSource(string fileName)
 		{
-			var uri = new Uri($"https://raw.githubusercontent.com/rus-bit/Gcode/master/misc/gcode/{fileName}");
+			var uri = new Uri($"https://raw.githubusercontent.com/rus-bit/Gcode/master/misc/gcode/{fileName}".ToString(CultureInfo.InvariantCulture));
 #pragma warning disable SecurityIntelliSenseCS // MS Security rules violation
-			var wc = new WebClient().DownloadString(uri);
+			using (var wc = new WebClient())
+			{
+				return wc.DownloadString(uri);
+			}
 #pragma warning restore SecurityIntelliSenseCS // MS Security rules violation
-
-			return wc;
 		}
 	}
 }

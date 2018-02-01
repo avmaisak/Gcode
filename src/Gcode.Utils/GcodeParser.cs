@@ -142,7 +142,6 @@ namespace Gcode.Utils
 			_rawFrame = raw.TrimString();
 			return DeserializeObject();
 		}
-
 		/// <inheritdoc />
 		/// <summary>
 		/// Serialize
@@ -180,11 +179,6 @@ namespace Gcode.Utils
 						if (addedLines == 0)
 						{
 							commandSeparator = string.Empty;
-						}
-
-						if (objProp.Value.Contains(","))
-						{
-							objProp.Value.Replace(',', '.');
 						}
 
 						res += $"{commandSeparator}{objProp.Key.ToUpper()}{objProp.Value}";
