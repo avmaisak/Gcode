@@ -13,12 +13,12 @@
     <PackageTags>csharp gcode 3d-printing reprap reprap-3d-printer marlin marlin-firmware repitier repitier-firmware</PackageTags>
     <RepositoryType>git</RepositoryType>
     <Copyright>Rus-Bit</Copyright>
-    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <PackageReleaseNotes>needs 
 Gcode.Entity
 Gcode.Common.Utils</PackageReleaseNotes>
-    <Version>1.0.1</Version>
-    <FileVersion>1.0.0.1</FileVersion>
+    <Version>1.0.0</Version>
+    <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
