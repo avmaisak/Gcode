@@ -3,6 +3,7 @@
 [![GitHub license](https://img.shields.io/github/license/rus-bit/Gcode.svg)](https://github.com/rus-bit/Gcode/blob/master/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/rus-bit/Gcode.svg?style=plastic)](https://github.com/rus-bit/Gcode/issues)
 [![NuGet version](https://badge.fury.io/nu/Gcode.Utils.svg)](https://badge.fury.io/nu/Gcode.Utils)
+[![codecov](https://codecov.io/gh/rus-bit/Gcode/branch/master/graph/badge.svg)](https://codecov.io/gh/rus-bit/Gcode)
 
 Утилиты для работы с файлами формата G-code для платформы .NET
 
