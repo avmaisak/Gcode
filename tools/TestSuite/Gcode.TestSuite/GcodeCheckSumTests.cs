@@ -1,4 +1,5 @@
 ﻿using Gcode.Common.Utils;
+using Gcode.TestSuite.Infrastructure;
 using Gcode.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -7,64 +8,60 @@ namespace Gcode.TestSuite
 	[TestClass]
 	public class GcodeCheckSumTests
 	{
-		private static string Ds100Gcode => TestSuiteDataSource.GetDataSource("100.gcode");
-		private static string BigFile => TestSuiteDataSource.GetDataSource("pattern_blade_fp_piece2_v1.gcode");
-		
 		[TestMethod]
-		public void GcodeCheckSumTest1()
+		public void CheckSumTest1()
 		{
-			var gcodeCommands = BigFile.Split("\n");
-
-			for (var i = 1; i < gcodeCommands.Length; i++)
+			var cmd = TestSuiteDataSource.TestSyntheticCodes[0];
+			var g = GcodeParser.ToGCode(cmd);
+			g.N = 1;
+			var crc = GcodeCrc.FrameCrc(g);
+			Assert.IsInstanceOfType(crc, typeof(int));
+		}
+		[TestMethod]
+		public void CheckSumTest2()
+		{
+			for (var i = 1; i < TestSuiteDataSource.TestSyntheticCodes.Length; i++)
 			{
-				var frame = gcodeCommands[i];
-				var parser = new GcodeParser(frame);
-
-				if (parser.IsComment) continue;
-				var frameCrc = GcodeCrc.FrameCrc(i, frame);
-				Assert.IsInstanceOfType(frameCrc, typeof(int));
-
+				var cmd = TestSuiteDataSource.TestSyntheticCodes[i];
+				var g = GcodeParser.ToGCode(cmd);
+				g.N = i;
+				var crc = GcodeCrc.FrameCrc(g);
+				Assert.IsInstanceOfType(crc, typeof(int));
 			}
 		}
 		[TestMethod]
-		public void GcodeCheckSumTest2()
+		public void CheckSumTest3()
 		{
-			var gcodeCommands = BigFile.Split("\n");
-			if (gcodeCommands == null || gcodeCommands.Length == 0)
+			for (var i = 1; i < TestSuiteDataSource.TestSyntheticCodes.Length; i++)
 			{
-				return;
-			}
-
-			for (var i = 1; i < gcodeCommands.Length; i++)
-			{
-				var frame = gcodeCommands[i];
-				var parser = new GcodeParser(frame);
-
-				if (parser.IsComment) continue;
-				var frameCrc = GcodeCrc.FrameCrc(i, frame);
-				Assert.IsTrue(frameCrc >= 0, $"CRC: {frameCrc} Failed at {i},frame: {frame} ");
-
+				var cmd = TestSuiteDataSource.TestSyntheticCodes[i];
+				var g = GcodeParser.ToGCode(cmd);
+				g.N = i;
+				var crc = GcodeCrc.FrameCrc(g);
+				Assert.IsTrue(crc >= 0, $"{i} {cmd}");
 			}
 		}
 		[TestMethod]
-		public void GcodeCheckSumTest3()
+		public void CheckSumTest4()
 		{
-			var gcodeCommands = Ds100Gcode.Split("\n");
-			if (gcodeCommands == null || gcodeCommands.Length == 0)
+			var ds = TestSuiteDataSource.Ds100Gcode.Split("\n");
+			for (var i = 1; i < ds.Length; i++)
 			{
-				return;
+				var cmd = ds[i];
+				var g = GcodeParser.ToGCode(cmd);
+				g.N = i;
+				var crc = GcodeCrc.FrameCrc(g);
+				Assert.IsTrue(crc >= 0, $"{i} {cmd}");
 			}
-
-			for (var i = 1; i < gcodeCommands.Length; i++)
-			{
-				var frame = gcodeCommands[i];
-				var parser = new GcodeParser(frame);
-
-				if (parser.IsComment) continue;
-				var frameCrc = GcodeCrc.FrameCrc(i, frame);
-				Assert.IsTrue(frameCrc >= 0, $"CRC: {frameCrc} Failed at {i},frame: {frame} ");
-
-			}
+		}
+		[TestMethod]
+		public void CheckSumTest4M115()
+		{
+			var cmd = TestSuiteDataSource.TestSyntheticCodes[6];
+			var g = GcodeParser.ToGCode(cmd);
+			g.N = 6;
+			var crc = GcodeCrc.FrameCrc(g);
+			Assert.IsTrue(crc >= 0, $"{cmd}");
 		}
 	}
 }

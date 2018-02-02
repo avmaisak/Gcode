@@ -9,7 +9,7 @@ namespace Gcode.Entity
 	public class GcodeCommandFrame : GcodeCommandFrameBase
 	{
 		/// <inheritdoc />
-		public override long? N { get; set; }
+		public override long N { get; set; }
 		/// <inheritdoc />
 		public override int? M { get; set; }
 		/// <inheritdoc />

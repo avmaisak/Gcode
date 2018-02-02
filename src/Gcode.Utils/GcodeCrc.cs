@@ -1,10 +1,14 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using Gcode.Entity;
 
-namespace Gcode.Utils {
+namespace Gcode.Utils
+{
 	/// <summary>
 	/// Проверка checksum
 	/// </summary>
-	public static class GcodeCrc {
+	public static class GcodeCrc
+	{
 		/// <summary>
 		/// Контрольная сумма кадра
 		/// http://reprap.org/wiki/G-code#.2A:_Checksum
@@ -19,13 +23,26 @@ namespace Gcode.Utils {
 		/// You can leave both of these out - RepRap will still work, but it won't do checking. 
 		/// You have to have both or neither though. If only one appears, it produces an error.
 		/// </summary>
-		/// <param name="line">порядковый номер строки</param>
-		/// <param name="frame">Кадр</param>
+		/// <param name="gcodeCommandFrame">Кадр</param>
 		/// <returns></returns>
-		public static int FrameCrc(long line, string frame) {
-			var f = $"N{line} {frame}";
-			var check = f.Aggregate(0, (current, ch) => current ^ (ch & 0xff));
+		public static int FrameCrc(GcodeCommandFrame gcodeCommandFrame)
+		{
+			if (gcodeCommandFrame.N == 0)
+			{
+#pragma warning disable S112 // General exceptions should never be thrown
+				throw new Exception("Frame line number expected (>0)");
+#pragma warning restore S112 // General exceptions should never be thrown
+			}
+
+			var f = GcodeParser.ToStringCommand(gcodeCommandFrame);
+			var check = 0;
+			foreach (var ch in f)
+			{
+				check ^= (ch & 0xff);
+			}
+
 			check ^= 32;
+
 			return check;
 		}
 	}

@@ -2,7 +2,7 @@
 using Gcode.Common.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Gcode.TestSuite
+namespace Gcode.TestSuite.Utils
 {
 	[TestClass]
 	public class ReflectionTests
@@ -84,9 +84,8 @@ namespace Gcode.TestSuite
 				var key = props[0].Key;
 				var value = props[0].Value;
 
-				Assert.AreEqual(key, "Name");
-				Assert.AreEqual("0.15",value);
-
+				Assert.AreEqual("Name",key );
+				Assert.AreEqual("0.15",value );
 			}
 		}
 	}

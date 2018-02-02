@@ -4,59 +4,43 @@ using System.Globalization;
 using System.Linq;
 using Gcode.Common.Utils;
 using Gcode.Entity;
-using Gcode.Utils.Interfaces;
 
 namespace Gcode.Utils
 {
 	/// <summary>
 	/// парсер 
 	/// </summary>
-	public class GcodeParser : IGcodeParser<GcodeCommandFrame>
+	public static class GcodeParser
 	{
 		#region private
 		/// <summary>
 		/// Культура
 		/// </summary>
 		private static readonly CultureInfo Culture = CultureInfo.InvariantCulture;
-		private string _rawFrame;
-		private readonly string _commentChar;
-		private void InitRawFrame(string rawFrame)
-		{
-			_rawFrame = rawFrame.TrimString();
-		}
-		#endregion
-		/// <summary>
-		/// парсер
-		/// </summary>
-		/// <param name="rawFrame"></param>
-		/// <param name="commentChar"></param>
-		public GcodeParser(string rawFrame = null, string commentChar = ";")
-		{
-			InitRawFrame(rawFrame);
-			_commentChar = commentChar;
-		}
+		private static string _rawFrame;
+		private const string CommentChar = ";";
 		/// <summary>
 		/// IsNullOrEror
 		/// </summary>
 		/// <returns></returns>
-		public bool IsNullOrErorFrame => string.IsNullOrWhiteSpace(_rawFrame);
+		private static bool IsNullOrErorFrame => string.IsNullOrWhiteSpace(_rawFrame);
 		/// <summary>
 		/// Кадр является комментарием
 		/// </summary>
 		/// <returns></returns>
-		public bool IsComment => !IsNullOrErorFrame && _rawFrame.StartsWith(_commentChar);
+		private static bool IsComment => !IsNullOrErorFrame && _rawFrame.StartsWith(CommentChar);
 		/// <summary>
 		/// ContainsComment
 		/// </summary>
 		/// <returns></returns>
-		public bool ContainsComment {
+		private static bool ContainsComment {
 			get {
 				if (IsNullOrErorFrame)
 				{
 					return false;
 				}
 
-				if (!_rawFrame.StartsWith(_commentChar) && _rawFrame.Contains(_commentChar))
+				if (!_rawFrame.StartsWith(CommentChar) && _rawFrame.Contains(CommentChar))
 				{
 					return true;
 				}
@@ -67,82 +51,171 @@ namespace Gcode.Utils
 		/// <summary>
 		/// EmptyComment
 		/// </summary>
-		public bool EmptyComment => _rawFrame.Length == 1 && _rawFrame == _commentChar;
+		private static bool EmptyComment => _rawFrame.Length == 1 && _rawFrame == CommentChar;
 		/// <summary>
 		/// Перебор сегментов
 		/// </summary>
-		public ICollection<KeyValuePair<string, string>> HandleSegments()
+		private static IEnumerable<KeyValuePair<string, string>> HandleSegments()
 		{
 			//сегмент кадра. разделитель пробел
 			var frameSegments = _rawFrame.Split(" ");
 
 			//Перебор сегментов
 			return (
-					from frameSegment in frameSegments
-					let frameSegmentLength = frameSegment.Length
-					let frameSegmentCommandName = frameSegment.Substring(0, 1)
-					let frameSegmentCommandValue = frameSegment.Substring(1, frameSegmentLength - 1)
-					select new KeyValuePair<string, string>(
-							frameSegmentCommandName, frameSegmentCommandValue)
-				).ToList();
+				from frameSegment in frameSegments
+				let frameSegmentLength = frameSegment.Length
+				let frameSegmentCommandName = frameSegment.Substring(0, 1)
+				let frameSegmentCommandValue = frameSegment.Substring(1, frameSegmentLength - 1)
+				select new KeyValuePair<string, string>(
+					frameSegmentCommandName, frameSegmentCommandValue)
+			).ToList();
 		}
 		/// <summary>
-		/// Deserialize
+		/// Normalize frame
 		/// </summary>
 		/// <returns></returns>
-		public GcodeCommandFrame DeserializeObject()
+		private static string NormalizeRawFrame()
 		{
+
+			var resultFrame = new List<string>();
+			string frame;
+			var commentString = string.Empty;
+
+			if (IsComment || EmptyComment || IsNullOrErorFrame)
+			{
+				return string.Empty;
+			}
+
+			if (ContainsComment)
+			{
+				var frameCommentArr = _rawFrame.Split(";");
+				frame = frameCommentArr[0].Trim();
+				commentString = frameCommentArr[1].Trim();
+			}
+
+			else
+			{
+				frame = _rawFrame;
+			}
+
+			for (var i = 0; i < frame.Length; i++)
+			{
+				var charRawFrame = frame[i];
+
+				var isIntPrev = false;
+				if (i > 0)
+				{
+					isIntPrev = char.IsNumber(frame[i - 1]);
+				}
+
+				var isLetter = char.IsLetter(charRawFrame);
+				var res = charRawFrame.ToString();
+
+				if (isLetter && isIntPrev)
+				{
+					res = $" {res}";
+				}
+				resultFrame.Add(res);
+			}
+
+			var resultFrameStr = string.Join(string.Empty, resultFrame.ToArray());
+
+			if (!string.IsNullOrWhiteSpace(commentString))
+			{
+				resultFrameStr = $"{resultFrameStr} ;{commentString}";
+			}
+
+			return string.Join(string.Empty, resultFrameStr);
+		}
+		/// <summary>
+		/// ToGcodeCommandFrame
+		/// </summary>
+		/// <returns></returns>
+		private static GcodeCommandFrame ToGcodeCommandFrame(IEnumerable<KeyValuePair<string, string>> frameSegments)
+		{
+			var gcodeCommandFrame = new GcodeCommandFrame();
+			foreach (var frameSegment in frameSegments)
+			{
+				//команда
+				var key = frameSegment.Key;
+				//значение
+				var value = frameSegment.Value;
+				//получить свойство кадра
+				var fieldInfo = gcodeCommandFrame.GetType().GetProperty(key);
+				//свойство есть
+				if (fieldInfo != null)
+				{
+					//получить информацию свойства поля кадра
+					var fileldInfoType = fieldInfo.PropertyType;
+					// тип универсален, и универсальный тип - Nullable
+					if (fileldInfoType.IsGenericType && fileldInfoType.GetGenericTypeDefinition() == typeof(Nullable<>))
+					{
+						//объект назначения
+						var obj = gcodeCommandFrame;
+						//значение поля
+						var fieldValue = value;
+						//свойства поля кадра
+						fileldInfoType = fileldInfoType.GetGenericArguments()[0];
+						//указание значения сегмента кадра
+
+						fieldInfo.SetValue(obj, Convert.ChangeType(fieldValue, fileldInfoType, Culture));
+					}
+				}
+			}
+			return gcodeCommandFrame;
+		}
+		#endregion
+
+		/// <summary>
+		/// ToGCode
+		/// </summary>
+		/// <returns></returns>
+		public static GcodeCommandFrame ToGCode(string raw)
+		{
+			_rawFrame = raw.TrimString();
+			var frameComment = string.Empty;
 			//инициализация кадра
 			var gcodeCommandFrame = new GcodeCommandFrame();
 			//нет информации о кадре
 			if (IsNullOrErorFrame)
 			{
-				return null;
+				return new GcodeCommandFrame();
 			}
-
 			//пустой комментарий
 			if (EmptyComment)
 			{
 				gcodeCommandFrame.Comment = string.Empty;
 				return gcodeCommandFrame;
 			}
-
 			//является комментарием
 			if (IsComment)
 			{
-				gcodeCommandFrame.Comment = _rawFrame.Replace(_commentChar, string.Empty);
+				gcodeCommandFrame.Comment = _rawFrame.Replace(CommentChar, string.Empty);
 				return gcodeCommandFrame;
 			}
 
 			//содержит комментарий
 			if (ContainsComment)
 			{
-				var r = _rawFrame.Split(_commentChar);
+				var r = _rawFrame.Split(CommentChar);
 				if (r.Length == 2)
 				{
 					_rawFrame = r[0].Trim();
-					gcodeCommandFrame.Comment = r[1].Trim();
+					frameComment = r[1].Trim();
 				}
 			}
 
-			NormalizeRawFrame();
-			var segments = HandleSegments();
+			_rawFrame = NormalizeRawFrame();
 
-			gcodeCommandFrame = ToGcodeCommandFrame(segments);
+			gcodeCommandFrame = ToGcodeCommandFrame(HandleSegments());
+
+			if (!string.IsNullOrWhiteSpace(frameComment))
+			{
+				gcodeCommandFrame.Comment = frameComment;
+			}
+
 			return gcodeCommandFrame;
 		}
-		/// <inheritdoc />
-		/// <summary>
-		/// Deserialize
-		/// </summary>
-		/// <param name="raw"></param>
-		/// <returns></returns>
-		public GcodeCommandFrame DeserializeObject(string raw)
-		{
-			_rawFrame = raw.TrimString();
-			return DeserializeObject();
-		}
-		/// <inheritdoc />
 		/// <summary>
 		/// Serialize
 		/// Команды в каждом кадре выполняются одновременно, 
@@ -159,7 +232,7 @@ namespace Gcode.Utils
 		/// <param name="gcodeCommandFrame"></param>
 		/// <param name="ignoreComments"></param>
 		/// <returns></returns>
-		public string SerializeObject(GcodeCommandFrame gcodeCommandFrame, bool ignoreComments = false)
+		public static string ToStringCommand(GcodeCommandFrame gcodeCommandFrame, bool ignoreComments = false)
 		{
 
 			var o = gcodeCommandFrame;
@@ -200,99 +273,6 @@ namespace Gcode.Utils
 			}
 
 			return res;
-		}
-		/// <summary>
-		/// Normalize frame
-		/// </summary>
-		/// <returns></returns>
-		public string NormalizeRawFrame()
-		{
-
-			var resultFrame = new List<string>();
-			string frame;
-			var commentString = string.Empty;
-
-			if (IsComment || EmptyComment || IsNullOrErorFrame)
-			{
-				return _rawFrame;
-			}
-
-			if (ContainsComment)
-			{
-				var frameCommentArr = _rawFrame.Split(";");
-				frame = frameCommentArr[0].Trim();
-				commentString = frameCommentArr[1].Trim();
-			}
-			else
-			{
-				frame = _rawFrame;
-			}
-
-			for (var i = 0; i < frame.Length; i++)
-			{
-				var charRawFrame = frame[i];
-
-				var isIntPrev = false;
-				if (i > 0)
-				{
-					isIntPrev = char.IsNumber(frame[i - 1]);
-				}
-
-				var isLetter = char.IsLetter(charRawFrame);
-				var res = charRawFrame.ToString();
-
-				if (isLetter && isIntPrev)
-				{
-					res = $" {res}";
-				}
-				resultFrame.Add(res);
-			}
-
-			var resultFrameStr = string.Join(string.Empty, resultFrame.ToArray());
-
-			if (!string.IsNullOrWhiteSpace(commentString))
-			{
-				resultFrameStr = $"{resultFrameStr} ;{commentString}";
-			}
-
-			return resultFrameStr;
-		}
-		/// <summary>
-		/// ToGcodeCommandFrame
-		/// </summary>
-		/// <returns></returns>
-		public static GcodeCommandFrame ToGcodeCommandFrame(IEnumerable<KeyValuePair<string, string>> frameSegments)
-		{
-			var gcodeCommandFrame = new GcodeCommandFrame();
-			foreach (var frameSegment in frameSegments)
-			{
-				//команда
-				var key = frameSegment.Key;
-				//значение
-				var value = frameSegment.Value;
-				//получить свойство кадра
-				var fieldInfo = gcodeCommandFrame.GetType().GetProperty(key);
-				//свойство есть
-				if (fieldInfo != null)
-				{
-					//получить информацию свойства поля кадра
-					var fileldInfoType = fieldInfo.PropertyType;
-					// тип универсален, и универсальный тип - Nullable
-					if (fileldInfoType.IsGenericType && fileldInfoType.GetGenericTypeDefinition() == typeof(Nullable<>))
-					{
-						//объект назначения
-						var obj = gcodeCommandFrame;
-						//значение поля
-						var fieldValue = value;
-						//свойства поля кадра
-						fileldInfoType = fileldInfoType.GetGenericArguments()[0];
-						//указание значения сегмента кадра
-
-						fieldInfo.SetValue(obj, Convert.ChangeType(fieldValue, fileldInfoType, Culture));
-					}
-				}
-			}
-			return gcodeCommandFrame;
 		}
 	}
 }

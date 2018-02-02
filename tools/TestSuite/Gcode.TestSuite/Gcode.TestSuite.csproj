@@ -24,7 +24,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -57,15 +57,15 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataSourceTest.cs" />
+    <Compile Include="Infrastructure\Test\DataSourceTest.cs" />
     <Compile Include="GcodeCheckSumTests.cs" />
     <Compile Include="GcodeParserTests.cs" />
     <Compile Include="GcodeCommandFrameTests.cs" />
     <Compile Include="GcodeCommandSetTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReflectionTests.cs" />
-    <Compile Include="StringExtensionsTests.cs" />
-    <Compile Include="TestSuiteDataSource.cs" />
+    <Compile Include="Utils\ReflectionTests.cs" />
+    <Compile Include="Utils\StringExtensionsTests.cs" />
+    <Compile Include="Infrastructure\TestSuiteDataSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

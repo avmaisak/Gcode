@@ -36,7 +36,5 @@ namespace Gcode.TestSuite
 			}
 		}
 
-		[TestMethod]
-		public void GcodeCommandFrameTest4(){}
 	}
 }
