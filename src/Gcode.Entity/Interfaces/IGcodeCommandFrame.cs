@@ -29,7 +29,7 @@ namespace Gcode.Entity.Interfaces {
 		/// Используется для запроса повторной передачи 
 		/// в случае возникновения ошибок связи.
 		/// </summary>
-		long N { get; set; }
+		long? N { get; set; }
 		/// <summary>
 		/// Вспомогательные (технологические) команды. Rep Rap - например, включение вентилятора
 		/// </summary>
@@ -116,10 +116,13 @@ namespace Gcode.Entity.Interfaces {
 		/// это как абсолютная длина входного волокна к потреблению, а не по длине экструдированной продукции.
 		/// </summary>
 		 double? E { get; set; }
-		
 		/// <summary>
 		/// Комментарий
 		/// </summary>
-		 string Comment { get; set; }
+		string Comment { get; set; }
+		/// <summary>
+		/// Контрольная сумма кадра
+		/// </summary>
+		int? CheckSum { get; set; }
 	}
 }

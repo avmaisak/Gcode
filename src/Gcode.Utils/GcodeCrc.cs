@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Gcode.Entity;
 
 namespace Gcode.Utils

@@ -4,7 +4,7 @@ using Gcode.Entity.Interfaces;
 namespace Gcode.Entity.Base {
 	/// <inheritdoc />
 	public abstract class GcodeCommandFrameBase : IGcodeCommandFrame{
-		public abstract long  N { get; set; }
+		public abstract long? N { get; set; }
 		/// <inheritdoc />
 		public abstract int? M { get; set; }
 		/// <inheritdoc />
@@ -46,5 +46,7 @@ namespace Gcode.Entity.Base {
 		public abstract double? E { get; set; }
 		/// <inheritdoc />
 		public abstract string Comment { get; set; }
+		/// <inheritdoc />
+		public abstract int? CheckSum { get; set; }
 	}
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using Gcode.Common.Utils;
 using Gcode.Entity;
 
@@ -190,7 +191,8 @@ namespace Gcode.Utils
 			//является комментарием
 			if (IsComment)
 			{
-				gcodeCommandFrame.Comment = _rawFrame.Replace(CommentChar, string.Empty);
+				
+				gcodeCommandFrame.Comment = _rawFrame.ReplaceAtIndex(0,' ').Trim();
 				return gcodeCommandFrame;
 			}
 
@@ -234,12 +236,12 @@ namespace Gcode.Utils
 		/// <returns></returns>
 		public static string ToStringCommand(GcodeCommandFrame gcodeCommandFrame, bool ignoreComments = false)
 		{
-
 			var o = gcodeCommandFrame;
-			var res = string.Empty;
+			var cmdSegmentStringBuilder = new StringBuilder();
 			var objectProperties = ReflectionUtils.GetProperties(o);
 			var commentString = string.Empty;
 			var addedLines = 0;
+
 			foreach (var objProp in objectProperties)
 			{
 				var commandSeparator = " ";
@@ -249,12 +251,21 @@ namespace Gcode.Utils
 				{
 					if (objProp.Key != "Comment")
 					{
+						var commandKey = objProp.Key;
+
 						if (addedLines == 0)
 						{
 							commandSeparator = string.Empty;
 						}
 
-						res += $"{commandSeparator}{objProp.Key.ToUpper()}{objProp.Value}";
+						if (objProp.Key == "CheckSum" && !string.IsNullOrWhiteSpace(objProp.Value))
+						{
+							commandKey = "*";
+						}
+
+						var cmdFrameSegmentStr = $"{commandSeparator}{commandKey}{objProp.Value}";
+
+						cmdSegmentStringBuilder.Append(cmdFrameSegmentStr);
 						addedLines++;
 					}
 					else
@@ -267,12 +278,8 @@ namespace Gcode.Utils
 				}
 			}
 
-			if (!string.IsNullOrWhiteSpace(commentString))
-			{
-				return $"{res} ;{commentString}";
-			}
-
-			return res;
+			var res =  !string.IsNullOrWhiteSpace(commentString) ? $"{cmdSegmentStringBuilder} ;{commentString}" : cmdSegmentStringBuilder.ToString();
+			return res.Trim();
 		}
 	}
 }
