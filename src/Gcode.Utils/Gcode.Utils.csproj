@@ -10,14 +10,14 @@
     <PackageLicenseUrl>https://github.com/rus-bit/Gcode/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/rus-bit/Gcode</PackageProjectUrl>
     <RepositoryUrl>https://github.com/rus-bit/Gcode.git</RepositoryUrl>
-    <PackageTags>csharp gcode 3d-printing reprap reprap-3d-printer marlin marlin-firmware repitier repitier-firmware</PackageTags>
+    <PackageTags>csharp gcode 3d-printing reprap reprap-3d-printer marlin marlin-firmware repitier repitier-firmware json</PackageTags>
     <RepositoryType>git</RepositoryType>
     <Copyright>Rus-Bit</Copyright>
     <AssemblyVersion>1.0.0.1</AssemblyVersion>
     <PackageReleaseNotes>needs 
 Gcode.Entity
 Gcode.Common.Utils</PackageReleaseNotes>
-    <Version>0.1.58</Version>
+    <Version>0.1.59</Version>
     <FileVersion>1.0.0.1</FileVersion>
     <PackageIconUrl>https://raw.githubusercontent.com/rus-bit/Gcode/master/misc/design/logo/logo.png</PackageIconUrl>
   </PropertyGroup>

@@ -4,36 +4,29 @@ using Gcode.TestSuite.Infrastructure;
 using Gcode.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Gcode.TestSuite
-{
+namespace Gcode.TestSuite {
 	/// <summary>
 	/// Gcode command tests
 	/// </summary>
 	[TestClass]
-	public class GcodeParserTests
-	{
+	public class GcodeParserTests {
 		[TestMethod]
-		public void GcodeParserSyntheticTests1()
-		{
-			foreach (var r in TestSuiteDataSource.TestSyntheticCodes)
-			{
+		public void GcodeParserSyntheticTests1() {
+			foreach (var r in TestSuiteDataSource.TestSyntheticCodes) {
 				var gcode = GcodeParser.ToGCode(r);
 				Assert.IsInstanceOfType(gcode, typeof(GcodeCommandFrame));
 			}
 		}
 		[TestMethod]
-		public void GcodeParserTests1()
-		{
+		public void GcodeParserTests1() {
 			var ds = TestSuiteDataSource.Ds100Gcode.Split("\n");
-			foreach (var r in ds)
-			{
+			foreach (var r in ds) {
 				var gcode = GcodeParser.ToGCode(r);
 				Assert.IsInstanceOfType(gcode, typeof(GcodeCommandFrame), $"{r}");
 			}
 		}
 		[TestMethod]
-		public void GcodeParserTests2()
-		{
+		public void GcodeParserTests2() {
 			//M206 T3 P200 X89 ; extruder normal steps per mm
 			var ds = TestSuiteDataSource.TestSyntheticCodes[0];
 			var gcode = GcodeParser.ToGCode(ds);
@@ -48,8 +41,7 @@ namespace Gcode.TestSuite
 			Assert.AreEqual("extruder normal steps per mm", gcode.Comment);
 		}
 		[TestMethod]
-		public void GcodeParserTestsCheckSumIcTest1()
-		{
+		public void GcodeParserTestsCheckSumIcTest1() {
 			var ds = TestSuiteDataSource.TestSyntheticCodes[0];
 			var gcode = GcodeParser.ToGCode(ds);
 			gcode.N = 1;
@@ -60,8 +52,7 @@ namespace Gcode.TestSuite
 			Assert.IsTrue(resStr.Contains($"*{gcode.CheckSum}"));
 		}
 		[TestMethod]
-		public void GcodeOrderSegmentTest1()
-		{
+		public void GcodeOrderSegmentTest1() {
 			//M206 T3 P200 X89 ;extruder normal steps per mm
 			var ds = TestSuiteDataSource.TestSyntheticCodes[0];
 			var gcode = GcodeParser.ToGCode(ds);
@@ -71,31 +62,52 @@ namespace Gcode.TestSuite
 			Assert.AreEqual(dsExpected, res);
 		}
 		[TestMethod]
-		public void GcodeOrderSegmentTest2()
-		{
+		public void GcodeOrderSegmentTest2() {
 			var ds = TestSuiteDataSource.Ds100Gcode.Split("\n");
-			foreach (var d in ds)
-			{
+			foreach (var d in ds) {
 				var s = d.Replace("\r", null);
 				if (s == ";") continue;
 				var gcode = GcodeParser.ToGCode(s);
 				var gcodeStr = GcodeParser.ToStringCommand(gcode);
 				var expectedResult = $"{s}";
-				if (string.IsNullOrWhiteSpace(gcode.Comment))
-				{
+				if (string.IsNullOrWhiteSpace(gcode.Comment)) {
 					Assert.AreEqual(expectedResult.Trim(), gcodeStr.Trim(), gcodeStr.Trim());
 				}
 
 			}
 		}
 		[TestMethod]
-		public void GcodeComment()
-		{
+		public void GcodeComment() {
 			const string cmd = ";> ololo G1 X1 Y1 XZ0 ; this frame comment";
 			var gcode = GcodeParser.ToGCode(cmd);
 
 			var gcodeRes = GcodeParser.ToStringCommand(gcode);
-			Assert.AreEqual(cmd,gcodeRes );
+			Assert.AreEqual(cmd, gcodeRes);
+		}
+		[TestMethod]
+		public void ToJsonTest1() {
+			const string raw = "G1 X626.713 Y251.523 E12.01248; Haha";
+			var expected = "{\"G\":\"1\",\"X\":\"626.713\",\"Y\":\"251.523\",\"E\":\"12.01248\",\"Comment\":\"Haha\"}";
+			//\r\n\t
+			expected = expected.Replace("\r", null);
+			expected = expected.Replace("\n", null);
+			expected = expected.Replace("\t", null);
+			var res = GcodeParser.ToJson(raw);
+			Assert.AreEqual(expected, res);
+		}
+		[TestMethod]
+		public void ToJsonTest2() {
+			var cmd = new GcodeCommandFrame {
+				G = 1,
+				X = 626.713,
+				Y = 251.523,
+				E = 12.01248,
+				Comment = "Haha"
+			};
+
+			var res = cmd.ToJson();
+			var expected = "{\"G\":\"1\",\"X\":\"626.713\",\"Y\":\"251.523\",\"E\":\"12.01248\",\"Comment\":\"Haha\"}";
+			Assert.AreEqual(expected, res);
 		}
 	}
 }
