@@ -109,5 +109,21 @@ namespace Gcode.TestSuite {
 			var expected = "{\"G\":\"1\",\"X\":\"626.713\",\"Y\":\"251.523\",\"E\":\"12.01248\",\"Comment\":\"Haha\"}";
 			Assert.AreEqual(expected, res);
 		}
+		[TestMethod]
+		public void NormalizeTest1() {
+
+			var g = "M109 S205 ; wait for temperature to be reached";
+			var res = GcodeParser.NormalizeRawFrame(g);
+			var expected = "M109 S205 ;wait for temperature to be reached";
+			Assert.AreEqual(expected, res);
+		}
+		[TestMethod]
+		public void NormalizeTest2() {
+
+			var g = "G1                    E      - 2.00000                 F2400.00000  ;              NormalizeTest2";
+			var res = GcodeParser.NormalizeRawFrame(g);
+			var expected = "G1 E-2.00000 F2400.00000 ;NormalizeTest2";
+			Assert.AreEqual(expected, res);
+		}
 	}
 }

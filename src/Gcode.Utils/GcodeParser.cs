@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Gcode.Common.Utils;
 using Gcode.Entity;
 
@@ -68,10 +69,17 @@ namespace Gcode.Utils {
 		/// Normalize frame
 		/// </summary>
 		/// <returns></returns>
-		private static string NormalizeRawFrame() {
+		// ReSharper disable once InconsistentNaming
+		private static string normalizeRawFrame(string frame = null) {
+
+			if (frame != null) {
+				_rawFrame = frame;
+			}
+
+			_rawFrame = _rawFrame.RemoveAllSpaces();
 
 			var resultFrame = new List<string>();
-			string frame;
+			string frameStr;
 			var commentString = string.Empty;
 
 			if (IsComment || EmptyComment || IsNullOrErorFrame) {
@@ -80,28 +88,36 @@ namespace Gcode.Utils {
 
 			if (ContainsComment) {
 				var frameCommentArr = _rawFrame.Split(";");
-				frame = frameCommentArr[0].Trim();
-				commentString = frameCommentArr[1].Trim();
+				frameStr = frameCommentArr[0].RemoveAllSpaces();
+				commentString = frameCommentArr[1].Trim().RemoveAllSpaces();
 			}
 
 			else {
-				frame = _rawFrame;
+				frameStr = _rawFrame;
 			}
 
-			for (var i = 0; i < frame.Length; i++) {
-				var charRawFrame = frame[i];
+			for (var i = 0; i < frameStr.Length; i++) {
+				var charRawFrame = frameStr[i];
+				var isChar = char.IsLetter(charRawFrame);
 
-				var isIntPrev = false;
-				if (i > 0) {
-					isIntPrev = char.IsNumber(frame[i - 1]);
-				}
-
-				var isLetter = char.IsLetter(charRawFrame);
 				var res = charRawFrame.ToString();
-
-				if (isLetter && isIntPrev) {
+				if (isChar) {
 					res = $" {res}";
 				}
+
+				//var isIntPrev = false;
+				//if (i > 0)
+				//{
+				//	var prev = frameStr[i - 1];
+				//	isIntPrev = char.IsNumber(prev) || char.IsSymbol(prev); 
+				//}
+
+				//var isLetter = char.IsLetter(charRawFrame);
+				//var res = charRawFrame.ToString();
+
+				//if (isLetter && isIntPrev) {
+				//	res = $" {res}";
+				//}
 				resultFrame.Add(res);
 			}
 
@@ -111,7 +127,8 @@ namespace Gcode.Utils {
 				resultFrameStr = $"{resultFrameStr} ;{commentString}";
 			}
 
-			return string.Join(string.Empty, resultFrameStr);
+			_rawFrame = string.Join(string.Empty, resultFrameStr);
+			return _rawFrame;
 		}
 		/// <summary>
 		/// ToGcodeCommandFrame
@@ -152,7 +169,7 @@ namespace Gcode.Utils {
 		/// </summary>
 		/// <returns></returns>
 		public static GcodeCommandFrame ToGCode(string raw) {
-			_rawFrame = raw.TrimString();
+			_rawFrame = normalizeRawFrame(raw.TrimString());
 			var frameComment = string.Empty;
 			//инициализация кадра
 			var gcodeCommandFrame = new GcodeCommandFrame();
@@ -181,7 +198,7 @@ namespace Gcode.Utils {
 				}
 			}
 
-			_rawFrame = NormalizeRawFrame();
+
 
 			gcodeCommandFrame = ToGcodeCommandFrame(HandleSegments());
 
@@ -250,11 +267,7 @@ namespace Gcode.Utils {
 		/// </summary>
 		/// <returns></returns>
 		public static string ToJson(string raw) {
-			_rawFrame = raw;
-
-			//if (IsNullOrErorFrame) {
-			//	return $"{ObjJsonStart}{ObjJsonEnd}";
-			//}
+			_rawFrame = NormalizeRawFrame(raw);
 
 			if (IsComment || IsNullOrErorFrame) {
 				return $"{{Comment:{raw.Replace(";", null).Replace("\r", null).Trim()}}}";
@@ -265,10 +278,9 @@ namespace Gcode.Utils {
 			if (ContainsComment) {
 				var arr = _rawFrame.Split(";");
 				_rawFrame = arr[0].Trim();
-				commentString = $",\"Comment\":\"{arr[1].Trim().Replace("\r",null)}\"";
+				commentString = $",\"Comment\":\"{arr[1].Trim().Replace("\r", null)}\"";
 			}
 
-			NormalizeRawFrame();
 
 			var segments = HandleSegments();
 			var segmentsKeyValuePair = segments as KeyValuePair<string, string>[] ?? segments.ToArray();
@@ -304,6 +316,14 @@ namespace Gcode.Utils {
 		public static string ToJson(this GcodeCommandFrame gcodeCommandFrame) {
 			var resJson = ToStringCommand(gcodeCommandFrame);
 			return ToJson(resJson);
+		}
+		/// <summary>
+		/// Normalize
+		/// </summary>
+		/// <param name="raw"></param>
+		/// <returns></returns>
+		public static string NormalizeRawFrame(string raw) {
+			return normalizeRawFrame(raw);
 		}
 	}
 }

@@ -1,25 +1,20 @@
 ﻿using System;
 using System.Text;
+using System.Text.RegularExpressions;
 
-namespace Gcode.Common.Utils
-{
-	public static class StringExtensions
-	{
-		public static string[] Split(this string str, string splitter)
-		{
+namespace Gcode.Common.Utils {
+	public static class StringExtensions {
+		public static string[] Split(this string str, string splitter) {
 			return str.Split(new[] { splitter }, StringSplitOptions.None);
 		}
-		public static string TrimString(this string str)
-		{
+		public static string TrimString(this string str) {
 			var res = string.Empty;
 
-			if (str == null)
-			{
+			if (str == null) {
 				return string.Empty;
 			}
 
-			if (!string.IsNullOrWhiteSpace(str))
-			{
+			if (!string.IsNullOrWhiteSpace(str)) {
 				res = str.Trim();
 			}
 
@@ -31,10 +26,18 @@ namespace Gcode.Common.Utils
 		/// <param name="text">string to be replaced</param>
 		/// <param name="index">position of the char to be replaced</param>
 		/// <param name="c">replacement char</param>
-		public static string ReplaceAtIndex(this string text, int index, char c)
-		{
-			var stringBuilder = new StringBuilder(text) {[index] = c};
+		public static string ReplaceAtIndex(this string text, int index, char c) {
+			var stringBuilder = new StringBuilder(text) { [index] = c };
 			return stringBuilder.ToString();
+		}
+		/// <summary>
+		/// Remove All Spaces
+		/// </summary>
+		/// <param name="text"></param>
+		/// <param name="options"></param>
+		/// <returns></returns>
+		public static string RemoveAllSpaces(this string text, RegexOptions options = RegexOptions.None) {
+			return text.Replace(" ",string.Empty);
 		}
 	}
 }
