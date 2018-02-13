@@ -104,26 +104,102 @@ namespace Gcode.TestSuite {
 				E = 12.01248,
 				Comment = "Haha"
 			};
-
 			var res = cmd.ToJson();
-			var expected = "{\"G\":\"1\",\"X\":\"626.713\",\"Y\":\"251.523\",\"E\":\"12.01248\",\"Comment\":\"Haha\"}";
+			const string expected = "{\"G\":\"1\",\"X\":\"626.713\",\"Y\":\"251.523\",\"E\":\"12.01248\",\"Comment\":\"Haha\"}";
 			Assert.AreEqual(expected, res);
+		}
+		[TestMethod]
+		public void ToJsonTest3() {
+			var ds = TestSuiteDataSource.Ds100Gcode.Split("\n");
+			foreach (var r in ds) {
+				var gcode = GcodeParser.ToGCode(r);
+				var res = gcode.ToJson();
+				Assert.IsTrue(res.StartsWith("{") && res.EndsWith("}"));
+			}
+		}
+		[TestMethod]
+		public void ToJsonTest4() {
+			var ds = TestSuiteDataSource.Ds100Gcode.Split("\n");
+			foreach (var r in ds) {
+				var res = GcodeParser.ToJson(r);
+				Assert.IsTrue(res.StartsWith("{") && res.EndsWith("}"));
+			}
 		}
 		[TestMethod]
 		public void NormalizeTest1() {
 
 			var g = "M109 S205 ; wait for temperature to be reached";
-			var res = GcodeParser.NormalizeRawFrame(g);
-			var expected = "M109 S205 ;wait for temperature to be reached";
+			var res = g.NormalizeRawFrame();
+			const string expected = "M109 S205 ;wait for temperature to be reached";
 			Assert.AreEqual(expected, res);
 		}
 		[TestMethod]
 		public void NormalizeTest2() {
 
 			var g = "G1                    E      - 2.00000                 F2400.00000  ;              NormalizeTest2";
-			var res = GcodeParser.NormalizeRawFrame(g);
-			var expected = "G1 E-2.00000 F2400.00000 ;NormalizeTest2";
+			var res = g.NormalizeRawFrame();
+			const string expected = "G1 E-2.00000 F2400.00000 ;NormalizeTest2";
 			Assert.AreEqual(expected, res);
+		}
+		[TestMethod]
+		public void ContainsCommentTest1() {
+			const string res = "M82 ; use absolute distances for extrusion";
+			Assert.IsTrue(res.ContainsComment());
+		}
+		[TestMethod]
+		public void ContainsCommentTest2() {
+			const string res = "M109 S205";
+			Assert.IsFalse(res.ContainsComment());
+		}
+		[TestMethod]
+		public void ContainsCommentTest3() {
+			const string res = "";
+			Assert.IsFalse(res.ContainsComment());
+		}
+		[TestMethod]
+		public void ContainsCommentTest4() {
+			const string res = ";";
+			Assert.IsFalse(res.ContainsComment());
+		}
+		[TestMethod]
+		public void ContainsCommentTest5() {
+			const string res = "   ; thin_walls = 1";
+			Assert.IsFalse(res.ContainsComment());
+		}
+		[TestMethod]
+		public void IsCommentTest1() {
+			const string res = "M82 ; use absolute distances for extrusion";
+			Assert.IsFalse(res.IsComment());
+		}
+		[TestMethod]
+		public void IsCommentTest2() {
+			const string res = "; perimeter_extrusion_width = 0";
+			Assert.IsTrue(res.IsComment());
+		}
+		[TestMethod]
+		public void IsCommentTest3() {
+			const string res = "             ;                perimeter_extrusion_width = 0;asddsadasdasd";
+			Assert.IsTrue(res.IsComment());
+		}
+		[TestMethod]
+		public void IsNullOrErorFrameTest1() {
+			const string res = "; perimeter_extrusion_width = 0";
+			Assert.IsFalse(res.IsNullOrErrorFrame());
+		}
+		[TestMethod]
+		public void IsEmptyCommentTest1() {
+			const string res = "; perimeter_extrusion_width = 0";
+			Assert.IsFalse(res.IsEmptyComment());
+		}
+		[TestMethod]
+		public void IsEmptyCommentTest2() {
+			const string res = "            ;            ";
+			Assert.IsTrue(res.IsEmptyComment());
+		}
+		[TestMethod]
+		public void IsEmptyCommentTest3() {
+			const string res = "    ";
+			Assert.IsFalse(res.IsEmptyComment());
 		}
 	}
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -38,6 +40,22 @@ namespace Gcode.Common.Utils {
 		/// <returns></returns>
 		public static string RemoveAllSpaces(this string text, RegexOptions options = RegexOptions.None) {
 			return text.Replace(" ",string.Empty);
+		}
+		/// <summary>
+		/// Перебор сегментов
+		/// </summary>
+		public static IEnumerable<KeyValuePair<string, string>> HandleSegments(this string raw, string frameSeparator = " ") {
+			//сегмент кадра. разделитель пробел
+			var frameSegments = raw.Split(frameSeparator);
+			//Перебор сегментов
+			return (
+				from frameSegment in frameSegments
+				let frameSegmentLength = frameSegment.Length
+				let frameSegmentCommandName = frameSegment.Substring(0, 1)
+				let frameSegmentCommandValue = frameSegment.Substring(1, frameSegmentLength - 1)
+				select new KeyValuePair<string, string>(
+					frameSegmentCommandName, frameSegmentCommandValue)
+			).ToList();
 		}
 	}
 }
