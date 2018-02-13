@@ -56,6 +56,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GCodeCommonUtilTests.cs" />
     <Compile Include="Infrastructure\Test\DataSourceTest.cs" />
     <Compile Include="GcodeCheckSumTests.cs" />
     <Compile Include="GcodeParserTests.cs" />

@@ -17,7 +17,7 @@
     <PackageReleaseNotes>needs 
 Gcode.Entity
 Gcode.Common.Utils</PackageReleaseNotes>
-    <Version>0.1.59</Version>
+    <Version>0.1.65</Version>
     <FileVersion>1.0.0.1</FileVersion>
     <PackageIconUrl>https://raw.githubusercontent.com/rus-bit/Gcode/master/misc/design/logo/logo.png</PackageIconUrl>
   </PropertyGroup>
