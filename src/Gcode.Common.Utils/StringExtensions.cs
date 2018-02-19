@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Gcode.Common.Utils {
 	public static class StringExtensions {
@@ -36,9 +35,8 @@ namespace Gcode.Common.Utils {
 		/// Remove All Spaces
 		/// </summary>
 		/// <param name="text"></param>
-		/// <param name="options"></param>
 		/// <returns></returns>
-		public static string RemoveAllSpaces(this string text, RegexOptions options = RegexOptions.None) {
+		public static string RemoveAllSpaces(this string text) {
 			return text.Replace(" ",string.Empty);
 		}
 		/// <summary>
