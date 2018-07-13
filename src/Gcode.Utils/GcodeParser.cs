@@ -41,7 +41,6 @@ namespace Gcode.Utils {
 						//свойства поля кадра
 						fileldInfoType = fileldInfoType.GetGenericArguments()[0];
 						//указание значения сегмента кадра
-
 						fieldInfo.SetValue(obj, Convert.ChangeType(fieldValue, fileldInfoType, Culture));
 					}
 				}
