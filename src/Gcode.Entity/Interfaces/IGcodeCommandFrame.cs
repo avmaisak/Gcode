@@ -15,6 +15,8 @@
 	усмотрению.
  */
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace Gcode.Entity.Interfaces {
 	/// <summary>
 	/// Программа, написанная с использованием G-кода, имеет жесткую структуру. 
@@ -23,6 +25,8 @@ namespace Gcode.Entity.Interfaces {
 	/// Первый (а в некоторых случаях ещё и последний) кадр содержит только один символ «%». 
 	/// Завершается программа командой M02 или M30. 
 	/// </summary>
+	[SuppressMessage("ReSharper", "UnusedMemberInSuper.Global")]
+	[SuppressMessage("ReSharper", "UnusedMember.Global")]
 	public interface IGcodeCommandFrame {
 		/// <summary>
 		/// Номер строки. 

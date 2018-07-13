@@ -5,13 +5,10 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 
-namespace Gcode.Common.Utils
-{
-	public static class ReflectionUtils
-	{
+namespace Gcode.Common.Utils {
+	public static class ReflectionUtils {
 
-		public static List<KeyValuePair<string, string>> GetProperties(object item)
-		{
+		public static List<KeyValuePair<string, string>> GetProperties(object item) {
 
 			var result = new List<KeyValuePair<string, string>>();
 			Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
@@ -33,20 +30,17 @@ namespace Gcode.Common.Utils
 
 			var propResult = new List<PropertyInfo>();
 
-			if (propertiesOrdered.Any())
-			{
+			if (propertiesOrdered.Any()) {
 				propResult.AddRange(propertiesOrdered);
 			}
 
-			if (propertiesUnordered.Any())
-			{
+			if (propertiesUnordered.Any()) {
 				propResult.AddRange(propertiesUnordered);
 			}
 
-
 			result.AddRange(
 				from pi in propResult
-				let selfValue = type.GetProperty(pi.Name).GetValue(item, null)
+				let selfValue = type.GetProperty(pi.Name)?.GetValue(item, null)
 				select selfValue != null
 					? new KeyValuePair<string, string>(pi.Name, selfValue.ToString())
 					: new KeyValuePair<string, string>(pi.Name, null));

@@ -114,7 +114,7 @@ namespace Gcode.Utils {
 
 			foreach (var objProp in objectProperties) {
 				var commandSeparator = " ";
-				var isNotEmpty = objProp.Value != null && !string.IsNullOrWhiteSpace(objProp.Value.Trim());
+				var isNotEmpty = !string.IsNullOrWhiteSpace(objProp.Value?.Trim());
 
 				if (isNotEmpty) {
 					if (objProp.Key != "Comment") {
