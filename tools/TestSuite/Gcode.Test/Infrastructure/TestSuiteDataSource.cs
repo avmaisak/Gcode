@@ -1,6 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.Net;
+﻿using System.IO;
 
 namespace Gcode.Test.Infrastructure {
 	public static class TestSuiteDataSource {
@@ -16,11 +14,10 @@ namespace Gcode.Test.Infrastructure {
 			"M115"
 		};
 
-		public static string GetDataSource(string fileName) {
-			var uri = new Uri($"https://downloads.s1.rus-bit.com/public/Gcode/{fileName}".ToString(CultureInfo.InvariantCulture));
-			using (var wc = new WebClient()) {
-				return wc.DownloadString(uri);
-			}
+		public static string GetDataSource(string fileName)
+		{
+			var path = Directory.GetCurrentDirectory();
+			return File.ReadAllText($@"{path}\..\..\..\..\..\TestData\{fileName}");
 		}
 	}
 }

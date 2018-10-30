@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using Gcode.Common.Utils;
-using Gcode.Entity;
+using Gcode.Utils.Common;
+using Gcode.Utils.Entity;
 
 namespace Gcode.Utils {
 	/// <summary>

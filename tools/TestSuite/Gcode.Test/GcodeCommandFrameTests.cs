@@ -1,4 +1,4 @@
-﻿using Gcode.Entity;
+﻿using Gcode.Utils.Entity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Gcode.Test

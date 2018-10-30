@@ -1,6 +1,6 @@
-﻿using Gcode.Entity;
-using Gcode.Test.Infrastructure;
+﻿using Gcode.Test.Infrastructure;
 using Gcode.Utils;
+using Gcode.Utils.Entity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Gcode.Test {

@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Gcode.Common.Utils;
+using Gcode.Utils.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Gcode.Test {
