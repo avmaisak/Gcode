@@ -11,8 +11,8 @@ install:
 
 
 build_script:
-  - dotnet build -c Debug
-  - dotnet build -c Release
+  - dotnet build misc/vs/Gcode.sln -c Debug 
+  - dotnet build misc/vs/Gcode.sln -c Release
 test_script:
   - OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test tools/TestSuite/Gcode.Test/Gcode.Test.csproj" -filter:"+[Gcode]* -[Gcode.Test]*" -output:".\coverage.xml" -oldstyle
   - codecov -f coverage.xml
