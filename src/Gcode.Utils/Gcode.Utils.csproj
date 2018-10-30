@@ -29,9 +29,4 @@ Gcode.Common.Utils</PackageReleaseNotes>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Gcode.Common.Utils\Gcode.Common.Utils.csproj" />
-    <ProjectReference Include="..\Gcode.Entity\Gcode.Entity.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -1,0 +1,28 @@
+version: '2.0.0+{build}'
+image: Visual Studio 2017
+skip_branch_with_pr: true
+skip_commits:
+  files:
+  - '**/*.md'
+build:
+  verbosity: normal
+install:
+  - choco install opencover codecov
+
+
+build_script:
+  - dotnet build misc/vs/Gcode.sln -c Debug 
+  - dotnet build misc/vs/Gcode.sln -c Release
+test_script:
+  - OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test tools/TestSuite/Gcode.Test/Gcode.Test.csproj" -filter:"+[Gcode]* -[Gcode.Test]*" -output:".\coverage.xml" -oldstyle
+  - codecov -f coverage.xml
+
+artifacts:
+  - path: 'src\Gcode.Utils\bin\Debug\*.nupkg'
+    name: NuGet Package (Debug)
+
+  - path: 'src\Gcode.Utils\bin\Release\*.nupkg'
+    name: NuGet Package (Release)
+
+  - path: coverage.xml
+    name: Coverage Report

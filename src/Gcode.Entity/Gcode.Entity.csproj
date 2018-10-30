@@ -25,8 +25,4 @@
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Gcode.Common.Utils\Gcode.Common.Utils.csproj" />
-  </ItemGroup>
-
 </Project>
