@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Net;
 
-namespace Gcode.TestSuite.Infrastructure {
+namespace Gcode.Test.Infrastructure {
 	public static class TestSuiteDataSource {
 		public static string Ds100Gcode => GetDataSource("100.gcode");
 		public static string[] TestSyntheticCodes { get; } =

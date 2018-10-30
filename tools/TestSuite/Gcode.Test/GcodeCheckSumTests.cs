@@ -1,9 +1,8 @@
-﻿using Gcode.Common.Utils;
-using Gcode.TestSuite.Infrastructure;
+﻿using Gcode.Test.Infrastructure;
 using Gcode.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Gcode.TestSuite
+namespace Gcode.Test
 {
 	[TestClass]
 	public class GcodeCheckSumTests

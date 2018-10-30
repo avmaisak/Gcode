@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Gcode.TestSuite.Infrastructure.Test {
+namespace Gcode.Test.Infrastructure.Test {
 	[TestClass]
 	public class DataSourceTest {
 		private static string Ds100Gcode =>TestSuiteDataSource.GetDataSource("100.gcode");

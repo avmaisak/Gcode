@@ -2,7 +2,7 @@
 using Gcode.Common.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Gcode.TestSuite.Utils {
+namespace Gcode.Test.Utils {
 	[TestClass]
 	public class StringExtensionsTests {
 		[TestMethod]

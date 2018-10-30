@@ -2,7 +2,7 @@
 using Gcode.Common.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Gcode.TestSuite {
+namespace Gcode.Test {
 	[TestClass]
 	public class GCodeCommonUtilTests {
 		[TestMethod]

@@ -1,10 +1,9 @@
-﻿using Gcode.Common.Utils;
-using Gcode.Entity;
-using Gcode.TestSuite.Infrastructure;
+﻿using Gcode.Entity;
+using Gcode.Test.Infrastructure;
 using Gcode.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Gcode.TestSuite {
+namespace Gcode.Test {
 	/// <summary>
 	/// Gcode command tests
 	/// </summary>
