@@ -1,10 +1,9 @@
 # Gcode
 
-Утилиты для работы с файлами формата G-code для платформы .NET
+[![codecov](https://codecov.io/gh/avmaisak/Gcode/branch/master/graph/badge.svg)](https://codecov.io/gh/avmaisak/Gcode)
+[![Build status](https://ci.appveyor.com/api/projects/status/6jt202mby0ajjire?svg=true)](https://ci.appveyor.com/project/avmaisak/gcode)
 
-Комплект:
-- Парсер G-code
-- Проверка контрольной суммы кадра
+Утилиты для работы с файлами формата G-code для платформы .NET
 
 Возможности:
 
