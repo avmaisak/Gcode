@@ -1,4 +1,4 @@
-version: '2.0.0+{build}'
+version: '2.0.0.{build}'
 image: Visual Studio 2017
 skip_branch_with_pr: true
 skip_commits:
@@ -15,7 +15,7 @@ build_script:
   - dotnet build misc/vs/Gcode.sln -c Release
 test_script:
   - OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test tools/TestSuite/Gcode.Test/Gcode.Test.csproj" -filter:"+[Gcode]* -[Gcode.Test]*" -output:".\coverage.xml" -oldstyle
-  - codecov -f coverage.xml
+  - codecov -f coverage.xml -t 3cc8d6a1-6ea2-4aa3-98e8-3d19ae46adc8
 
 artifacts:
   - path: 'src\Gcode.Utils\bin\Debug\*.nupkg'
