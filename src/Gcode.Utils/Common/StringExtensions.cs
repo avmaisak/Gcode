@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Gcode.Utils.Entity;
 
 namespace Gcode.Utils.Common {
 	public static class StringExtensions {
@@ -54,6 +55,15 @@ namespace Gcode.Utils.Common {
 				select new KeyValuePair<string, string>(
 					frameSegmentCommandName, frameSegmentCommandValue)
 			).ToList();
+		}
+		/// <summary>
+		/// ToGcodeCommandFrame
+		/// </summary>
+		/// <param name="str"></param>
+		/// <returns></returns>
+		public static GcodeCommandFrame ToGcodeCommandFrame(this string str)
+		{
+			return GcodeParser.ToGCode(str);
 		}
 	}
 }

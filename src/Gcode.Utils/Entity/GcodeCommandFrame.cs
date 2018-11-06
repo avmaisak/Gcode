@@ -55,5 +55,13 @@ namespace Gcode.Utils.Entity
 		public override string Comment { get; set; }
 		[Order(23)]
 		public override int? CheckSum { get; set; }
+		public override string ToString()
+		{
+			return GcodeParser.ToStringCommand(this);
+		}
+		public string ToJson()
+		{
+			return GcodeParser.ToJson(this);
+		}
 	}
 }
