@@ -26,3 +26,10 @@ artifacts:
 
   - path: coverage.xml
     name: Coverage Report
+
+deploy:
+  provider: NuGet
+  api_key:
+    secure: oy2ibroqpazm7jq6c3caxuskjsgnkbkuvj4eqjfp64obpq
+  skip_symbols: true
+  artifact: /.*\.nupkg/
