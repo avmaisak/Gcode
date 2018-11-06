@@ -16,5 +16,35 @@ namespace Gcode.Test.Utils {
 				Assert.IsTrue(string.IsNullOrWhiteSpace(res.TrimString()));
 			}
 		}
+		[TestMethod]
+		public void GcodeParserStringExtensionsTest1()
+		{
+			var gcode = "M206 T3 P200 X89".ToGcodeCommandFrame();
+			Assert.IsNotNull(gcode.M);
+			Assert.AreEqual(206, gcode.M.Value);
+			Assert.IsNotNull(gcode.T);
+			Assert.AreEqual(3, gcode.T.Value);
+			Assert.IsNotNull(gcode.P);
+			Assert.AreEqual(200, gcode.P.Value);
+			Assert.IsNotNull(gcode.X);
+			Assert.AreEqual(89, gcode.X.Value);
+		}
+		[TestMethod]
+		public void GcodeParserStringExtensionsTest2_SplittedString()
+		{
+			for (var i = 1; i < 100500; i++)
+			{
+				var gcode = $"M{i}T{i}P{i}X{i}".ToGcodeCommandFrame();
+				Assert.IsNotNull(gcode.M);
+				Assert.AreEqual(i, gcode.M.Value);
+				Assert.IsNotNull(gcode.T);
+				Assert.AreEqual(i, gcode.T.Value);
+				Assert.IsNotNull(gcode.P);
+				Assert.AreEqual(i, gcode.P.Value);
+				Assert.IsNotNull(gcode.X);
+				Assert.AreEqual(i, gcode.X.Value);
+			}
+			
+		}
 	}
 }
