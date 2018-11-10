@@ -1,14 +1,20 @@
 version: '2.0.0.{build}'
+environment:
+  CODECOV_TOKEN:
+    secure: 3cc8d6a1-6ea2-4aa3-98e8-3d19ae46adc8
 image: Visual Studio 2017
 skip_branch_with_pr: true
 skip_commits:
   files:
   - '**/*.md'
+
+before_build:
+- nuget restore
+- choco install opencover.portable
+- choco install codecov
+
 build:
   verbosity: normal
-install:
-  - choco install opencover codecov
-
 
 build_script:
   - dotnet build misc/vs/Gcode.sln -c Debug 
@@ -30,6 +36,6 @@ artifacts:
 deploy:
   provider: NuGet
   api_key:
-    secure: oy2ibroqpazm7jq6c3caxuskjsgnkbkuvj4eqjfp64obpq
+    secure: aqkB1JtbMkc7X/GvoNX5zmX5TUQSsUQ/4L8fUujUJducDenNK8axwRvl89g5oJY3
   skip_symbols: true
   artifact: /.*\.nupkg/
