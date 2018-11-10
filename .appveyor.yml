@@ -9,7 +9,6 @@ skip_commits:
   - '**/*.md'
 
 before_build:
-- nuget restore
 - choco install opencover.portable
 - choco install codecov
 
