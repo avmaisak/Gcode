@@ -1,5 +1,7 @@
-﻿using Gcode.Test.Infrastructure;
+﻿using System;
+using Gcode.Test.Infrastructure;
 using Gcode.Utils;
+using Gcode.Utils.Entity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Gcode.Test
@@ -61,6 +63,32 @@ namespace Gcode.Test
 			g.N = 6;
 			var crc = GcodeCrc.FrameCrc(g);
 			Assert.IsTrue(crc >= 0, $"{cmd}");
+		}
+		[TestMethod]
+		public void CheckSumTest5()
+		{
+			var gcode = new GcodeCommandFrame();
+			try {
+				GcodeCrc.FrameCrc(gcode);
+				Assert.Fail(); // If it gets to this line, no exception was thrown
+			}
+			catch
+			{
+				// ignored
+			}
+		}
+		[TestMethod]
+		public void CheckSumTest6()
+		{
+			var gcode = new GcodeCommandFrame { N = -1 };
+			try {
+				GcodeCrc.FrameCrc(gcode);
+				Assert.Fail(); // If it gets to this line, no exception was thrown
+			}
+			catch
+			{
+				// ignored
+			}
 		}
 	}
 }

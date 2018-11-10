@@ -5,17 +5,25 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 
-namespace Gcode.Utils.Common {
-	public static class ReflectionUtils {
-
-		public static List<KeyValuePair<string, string>> GetProperties(object item) {
+namespace Gcode.Utils.Common
+{
+	public static class ReflectionUtils
+	{
+		private static readonly CultureInfo DefaultCulture = CultureInfo.InvariantCulture;
+		public static List<KeyValuePair<string, string>> GetProperties(object item, CultureInfo culture = null)
+		{
 
 			var result = new List<KeyValuePair<string, string>>();
-			Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+			Thread.CurrentThread.CurrentCulture = culture ?? DefaultCulture;
 
 			if (item == null) return result;
 
 			var type = item.GetType();
+			var props = type.GetProperties();
+			if (props.Length == 0)
+			{
+				return result;
+			}
 
 			var propertiesOrdered =
 					(from property in type.GetProperties()
@@ -30,11 +38,13 @@ namespace Gcode.Utils.Common {
 
 			var propResult = new List<PropertyInfo>();
 
-			if (propertiesOrdered.Any()) {
+			if (propertiesOrdered.Any())
+			{
 				propResult.AddRange(propertiesOrdered);
 			}
 
-			if (propertiesUnordered.Any()) {
+			if (propertiesUnordered.Any())
+			{
 				propResult.AddRange(propertiesUnordered);
 			}
 

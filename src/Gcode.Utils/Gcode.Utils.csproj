@@ -13,19 +13,20 @@
     <PackageTags>csharp gcode 3d-printing reprap reprap-3d-printer marlin marlin-firmware repitier repitier-firmware json</PackageTags>
     <RepositoryType>git</RepositoryType>
     <Copyright>Anton Maisak</Copyright>
-    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <AssemblyVersion>0.2.0.2</AssemblyVersion>
     <PackageReleaseNotes>Gcode.Entity
 Gcode.Common.Utils</PackageReleaseNotes>
-    <Version>0.2.1</Version>
-    <FileVersion>1.0.0.1</FileVersion>
+    <Version>0.2.2</Version>
+    <FileVersion>0.2.0.2</FileVersion>
     <PackageIconUrl>https://raw.githubusercontent.com/avmaisak/Gcode/master/misc/design/logo/logo.png</PackageIconUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
 
 </Project>

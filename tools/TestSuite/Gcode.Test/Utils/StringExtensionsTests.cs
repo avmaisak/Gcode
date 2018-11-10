@@ -6,7 +6,7 @@ namespace Gcode.Test.Utils {
 	[TestClass]
 	public class StringExtensionsTests {
 		[TestMethod]
-		public void TrimStringTest() {
+		public void TrimStringTest1() {
 			var sb = new StringBuilder(string.Empty);
 			var s = string.Empty;
 			for (var i = 0; i < 100; i++) {
@@ -15,6 +15,32 @@ namespace Gcode.Test.Utils {
 				var res = sb.ToString();
 				Assert.IsTrue(string.IsNullOrWhiteSpace(res.TrimString()));
 			}
+		}
+		[TestMethod]
+		public void TrimStringTest2()
+		{
+			var str = " str str str  ";
+			Assert.IsNotNull(str.TrimString());
+		}
+		[TestMethod]
+		public void TrimStringTest2_1()
+		{
+			var str = " str str str  ";
+			Assert.IsTrue(str.TrimString() == "str str str");
+		}
+		[TestMethod]
+		public void TrimStringTest3()
+		{
+			var str = string.Empty;
+			var res = string.Empty;
+			Assert.IsTrue(res == str.TrimString());
+		}
+		[TestMethod]
+		public void TrimStringTest4()
+		{
+			var str = null as string;
+			var res = string.Empty;
+			Assert.IsTrue(res == str.TrimString());
 		}
 		[TestMethod]
 		public void GcodeParserStringExtensionsTest1()

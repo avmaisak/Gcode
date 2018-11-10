@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Gcode.Utils.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -7,6 +8,30 @@ namespace Gcode.Test.Utils
 	[TestClass]
 	public class ReflectionTests
 	{
+		[TestMethod]
+		public void ReflectionTestsInit1()
+		{
+			var s = new
+			{
+				Name = "Name obj",
+				Description = "Description obj"
+			};
+
+			var props = ReflectionUtils.GetProperties(s);
+			Assert.IsInstanceOfType(props, typeof(List<KeyValuePair<string, string>>));
+		}
+		[TestMethod]
+		public void ReflectionTestsInit2()
+		{
+			var s = new
+			{
+				Name = "Name obj",
+				Description = @"At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat"
+			};
+
+			var props = ReflectionUtils.GetProperties(s);
+			Assert.IsNotNull(props);
+		}
 		[TestMethod]
 		public void ReflectionTests1()
 		{

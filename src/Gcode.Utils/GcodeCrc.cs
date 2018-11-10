@@ -23,11 +23,11 @@ namespace Gcode.Utils {
 		/// <param name="gcodeCommandFrame">Кадр</param>
 		/// <returns></returns>
 		public static int FrameCrc(GcodeCommandFrame gcodeCommandFrame) {
-			if (gcodeCommandFrame.N == 0) {
+			if (gcodeCommandFrame.N <= 0) {
 				throw new Exception("Frame line number expected (>0)");
 			}
 
-			var f = GcodeParser.ToStringCommand(gcodeCommandFrame);
+			var f = gcodeCommandFrame.ToString();
 			var check = 0;
 			foreach (var ch in f) {
 				check ^= ch & 0xff;
@@ -37,5 +37,22 @@ namespace Gcode.Utils {
 
 			return check;
 		}
+		public static int FrameCrc(string gcodeCommandFrame)
+		{
+			var gcode = GcodeParser.ToGCode(gcodeCommandFrame);
+			if (gcode.N <= 0) {
+				throw new Exception("Frame line number expected (>0)");
+			}
+			var f = gcodeCommandFrame;
+			var check = 0;
+			foreach (var ch in f) {
+				check ^= ch & 0xff;
+			}
+
+			check ^= 32;
+
+			return check;
+		}
+
 	}
 }
