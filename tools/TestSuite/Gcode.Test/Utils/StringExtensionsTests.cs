@@ -31,9 +31,7 @@ namespace Gcode.Test.Utils {
 		[TestMethod]
 		public void TrimStringTest3()
 		{
-			var str = string.Empty;
-			var res = string.Empty;
-			Assert.IsTrue(res == str.TrimString());
+			Assert.IsTrue(string.Empty == string.Empty.TrimString());
 		}
 		[TestMethod]
 		public void TrimStringTest4()
