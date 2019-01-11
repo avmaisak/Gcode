@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Gcode.Utils.Common;
+using LibBase.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Gcode.Test {
@@ -43,13 +44,13 @@ namespace Gcode.Test {
 		[TestMethod]
 		public void HandleSegmentsTest1() {
 			const string s = "G1 X80.151 Y102.000 F7800.000";
-			var res = s.HandleSegments();
+			var res = s.ToKeyValuePair();
 			Assert.AreEqual(res.Count(), 4);
 		}
 		[TestMethod]
 		public void HandleSegmentsTest2() {
 			const string str = "G1 X80.151 Y102.000 F7800.000";
-			var res = str.HandleSegments();
+			var res = str.ToKeyValuePair();
 			var ss = res.FirstOrDefault(s => s.Key == "G" && s.Value == "1");
 			Assert.IsNotNull(ss);
 		}

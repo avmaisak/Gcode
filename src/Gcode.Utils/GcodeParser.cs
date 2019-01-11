@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using Gcode.Utils.Common;
 using Gcode.Utils.Entity;
+using LibBase.Extensions;
 
 namespace Gcode.Utils {
 	/// <summary>
@@ -82,7 +83,7 @@ namespace Gcode.Utils {
 				}
 			}
 
-			gcodeCommandFrame = ToGcodeCommandFrame(_rawFrame.HandleSegments());
+			gcodeCommandFrame = ToGcodeCommandFrame(_rawFrame.ToKeyValuePair());
 
 			if (!string.IsNullOrWhiteSpace(frameComment)) {
 				gcodeCommandFrame.Comment = frameComment;
@@ -165,7 +166,7 @@ namespace Gcode.Utils {
 				commentString = $",\"Comment\":\"{arr[1].Trim().Replace("\r", null)}\"";
 			}
 
-			var segments = _rawFrame.HandleSegments();
+			var segments = _rawFrame.ToKeyValuePair();
 			var segmentsKeyValuePair = segments as KeyValuePair<string, string>[] ?? segments.ToArray();
 
 			var sb = new StringBuilder();
