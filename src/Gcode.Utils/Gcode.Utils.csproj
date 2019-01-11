@@ -16,7 +16,7 @@
     <AssemblyVersion>0.2.0.2</AssemblyVersion>
     <PackageReleaseNotes>Gcode.Entity
 Gcode.Common.Utils</PackageReleaseNotes>
-    <Version>0.2.2</Version>
+    <Version>0.2.3</Version>
     <FileVersion>0.2.0.2</FileVersion>
     <PackageIconUrl>https://raw.githubusercontent.com/avmaisak/Gcode/master/misc/design/logo/logo.png</PackageIconUrl>
   </PropertyGroup>
@@ -28,5 +28,9 @@ Gcode.Common.Utils</PackageReleaseNotes>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LibBase" Version="1.0.1" />
+  </ItemGroup>
 
 </Project>
