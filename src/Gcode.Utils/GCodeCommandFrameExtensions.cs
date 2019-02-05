@@ -6,7 +6,7 @@ namespace Gcode.Utils
 	{
 		public static int CheckSum(this GcodeCommandFrame f)
 		{
-			return GcodeCrc.FrameCrc(f);
+			return f.FrameCrc();
 		}
 	}
 }

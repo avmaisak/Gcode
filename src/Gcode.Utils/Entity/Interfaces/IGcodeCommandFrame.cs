@@ -9,7 +9,7 @@
 	G-код кодировали на 8-дорожечную перфоленту в коде ISO 7-bit 
 	(разработан для представления информации УЧПУ в виде машинного кода так же, как и коды AEG и PC8C), 
 	восьмая дорожка использовалась для контроля чётности.
-	роизводители систем УЧПУ(CNC), как правило, используют софт управления станком, 
+	Производители систем УЧПУ(CNC), как правило, используют софт управления станком, 
 	для которого написана (оператором) программа обработки в качестве осмысленных команд управления, 
 	используется G-код в качестве базового подмножества языка программирования, расширяя его по своему 
 	усмотрению.
@@ -35,54 +35,54 @@ namespace Gcode.Utils.Entity.Interfaces {
 		/// </summary>
 		long? N { get; set; }
 		/// <summary>
-		/// Вспомогательные (технологические) команды. Rep Rap - например, включение вентилятора
+		/// Вспомогательные (технологические) команды. Rep Rap - например, включение вентилятора.
 		/// </summary>
 		int? M { get; set; }
 		/// <summary>
-		/// линейное перемещение
+		/// линейное перемещение.
 		/// </summary>
 		int? G { get; set; }
 		/// <summary>
-		/// Выбор инструмента . В RepRap, инструменты - экструдеры
+		/// Выбор инструмента . В RepRap, инструменты - экструдеры.
 		/// </summary>
 		double? T { get; set; }
 		/// <summary>
-		/// Параметр команды. time in milliseconds; proportional (Kp) in PID Tuning
+		/// Параметр команды. time in milliseconds; proportional (Kp) in PID Tuning.
 		/// </summary>
 		double? P { get; set; }
 		/// <summary>
-		/// Координата X
+		/// Координата X.
 		/// </summary>
 		double? X { get; set; }
 		/// <summary>
-		/// Координата Y
+		/// Координата Y.
 		/// </summary>
 		double? Y { get; set; }
 		/// <summary>
-		/// Координата Z
+		/// Координата Z.
 		/// </summary>
 		double? Z { get; set; }
 		/// <summary>
 		/// Скорость рабочей подачи.
 		/// Для фрезерных станков это дюймы в минуту(IPM) или миллиметры в минуту(mm/min),
 		/// Для токарных станков это дюймы за оборот(IPR) или миллиметры за оборот(mm/rev).
-		/// для RepRap Скорость подачи (mm per minute.) Скорость движения печатающей головки
+		/// для RepRap Скорость подачи (mm per minute.) Скорость движения печатающей головки.
 		/// </summary>
 		double? F { get; set; }
 		/// <summary>
-		/// Stepper A position or angle
+		/// Stepper A position or angle.
 		/// </summary>
 		double? A { get; set; }
 		/// <summary>
-		/// Stepper B position or angle
+		/// Stepper B position or angle.
 		/// </summary>
 		 double? B { get; set; }
 		/// <summary>
-		/// Stepper C position or angle
+		/// Stepper C position or angle.
 		/// </summary>
 		 double? C { get; set; }
 		/// <summary>
-		/// Скорость вращения шпинделя, время в секундах, температура, напряжение для отправки на двигатель
+		/// Скорость вращения шпинделя, время в секундах, температура, напряжение для отправки на двигатель.
 		/// </summary>
 		 double? S { get; set; }
 		/// <summary>
@@ -90,15 +90,15 @@ namespace Gcode.Utils.Entity.Interfaces {
 		/// </summary>
 		 double? R { get; set; }
 		/// <summary>
-		/// Параметр коррекции выбранного инструмента
+		/// Параметр коррекции выбранного инструмента.
 		/// </summary>
 		 int? D { get; set; }
 		/// <summary>
-		/// Параметр дуги при круговой интерполяции. Инкрементальное расстояние от начальной точки до центра дуги по оси X ( integral (Ki) in PID Tuning)
+		/// Параметр дуги при круговой интерполяции. Инкрементальное расстояние от начальной точки до центра дуги по оси X ( integral (Ki) in PID Tuning).
 		/// </summary>
 		 double? I { get; set; }
 		/// <summary>
-		///  used for diameter; derivative (Kd) in PID Tuning / Параметр дуги при круговой интерполяции. Инкрементальное расстояние от начального
+		///  used for diameter; derivative (Kd) in PID Tuning / Параметр дуги при круговой интерполяции. Инкрементальное расстояние от начального.
 		/// </summary>
 		 double? J { get; set; }
 		/// <summary>
@@ -106,12 +106,12 @@ namespace Gcode.Utils.Entity.Interfaces {
 		/// </summary>
 		 double? K { get; set; }
 		/// <summary>
-		/// Число вызовов подпрограммы, Вызов подпрограммы с данной меткой
+		/// Число вызовов подпрограммы, Вызов подпрограммы с данной меткой.
 		/// </summary>
 		 double? L { get; set; }
 		
 		/// <summary>
-		/// Нагреватель. (Parameter - used for heater number in PID Tuning)
+		/// Нагреватель. (Parameter - used for heater number in PID Tuning).
 		/// </summary>
 		 double? H { get; set; }
 		/// <summary>
@@ -121,11 +121,11 @@ namespace Gcode.Utils.Entity.Interfaces {
 		/// </summary>
 		 double? E { get; set; }
 		/// <summary>
-		/// Комментарий
+		/// Комментарий.
 		/// </summary>
 		string Comment { get; set; }
 		/// <summary>
-		/// Контрольная сумма кадра
+		/// Контрольная сумма кадра.
 		/// </summary>
 		int? CheckSum { get; set; }
 	}

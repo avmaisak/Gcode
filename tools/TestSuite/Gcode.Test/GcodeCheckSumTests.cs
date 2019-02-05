@@ -1,5 +1,4 @@
-﻿using System;
-using Gcode.Test.Infrastructure;
+﻿using Gcode.Test.Infrastructure;
 using Gcode.Utils;
 using Gcode.Utils.Entity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -15,7 +14,7 @@ namespace Gcode.Test
 			var cmd = TestSuiteDataSource.TestSyntheticCodes[0];
 			var g = GcodeParser.ToGCode(cmd);
 			g.N = 1;
-			var crc = GcodeCrc.FrameCrc(g);
+			var crc = g.FrameCrc();
 			Assert.IsInstanceOfType(crc, typeof(int));
 		}
 		[TestMethod]
@@ -26,7 +25,7 @@ namespace Gcode.Test
 				var cmd = TestSuiteDataSource.TestSyntheticCodes[i];
 				var g = GcodeParser.ToGCode(cmd);
 				g.N = i;
-				var crc = GcodeCrc.FrameCrc(g);
+				var crc = g.FrameCrc();
 				Assert.IsInstanceOfType(crc, typeof(int));
 			}
 		}
@@ -38,7 +37,7 @@ namespace Gcode.Test
 				var cmd = TestSuiteDataSource.TestSyntheticCodes[i];
 				var g = GcodeParser.ToGCode(cmd);
 				g.N = i;
-				var crc = GcodeCrc.FrameCrc(g);
+				var crc = g.FrameCrc();
 				Assert.IsTrue(crc >= 0, $"{i} {cmd}");
 			}
 		}
@@ -51,7 +50,7 @@ namespace Gcode.Test
 				var cmd = ds[i];
 				var g = GcodeParser.ToGCode(cmd);
 				g.N = i;
-				var crc = GcodeCrc.FrameCrc(g);
+				var crc = g.FrameCrc();
 				Assert.IsTrue(crc >= 0, $"{i} {cmd}");
 			}
 		}
@@ -61,7 +60,7 @@ namespace Gcode.Test
 			var cmd = TestSuiteDataSource.TestSyntheticCodes[6];
 			var g = GcodeParser.ToGCode(cmd);
 			g.N = 6;
-			var crc = GcodeCrc.FrameCrc(g);
+			var crc = g.FrameCrc();
 			Assert.IsTrue(crc >= 0, $"{cmd}");
 		}
 		[TestMethod]
@@ -69,7 +68,7 @@ namespace Gcode.Test
 		{
 			var gcode = new GcodeCommandFrame();
 			try {
-				GcodeCrc.FrameCrc(gcode);
+				gcode.FrameCrc();
 				Assert.Fail(); // If it gets to this line, no exception was thrown
 			}
 			catch
@@ -82,7 +81,7 @@ namespace Gcode.Test
 		{
 			var gcode = new GcodeCommandFrame { N = -1 };
 			try {
-				GcodeCrc.FrameCrc(gcode);
+				gcode.FrameCrc();
 				Assert.Fail(); // If it gets to this line, no exception was thrown
 			}
 			catch
