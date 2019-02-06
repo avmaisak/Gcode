@@ -53,8 +53,8 @@ namespace Gcode.Test
 			var ds = TestSuiteDataSource.TestSyntheticCodes[0];
 			var gcode = GcodeParser.ToGCode(ds);
 			gcode.N = 1;
-			gcode.CheckSum = GcodeCrc.FrameCrc(gcode);
-			var resStr = GcodeParser.ToStringCommand(gcode);
+			gcode.CheckSum = gcode.FrameCrc();
+			var resStr = gcode.ToStringCommand();
 
 			Assert.IsNotNull(resStr);
 			Assert.IsTrue(resStr.Contains($"*{gcode.CheckSum}"));
@@ -67,7 +67,7 @@ namespace Gcode.Test
 			var gcode = GcodeParser.ToGCode(ds);
 			gcode.N = 1;
 			var dsExpected = $"N{gcode.N} {ds}";
-			var res = GcodeParser.ToStringCommand(gcode);
+			var res = gcode.ToStringCommand();
 			Assert.AreEqual(dsExpected, res);
 		}
 		[TestMethod]
@@ -79,7 +79,7 @@ namespace Gcode.Test
 				var s = d.Replace("\r", null);
 				if (s == ";") continue;
 				var gcode = GcodeParser.ToGCode(s);
-				var gcodeStr = GcodeParser.ToStringCommand(gcode);
+				var gcodeStr = gcode.ToStringCommand();
 				var expectedResult = $"{s}";
 				if (string.IsNullOrWhiteSpace(gcode.Comment))
 				{
@@ -94,7 +94,7 @@ namespace Gcode.Test
 			const string cmd = ";> ololo G1 X1 Y1 XZ0 ; this frame comment";
 			var gcode = GcodeParser.ToGCode(cmd);
 
-			var gcodeRes = GcodeParser.ToStringCommand(gcode);
+			var gcodeRes = gcode.ToStringCommand();
 			Assert.AreEqual(cmd, gcodeRes);
 		}
 		[TestMethod]
@@ -106,7 +106,7 @@ namespace Gcode.Test
 			expected = expected.Replace("\r", null);
 			expected = expected.Replace("\n", null);
 			expected = expected.Replace("\t", null);
-			var res = GcodeParser.ToJson(raw);
+			var res = raw.GcodeToJson();
 			Assert.AreEqual(expected, res);
 		}
 		[TestMethod]
@@ -141,7 +141,7 @@ namespace Gcode.Test
 			var ds = TestSuiteDataSource.Ds100Gcode.Split("\n");
 			foreach (var r in ds)
 			{
-				var res = GcodeParser.ToJson(r);
+				var res = r.GcodeToJson();
 				Assert.IsTrue(res.StartsWith("{") && res.EndsWith("}"));
 			}
 		}
@@ -150,7 +150,7 @@ namespace Gcode.Test
 		{
 
 			var g = "M109 S205 ; wait for temperature to be reached";
-			var res = g.NormalizeRawFrame();
+			var res = g.NormalizeGcodeRawFrame();
 			const string expected = "M109 S205 ;wait for temperature to be reached";
 			Assert.AreEqual(expected, res);
 		}
@@ -159,7 +159,7 @@ namespace Gcode.Test
 		{
 
 			var g = "G1                    E      - 2.00000                 F2400.00000  ;              NormalizeTest2";
-			var res = g.NormalizeRawFrame();
+			var res = g.NormalizeGcodeRawFrame();
 			const string expected = "G1 E-2.00000 F2400.00000 ;NormalizeTest2";
 			Assert.AreEqual(expected, res);
 		}
@@ -167,49 +167,49 @@ namespace Gcode.Test
 		public void ContainsCommentTest1()
 		{
 			const string res = "M82 ; use absolute distances for extrusion";
-			Assert.IsTrue(res.ContainsComment());
+			Assert.IsTrue(res.ContainsGcodeComment());
 		}
 		[TestMethod]
 		public void ContainsCommentTest2()
 		{
 			const string res = "M109 S205";
-			Assert.IsFalse(res.ContainsComment());
+			Assert.IsFalse(res.ContainsGcodeComment());
 		}
 		[TestMethod]
 		public void ContainsCommentTest3()
 		{
 			const string res = "";
-			Assert.IsFalse(res.ContainsComment());
+			Assert.IsFalse(res.ContainsGcodeComment());
 		}
 		[TestMethod]
 		public void ContainsCommentTest4()
 		{
 			const string res = ";";
-			Assert.IsFalse(res.ContainsComment());
+			Assert.IsFalse(res.ContainsGcodeComment());
 		}
 		[TestMethod]
 		public void ContainsCommentTest5()
 		{
 			const string res = "   ; thin_walls = 1";
-			Assert.IsFalse(res.ContainsComment());
+			Assert.IsFalse(res.ContainsGcodeComment());
 		}
 		[TestMethod]
 		public void IsCommentTest1()
 		{
 			const string res = "M82 ; use absolute distances for extrusion";
-			Assert.IsFalse(res.IsComment());
+			Assert.IsFalse(res.IsGcodeComment());
 		}
 		[TestMethod]
 		public void IsCommentTest2()
 		{
 			const string res = "; perimeter_extrusion_width = 0";
-			Assert.IsTrue(res.IsComment());
+			Assert.IsTrue(res.IsGcodeComment());
 		}
 		[TestMethod]
 		public void IsCommentTest3()
 		{
 			const string res = "             ;                perimeter_extrusion_width = 0;asddsadasdasd";
-			Assert.IsTrue(res.IsComment());
+			Assert.IsTrue(res.IsGcodeComment());
 		}
 		[TestMethod]
 		public void IsNullOrErorFrameTest1()

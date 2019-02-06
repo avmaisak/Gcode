@@ -32,7 +32,7 @@ namespace Gcode.Test
 			for (var i = 0; i < 95000; i++)
 			{
 				var gcode = new GcodeCommandFrame { X = i, Y = i * 2 };
-				var gcodeStr = GcodeParser.ToStringCommand(gcode);
+				var gcodeStr = gcode.ToStringCommand();
 				Assert.IsNotNull(gcodeStr);
 
 				var rawString = $"G1 X{i}.131 Y{i}.91 Z{i}.833 E0 F360";

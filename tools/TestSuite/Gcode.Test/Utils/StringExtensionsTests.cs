@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using Gcode.Utils.Common;
+using Gcode.Utils;
 using LibBase.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

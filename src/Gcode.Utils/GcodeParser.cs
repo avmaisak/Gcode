@@ -54,7 +54,7 @@ namespace Gcode.Utils {
 		/// </summary>
 		/// <returns></returns>
 		public static GcodeCommandFrame ToGCode(string raw) {
-			_rawFrame = NormalizeRawFrame(raw.TrimString());
+			_rawFrame = NormalizeGcodeRawFrame(raw.TrimString());
 			var frameComment = string.Empty;
 			//инициализация кадра
 			var gcodeCommandFrame = new GcodeCommandFrame();
@@ -68,14 +68,14 @@ namespace Gcode.Utils {
 				return gcodeCommandFrame;
 			}
 			//является комментарием
-			if (_rawFrame.IsComment()) {
+			if (_rawFrame.IsGcodeComment()) {
 
 				gcodeCommandFrame.Comment = _rawFrame.ReplaceAtIndex(0, ' ').Trim();
 				return gcodeCommandFrame;
 			}
 
 			//содержит комментарий
-			if (_rawFrame.ContainsComment()) {
+			if (_rawFrame.ContainsGcodeComment()) {
 				var r = _rawFrame.Split(CommentChar);
 				if (r.Length == 2) {
 					_rawFrame = r[0].Trim();
@@ -106,7 +106,7 @@ namespace Gcode.Utils {
 		/// <param name="gcodeCommandFrame"></param>
 		/// <param name="ignoreComments"></param>
 		/// <returns></returns>
-		public static string ToStringCommand(GcodeCommandFrame gcodeCommandFrame, bool ignoreComments = false) {
+		public static string ToStringCommand(this GcodeCommandFrame gcodeCommandFrame, bool ignoreComments = false) {
 			var o = gcodeCommandFrame;
 			var cmdSegmentStringBuilder = new StringBuilder();
 			var objectProperties = ReflectionUtils.GetProperties(o);
@@ -149,18 +149,18 @@ namespace Gcode.Utils {
 		/// ToJson
 		/// </summary>
 		/// <returns></returns>
-		public static string ToJson(string raw) {
-			_rawFrame = NormalizeRawFrame(raw);
+		public static string GcodeToJson(this string raw) {
+			_rawFrame = NormalizeGcodeRawFrame(raw);
 			const string objJsonStart = "{";
 			const string objJsonEnd = "}";
 
-			if (_rawFrame.IsComment() || _rawFrame.IsNullOrErrorFrame()) {
+			if (_rawFrame.IsGcodeComment() || _rawFrame.IsNullOrErrorFrame()) {
 				return $"{{Comment:{raw.Replace(";", null).Replace("\r", null).Trim()}}}";
 			}
 
 			var commentString = string.Empty;
 
-			if (_rawFrame.ContainsComment()) {
+			if (_rawFrame.ContainsGcodeComment()) {
 				var arr = _rawFrame.Split(";");
 				_rawFrame = arr[0].Trim();
 				commentString = $",\"Comment\":\"{arr[1].Trim().Replace("\r", null)}\"";
@@ -199,14 +199,14 @@ namespace Gcode.Utils {
 		/// <returns></returns>
 		public static string ToJson(this GcodeCommandFrame gcodeCommandFrame) {
 			var resJson = ToStringCommand(gcodeCommandFrame);
-			return ToJson(resJson);
+			return GcodeToJson(resJson);
 		}
 		/// <summary>
 		/// Normalize
 		/// </summary>
 		/// <param name="raw"></param>
 		/// <returns></returns>
-		public static string NormalizeRawFrame(this string raw) {
+		public static string NormalizeGcodeRawFrame(this string raw) {
 			if (raw != null) {
 				_rawFrame = raw;
 			}
@@ -215,7 +215,7 @@ namespace Gcode.Utils {
 			string frameStr;
 			var commentString = string.Empty;
 
-			if (_rawFrame.IsComment() || _rawFrame.IsEmptyComment() || _rawFrame.IsNullOrErrorFrame()) {
+			if (_rawFrame.IsGcodeComment() || _rawFrame.IsEmptyComment() || _rawFrame.IsNullOrErrorFrame()) {
 				if (!string.IsNullOrWhiteSpace(_rawFrame)) {
 					_rawFrame = _rawFrame.Trim();
 					return _rawFrame;
@@ -223,7 +223,7 @@ namespace Gcode.Utils {
 				return string.Empty;
 			}
 
-			if (_rawFrame.ContainsComment()) {
+			if (_rawFrame.ContainsGcodeComment()) {
 				var frameCommentArr = _rawFrame.Split(";");
 				frameStr = frameCommentArr[0].RemoveAllSpaces();
 				commentString = frameCommentArr[1].Trim().Trim();
@@ -261,7 +261,7 @@ namespace Gcode.Utils {
 		/// </summary>
 		/// <param name="raw"></param>
 		/// <returns></returns>
-		public static bool ContainsComment(this string raw) {
+		public static bool ContainsGcodeComment(this string raw) {
 			_rawFrame = raw.Trim();
 			return !_rawFrame.StartsWith(CommentChar) && _rawFrame.Contains(CommentChar);
 		}
@@ -270,7 +270,7 @@ namespace Gcode.Utils {
 		/// </summary>
 		/// <param name="raw"></param>
 		/// <returns></returns>
-		public static bool IsComment(this string raw) {
+		public static bool IsGcodeComment(this string raw) {
 			_rawFrame = raw.Trim();
 			return !_rawFrame.IsNullOrErrorFrame() && _rawFrame.StartsWith(CommentChar);
 		}
@@ -291,6 +291,16 @@ namespace Gcode.Utils {
 		public static bool IsEmptyComment(this string raw) {
 			_rawFrame = raw.Trim();
 			return _rawFrame.Length == 1 && _rawFrame == CommentChar;
+		}
+
+		/// <summary>
+		/// ToGcodeCommandFrame.
+		/// </summary>
+		/// <param name="str"></param>
+		/// <returns></returns>
+		public static GcodeCommandFrame ToGcodeCommandFrame(this string str)
+		{
+			return ToGCode(str);
 		}
 	}
 }

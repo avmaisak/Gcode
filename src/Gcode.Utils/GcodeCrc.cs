@@ -1,11 +1,13 @@
 ﻿using System;
 using Gcode.Utils.Entity;
 
-namespace Gcode.Utils {
+namespace Gcode.Utils
+{
 	/// <summary>
 	/// Проверка checksum
 	/// </summary>
-	public static class GcodeCrc {
+	public static class GcodeCrc
+	{
 		/// <summary>
 		/// Контрольная сумма кадра
 		/// http://reprap.org/wiki/G-code#.2A:_Checksum
@@ -22,14 +24,17 @@ namespace Gcode.Utils {
 		/// </summary>
 		/// <param name="gcodeCommandFrame">Кадр</param>
 		/// <returns></returns>
-		public static int FrameCrc(GcodeCommandFrame gcodeCommandFrame) {
-			if (gcodeCommandFrame.N <= 0) {
+		public static int FrameCrc(this GcodeCommandFrame gcodeCommandFrame)
+		{
+			if (gcodeCommandFrame.N <= 0)
+			{
 				throw new Exception("Frame line number expected (>0)");
 			}
 
 			var f = gcodeCommandFrame.ToString();
 			var check = 0;
-			foreach (var ch in f) {
+			foreach (var ch in f)
+			{
 				check ^= ch & 0xff;
 			}
 
@@ -37,15 +42,17 @@ namespace Gcode.Utils {
 
 			return check;
 		}
-		public static int FrameCrc(string gcodeCommandFrame)
+		public static int FrameCrc(this string gcodeCommandFrame)
 		{
 			var gcode = GcodeParser.ToGCode(gcodeCommandFrame);
-			if (gcode.N <= 0) {
+			if (gcode.N <= 0)
+			{
 				throw new Exception("Frame line number expected (>0)");
 			}
 			var f = gcodeCommandFrame;
 			var check = 0;
-			foreach (var ch in f) {
+			foreach (var ch in f)
+			{
 				check ^= ch & 0xff;
 			}
 
@@ -53,6 +60,5 @@ namespace Gcode.Utils {
 
 			return check;
 		}
-
 	}
 }

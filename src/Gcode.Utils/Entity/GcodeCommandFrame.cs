@@ -57,7 +57,7 @@ namespace Gcode.Utils.Entity
 		public override int? CheckSum { get; set; }
 		public override string ToString()
 		{
-			return GcodeParser.ToStringCommand(this);
+			return this.ToStringCommand();
 		}
 		public string ToJson()
 		{
