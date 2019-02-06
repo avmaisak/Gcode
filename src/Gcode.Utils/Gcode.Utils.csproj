@@ -30,7 +30,7 @@ Gcode.Common.Utils</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LibBase" Version="1.0.1" />
+    <PackageReference Include="LibBase" Version="1.0.2" />
   </ItemGroup>
 
 </Project>
