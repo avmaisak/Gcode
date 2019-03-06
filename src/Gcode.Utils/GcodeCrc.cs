@@ -42,6 +42,7 @@ namespace Gcode.Utils
 
 			return check;
 		}
+		// ReSharper disable once UnusedMember.Global
 		public static int FrameCrc(this string gcodeCommandFrame)
 		{
 			var gcode = GcodeParser.ToGCode(gcodeCommandFrame);
