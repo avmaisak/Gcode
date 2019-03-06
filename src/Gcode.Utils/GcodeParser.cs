@@ -107,9 +107,8 @@ namespace Gcode.Utils {
 		/// <param name="ignoreComments"></param>
 		/// <returns></returns>
 		public static string ToStringCommand(this GcodeCommandFrame gcodeCommandFrame, bool ignoreComments = false) {
-			var o = gcodeCommandFrame;
 			var cmdSegmentStringBuilder = new StringBuilder();
-			var objectProperties = ReflectionUtils.GetProperties(o);
+			var objectProperties = ReflectionUtils.GetProperties(gcodeCommandFrame);
 			var commentString = string.Empty;
 			var addedLines = 0;
 
