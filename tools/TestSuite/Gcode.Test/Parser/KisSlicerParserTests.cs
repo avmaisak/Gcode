@@ -70,5 +70,26 @@ namespace Gcode.Test.Parser
 				Assert.IsTrue(res.FilamentUsedExtruder2Volume == (decimal)2129.249);
 			}
 		}
+		[TestMethod]
+		public void KisSlicerParserTest4()
+		{
+			var src = TestSuiteDataSource.GetDataSourceArray("100_1.gcode");
+			if (src.Length > 0)
+			{
+				var kisSlicerParser = new KisSlicerParser();
+				var res = kisSlicerParser.GetSlicerInfo(src);
+				Assert.IsNotNull(res);
+				Assert.IsTrue(res.Name == "KISSlicer");
+				Assert.IsTrue(res.Edition == "PREMIUM");
+				Assert.IsTrue(res.Version == "version 2 a 0.4.4 Win64");
+				Assert.IsTrue(res.EstimatedBuildTime == (decimal)9.24);
+				Assert.IsTrue(res.EstimatedBuildCost == (decimal)55.44);
+				Assert.IsTrue(res.TotalEstimatedPreCoolMinutes == (decimal)4.61);
+				Assert.IsTrue(res.FilamentUsedExtruder1 == (decimal)803.35);
+				Assert.IsTrue(res.FilamentUsedExtruder1Volume == (decimal)1.932);
+				Assert.IsTrue(res.FilamentUsedExtruder2 == null);
+				Assert.IsTrue(res.FilamentUsedExtruder2Volume == null);
+			}
+		}
 	}
 }

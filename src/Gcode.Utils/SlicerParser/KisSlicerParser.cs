@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Gcode.Utils.Entity;
+using LibBase.Extensions;
 
 namespace Gcode.Utils.SlicerParser
 {
@@ -48,19 +49,20 @@ namespace Gcode.Utils.SlicerParser
 				var filamentUsageExt1 = fileContent.FirstOrDefault(x => x.StartsWith(";    Ext 1 = "));
 				if (filamentUsageExt1 != null)
 				{
+					filamentUsageExt1 = filamentUsageExt1.TrimString();
+
 					res.FilamentUsedExtruder1  = Convert.ToDecimal(
-						filamentUsageExt1.Split('=')[1]?
-							.Split(')')[0]?
-							.Split(' ')[1]?
+						filamentUsageExt1
+							.Split('=')[1]?
+							.Split(new string[] { "mm" }, StringSplitOptions.RemoveEmptyEntries)[0]
 							.Replace(".",",")?
 							.Trim()
 					);
 
 					res.FilamentUsedExtruder1Volume = Convert.ToDecimal(
 						filamentUsageExt1
-							.Split('=')[1]?
-							.Split('(')[1]?
-							.Split(' ')[0]?
+							.Split('(')[1]
+							.Split(new string[] { "cm" }, StringSplitOptions.RemoveEmptyEntries)[0]
 							.Replace(".",",")?
 							.Trim()
 					);
@@ -70,18 +72,17 @@ namespace Gcode.Utils.SlicerParser
 				if (filamentUsageExt2 != null)
 				{
 					res.FilamentUsedExtruder2  = Convert.ToDecimal(
-						filamentUsageExt2.Split('=')[1]?
-							.Split(')')[0]?
-							.Split(' ')[1]?
+						filamentUsageExt2
+							.Split('=')[1]?
+							.Split(new string[] { "mm" }, StringSplitOptions.RemoveEmptyEntries)[0]
 							.Replace(".",",")?
 							.Trim()
 					);
 
 					res.FilamentUsedExtruder2Volume = Convert.ToDecimal(
 						filamentUsageExt2
-							.Split('=')[1]?
-							.Split('(')[1]?
-							.Split(' ')[0]?
+							.Split('(')[1]
+							.Split(new string[] { "cm" }, StringSplitOptions.RemoveEmptyEntries)[0]
 							.Replace(".",",")?
 							.Trim()
 					);
