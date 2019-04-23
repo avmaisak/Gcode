@@ -1,7 +1,9 @@
 ﻿using System.IO;
 
 namespace Gcode.Test.Infrastructure {
-	public static class TestSuiteDataSource {
+	public static class TestSuiteDataSource
+	{
+		private static readonly string InternalTestFolder = $@"{Directory.GetCurrentDirectory()}\..\..\..\..\..\TestData\";
 		public static string Ds100Gcode => GetDataSource("100.gcode");
 		public static string[] TestSyntheticCodes { get; } =
 		{
@@ -16,8 +18,12 @@ namespace Gcode.Test.Infrastructure {
 
 		public static string GetDataSource(string fileName)
 		{
-			var path = Directory.GetCurrentDirectory();
-			return File.ReadAllText($@"{path}\..\..\..\..\..\TestData\{fileName}");
+			return File.ReadAllText($@"{InternalTestFolder}{fileName}");
+		}
+
+		public static string[] GetDataSourceArray(string fileName)
+		{
+			return File.ReadAllLines($"{InternalTestFolder}{fileName}");
 		}
 	}
 }

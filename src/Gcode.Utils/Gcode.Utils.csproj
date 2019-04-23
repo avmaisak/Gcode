@@ -24,13 +24,13 @@ Gcode.Common.Utils</PackageReleaseNotes>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LibBase" Version="1.0.2" />
+    <PackageReference Include="LibBase" Version="1.0.3" />
   </ItemGroup>
 
 </Project>
