@@ -4,6 +4,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Gcode.Test.Parser
 {
+	/// <summary>
+	/// Tests work only on windows platform (WiP)
+	/// </summary>
 	[TestClass]
 	public class KisSlicerParserTests
 	{
@@ -11,7 +14,7 @@ namespace Gcode.Test.Parser
 		public void KisSlicerParserTest1()
 		{
 			var src = TestSuiteDataSource.GetDataSourceArray("100.gcode");
-			if (src.Length > 0)
+			if (src?.Length > 0)
 			{
 				var kisSlicerParser = new KisSlicerParser();
 				var res = kisSlicerParser.GetSlicerInfo(src);
@@ -32,7 +35,7 @@ namespace Gcode.Test.Parser
 		public void KisSlicerParserTest2()
 		{
 			var src = TestSuiteDataSource.GetDataSourceArray("pattern_blade_fp_piece2_v1.gcode");
-			if (src.Length > 0)
+			if (src?.Length > 0)
 			{
 				var kisSlicerParser = new KisSlicerParser();
 				var res = kisSlicerParser.GetSlicerInfo(src);
@@ -53,7 +56,7 @@ namespace Gcode.Test.Parser
 		public void KisSlicerParserTest3()
 		{
 			var src = TestSuiteDataSource.GetDataSourceArray("test_2_extruers.gcode");
-			if (src.Length > 0)
+			if (src?.Length > 0)
 			{
 				var kisSlicerParser = new KisSlicerParser();
 				var res = kisSlicerParser.GetSlicerInfo(src);

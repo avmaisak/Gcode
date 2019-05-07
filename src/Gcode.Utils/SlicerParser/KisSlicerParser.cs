@@ -25,6 +25,11 @@ namespace Gcode.Utils.SlicerParser
 				Edition = name.Split(';')[1]?.Split('-')[1]?.Trim() ?? string.Empty,
 			};
 
+			if (string.IsNullOrWhiteSpace(res.Name))
+			{
+				return null;
+			}
+
 			var buildTimeStr = fileContent.FirstOrDefault(x => x.StartsWith("; Estimated Build Time:"));
 			if (buildTimeStr != null)
 			{

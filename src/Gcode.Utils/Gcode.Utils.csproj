@@ -16,7 +16,7 @@
     <AssemblyVersion>0.2.0.7</AssemblyVersion>
     <PackageReleaseNotes>Gcode.Entity
 Gcode.Common.Utils</PackageReleaseNotes>
-    <Version>0.2.7</Version>
+    <Version>0.2.8</Version>
     <FileVersion>0.2.0.7</FileVersion>
     <PackageIconUrl>https://raw.githubusercontent.com/avmaisak/Gcode/master/misc/design/logo/logo.png</PackageIconUrl>
   </PropertyGroup>
@@ -30,7 +30,7 @@ Gcode.Common.Utils</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LibBase" Version="1.0.3" />
+    <PackageReference Include="LibBase" Version="1.0.4" />
   </ItemGroup>
 
 </Project>
