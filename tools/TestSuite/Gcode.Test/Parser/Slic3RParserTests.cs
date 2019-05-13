@@ -10,7 +10,7 @@ namespace Gcode.Test.Parser
 		[TestMethod]
 		public void Slic3RParserTest1()
 		{
-			var src = TestSuiteDataSource.GetDataSourceArray(@"slic3r\2.gcode");
+			string[] src = TestSuiteDataSource.GetDataSourceArray(@"slic3r\2.gcode");
 			if (src?.Length > 0)
 			{
 				var parser = new Slic3RParser();
@@ -19,6 +19,8 @@ namespace Gcode.Test.Parser
 				Assert.IsTrue(res.Edition == string.Empty);
 				Assert.IsTrue(res.Version == "1.3.0");
 				Assert.IsTrue(res.FilamentUsedExtruder1 == (decimal) 675947.4);
+				Assert.IsTrue(res.FilamentDiameter == (decimal) 1.75);
+				Assert.IsTrue(res.FilamentUsedExtruder1Volume > 0);
 			}
 		}
 	}

@@ -35,6 +35,26 @@ namespace Gcode.Utils.SlicerParser
 				// filament used
 				res.FilamentUsedExtruder2 = Convert.ToDecimal(filamentUsed[1].Split('=')[1]?.Split(' ')[1]?.Replace("mm", "").Replace(".", ","));
 			}
+
+			var filamentDiameter = fileContent.FirstOrDefault(x => x.StartsWith("; filament_diameter"));
+
+			if (!string.IsNullOrWhiteSpace(filamentDiameter))
+			{
+				res.FilamentDiameter = Convert.ToDecimal(filamentDiameter?.Split('=')?[1].Replace(".",","));
+			}
+
+			if (res.FilamentUsedExtruder1 != null && res.FilamentUsedExtruder1 > 0 && res.FilamentDiameter != null && res.FilamentDiameter > 0)
+			{
+				// обьем = сечение * длину
+				res.FilamentUsedExtruder1Volume = res.FilamentDiameter * res.FilamentUsedExtruder1;
+			}
+
+			if (res.FilamentUsedExtruder2 != null && res.FilamentUsedExtruder2 > 0 && res.FilamentDiameter != null && res.FilamentDiameter > 0)
+			{
+				// обьем = сечение * длину
+				res.FilamentUsedExtruder2Volume = res.FilamentDiameter * res.FilamentUsedExtruder2;
+			}
+
 			return res;
 		}
 	}

@@ -16,6 +16,7 @@ namespace Gcode.Test.Parser
 				var simplify3dParser = new Simplify3dParser();
 				var res = simplify3dParser.GetSlicerInfo(src);
 				Assert.IsNotNull(res);
+				Assert.IsTrue(res.FilamentDiameter == (decimal)1.75);
 			}
 		}
 	}

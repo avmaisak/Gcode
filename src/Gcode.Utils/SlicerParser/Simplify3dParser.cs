@@ -67,6 +67,12 @@ namespace Gcode.Utils.SlicerParser
 				res.FilamentUsedExtruder1Volume = Convert.ToDecimal(volume.Split(' ')?[5]?.Replace(".",",") ?? "0");
 			}
 
+			var filamentDiameter = fileContent.FirstOrDefault(x => x.StartsWith(";   filamentDiameters,"));
+			if (!string.IsNullOrWhiteSpace(filamentDiameter))
+			{
+				res.FilamentDiameter = Convert.ToDecimal(filamentDiameter.Split(',')[1].Split('|')[0].Replace(".",","));
+			}
+
 			return res;
 		}
 	}

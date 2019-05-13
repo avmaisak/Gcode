@@ -45,6 +45,6 @@
 		/// <summary>
 		/// Диаметр прутка (мм)
 		/// </summary>
-		decimal? FiberDiameter { get; set; }
+		decimal? FilamentDiameter { get; set; }
 	}
 }

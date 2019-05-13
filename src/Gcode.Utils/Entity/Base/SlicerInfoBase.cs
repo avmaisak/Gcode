@@ -50,6 +50,6 @@ namespace Gcode.Utils.Entity.Base
 		/// <summary>
 		/// Диаметр прутка
 		/// </summary>
-		public decimal? FiberDiameter { get; set; }
+		public decimal? FilamentDiameter { get; set; }
 	}
 }
