@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Gcode.Utils.Entity.Interfaces
+﻿namespace Gcode.Utils.Entity.Interfaces
 {
 	public interface ISlicerInfo
 	{
@@ -46,5 +42,13 @@ namespace Gcode.Utils.Entity.Interfaces
 		/// Total estimated (pre-cool) minutes.
 		/// </summary>
 		decimal? TotalEstimatedPreCoolMinutes { get; set; }
+		/// <summary>
+		/// NoozleDiameter 1.
+		/// </summary>
+		decimal? NoozleDiameter1 { get; set; }
+		/// <summary>
+		/// NoozleDiameter 2.
+		/// </summary>
+		decimal? NoozleDiameter2 { get; set; }
 	}
 }

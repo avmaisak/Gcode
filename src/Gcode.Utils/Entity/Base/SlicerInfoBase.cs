@@ -47,5 +47,15 @@ namespace Gcode.Utils.Entity.Base
 		/// Total estimated (pre-cool) minutes.
 		/// </summary>
 		public decimal? TotalEstimatedPreCoolMinutes { get; set; }
+
+		/// <summary>
+		/// NoozleDiameter 1.
+		/// </summary>
+		public decimal? NoozleDiameter1 { get; set; }
+
+		/// <summary>
+		/// NoozleDiameter 2.
+		/// </summary>
+		public decimal? NoozleDiameter2 { get; set; }
 	}
 }

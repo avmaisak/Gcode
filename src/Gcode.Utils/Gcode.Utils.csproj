@@ -30,11 +30,13 @@ Gcode.Common.Utils</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LibBase" Version="1.0.4" />
+    <Compile Remove="SlicerParser\Base\**" />
+    <EmbeddedResource Remove="SlicerParser\Base\**" />
+    <None Remove="SlicerParser\Base\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="SlicerParser\Base\" />
+    <PackageReference Include="LibBase" Version="1.0.4" />
   </ItemGroup>
 
 </Project>

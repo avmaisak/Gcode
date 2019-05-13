@@ -7,7 +7,7 @@ namespace Gcode.Utils.Entity
 	{
 		public GcodeCommandSet()
 		{
-			GCodeCommandFrameSet = new List<GcodeCommandFrameBase>();
+			GCodeCommandFrameSet = new List<GcodeCommandFrame>();
 		}
 	}
 }
