@@ -29,6 +29,7 @@ namespace Gcode.Test.Parser
 				Assert.IsTrue(res.FilamentUsedExtruder1Volume == (decimal)219.282);
 				Assert.IsTrue(res.FilamentUsedExtruder2 == null);
 				Assert.IsTrue(res.FilamentUsedExtruder2Volume == null);
+				Assert.IsTrue(res.FiberDiameter == (decimal) 1.75);
 			}
 		}
 		[TestMethod]

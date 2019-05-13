@@ -43,12 +43,8 @@
 		/// </summary>
 		decimal? TotalEstimatedPreCoolMinutes { get; set; }
 		/// <summary>
-		/// NoozleDiameter 1.
+		/// Диаметр прутка (мм)
 		/// </summary>
-		decimal? NoozleDiameter1 { get; set; }
-		/// <summary>
-		/// NoozleDiameter 2.
-		/// </summary>
-		decimal? NoozleDiameter2 { get; set; }
+		decimal? FiberDiameter { get; set; }
 	}
 }

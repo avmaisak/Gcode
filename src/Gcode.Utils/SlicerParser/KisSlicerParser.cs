@@ -94,6 +94,13 @@ namespace Gcode.Utils.SlicerParser
 				}
 			}
 
+
+			var fiberDiameter = fileContent.FirstOrDefault(x => x.StartsWith("; fiber_dia_mm"));
+			if (!string.IsNullOrWhiteSpace(fiberDiameter))
+			{
+				res.FiberDiameter = Convert.ToDecimal(fiberDiameter?.Split(' ')?[3]?.Trim().Replace(".", ","));
+			}
+
 			return res;
 		}
 	}
