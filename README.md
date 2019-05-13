@@ -1,6 +1,5 @@
 # Gcode
 
-[![codecov](https://codecov.io/gh/avmaisak/Gcode/branch/master/graph/badge.svg)](https://codecov.io/gh/avmaisak/Gcode)
 [![Build status](https://ci.appveyor.com/api/projects/status/6jt202mby0ajjire?svg=true)](https://ci.appveyor.com/project/avmaisak/gcode)
 
 Утилиты для работы с файлами формата G-code для платформы .NET
@@ -18,7 +17,9 @@ Install-Package Gcode.Utils
 
 - Преобразование сырого кадра в структурированный тип GcodeCommandFrame
 - Преобразование типа GcodeCommandFrame в строку для последующей отправки на устройство
+- Вычисление контрольной суммы
 - Преобразование в формат JSON (RFC 7159)
+- Обработка и получение информации (тип слайсера, версия, редакция, время печати, объём потраченного материала для всех экструдеров, стоимость печати, диаметр прутка) в зависимости от слайсера (Cura, KisSlicer, Simplify3d, Slic3R)
 
 ### Поддержка платформ:
 
@@ -56,5 +57,14 @@ var gcodeConverted = GcodeParser.ToGCode(rawString);
 g.N = 1;
 // получить контрольную сумму
 var crc = GcodeCrc.FrameCrc(g);
+
+// Получить информацию о слайсере
+string[] src = "fileContentsArray";
+// Slic3R Parser
+var parser = new Slic3RParser();
+var res = parser.GetSlicerInfo(src);
+var volume = res.FilamentUsedExtruder1Volume;
+var filamentDiameter = res.FilamentDiameter;
+var filamentUsed = res.FilamentUsedExtruder1;
 
 ````
