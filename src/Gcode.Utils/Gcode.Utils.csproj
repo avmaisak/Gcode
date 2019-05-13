@@ -33,4 +33,8 @@ Gcode.Common.Utils</PackageReleaseNotes>
     <PackageReference Include="LibBase" Version="1.0.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="SlicerParser\Base\" />
+  </ItemGroup>
+
 </Project>

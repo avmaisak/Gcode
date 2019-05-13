@@ -9,12 +9,10 @@ namespace Gcode.Utils.Common
 {
 	public static class ReflectionUtils
 	{
-		private static readonly CultureInfo DefaultCulture = CultureInfo.InvariantCulture;
-		public static List<KeyValuePair<string, string>> GetProperties(object item, CultureInfo culture = null)
+		public static List<KeyValuePair<string, string>> GetProperties(this object item, CultureInfo culture = null)
 		{
-
 			var result = new List<KeyValuePair<string, string>>();
-			Thread.CurrentThread.CurrentCulture = culture ?? DefaultCulture;
+			Thread.CurrentThread.CurrentCulture = culture ?? CultureInfo.InvariantCulture;
 
 			if (item == null) return result;
 
