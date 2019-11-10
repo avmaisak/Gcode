@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2026
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29503.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "testing", "testing", "{B22665F5-5C15-4AE1-85D0-87A65BAB9530}"
 EndProject
@@ -17,7 +17,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{41775F0A-BF91-4545-8C45-11E5995CD467}"
 	ProjectSection(SolutionItems) = preProject
 		..\..\.appveyor.yml = ..\..\.appveyor.yml
-		..\..\codecov.yml = ..\..\codecov.yml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gcode.Test", "..\..\tools\TestSuite\Gcode.Test\Gcode.Test.csproj", "{2BD1DBB3-03D5-4C11-A08C-B7EF46D07977}"
