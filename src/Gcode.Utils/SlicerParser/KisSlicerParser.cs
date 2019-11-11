@@ -22,7 +22,7 @@ namespace Gcode.Utils.SlicerParser
 			{
 				Name = name.Split(';')[1]?.Split('-')[0]?.Trim() ?? string.Empty,
 				Version = fileContent.FirstOrDefault(x => x.StartsWith("; version"))?.Split(';')?[1]?.Trim() ?? string.Empty,
-				Edition = name.Split(';')[1]?.Split('-')[1]?.Trim() ?? string.Empty,
+				Edition = name.Split(';')[1]?.Split('-')[1]?.Trim() ?? string.Empty
 			};
 
 			if (string.IsNullOrWhiteSpace(res.Name))
@@ -33,19 +33,19 @@ namespace Gcode.Utils.SlicerParser
 			var buildTimeStr = fileContent.FirstOrDefault(x => x.StartsWith("; Estimated Build Time:"));
 			if (buildTimeStr != null)
 			{
-				res.EstimatedBuildTime = Convert.ToDecimal(buildTimeStr?.Trim()?.Split(':')?[1]?.Split(new string[] { "minutes" }, StringSplitOptions.RemoveEmptyEntries)?[0]?.Trim()?.Replace(".",","));
+				res.EstimatedBuildTime = Convert.ToDecimal(buildTimeStr.Trim().Split(':')?[1]?.Split(new[] { "minutes" }, StringSplitOptions.RemoveEmptyEntries)[0].Trim().Replace(".",","));
 			}
 
 			var buildCostStr = fileContent.FirstOrDefault(x => x.StartsWith("; Estimated Build Cost:"));
 			if (buildCostStr != null)
 			{
-				res.EstimatedBuildCost = Convert.ToDecimal(buildCostStr?.Split('$')?[1]?.Trim()?.Replace(".",","));
+				res.EstimatedBuildCost = Convert.ToDecimal(buildCostStr.Split('$')?[1]?.Trim().Replace(".",","));
 			}
 
 			var totalEstimatedPreCoolMinutes = fileContent.FirstOrDefault(x => x.StartsWith("; Total estimated (pre-cool) minutes:"));
 			if (totalEstimatedPreCoolMinutes != null)
 			{
-				res.TotalEstimatedPreCoolMinutes = Convert.ToDecimal(totalEstimatedPreCoolMinutes?.Split(':')?[1]?.Trim()?.Replace(".",","));
+				res.TotalEstimatedPreCoolMinutes = Convert.ToDecimal(totalEstimatedPreCoolMinutes.Split(':')?[1]?.Trim().Replace(".",","));
 			}
 
 			var filamentUsageExist = fileContent.FirstOrDefault(x => x.StartsWith("; Filament used per extruder:")) != null;
@@ -59,16 +59,16 @@ namespace Gcode.Utils.SlicerParser
 					res.FilamentUsedExtruder1  = Convert.ToDecimal(
 						filamentUsageExt1
 							.Split('=')[1]?
-							.Split(new string[] { "mm" }, StringSplitOptions.RemoveEmptyEntries)[0]
-							.Replace(".",",")?
+							.Split(new[] { "mm" }, StringSplitOptions.RemoveEmptyEntries)[0]
+							.Replace(".",",")
 							.Trim()
 					);
 
 					res.FilamentUsedExtruder1Volume = Convert.ToDecimal(
 						filamentUsageExt1
 							.Split('(')[1]
-							.Split(new string[] { "cm" }, StringSplitOptions.RemoveEmptyEntries)[0]
-							.Replace(".",",")?
+							.Split(new[] { "cm" }, StringSplitOptions.RemoveEmptyEntries)[0]
+							.Replace(".",",")
 							.Trim()
 					);
 				}
@@ -79,16 +79,16 @@ namespace Gcode.Utils.SlicerParser
 					res.FilamentUsedExtruder2  = Convert.ToDecimal(
 						filamentUsageExt2
 							.Split('=')[1]?
-							.Split(new string[] { "mm" }, StringSplitOptions.RemoveEmptyEntries)[0]
-							.Replace(".",",")?
+							.Split(new[] { "mm" }, StringSplitOptions.RemoveEmptyEntries)[0]
+							.Replace(".",",")
 							.Trim()
 					);
 
 					res.FilamentUsedExtruder2Volume = Convert.ToDecimal(
 						filamentUsageExt2
 							.Split('(')[1]
-							.Split(new string[] { "cm" }, StringSplitOptions.RemoveEmptyEntries)[0]
-							.Replace(".",",")?
+							.Split(new[] { "cm" }, StringSplitOptions.RemoveEmptyEntries)[0]
+							.Replace(".",",")
 							.Trim()
 					);
 				}
@@ -96,10 +96,7 @@ namespace Gcode.Utils.SlicerParser
 
 
 			var fiberDiameter = fileContent.FirstOrDefault(x => x.StartsWith("; fiber_dia_mm"));
-			if (!string.IsNullOrWhiteSpace(fiberDiameter))
-			{
-				res.FilamentDiameter = Convert.ToDecimal(fiberDiameter?.Split(' ')?[3]?.Trim().Replace(".", ","));
-			}
+			if (!string.IsNullOrWhiteSpace(fiberDiameter)) res.FilamentDiameter = Convert.ToDecimal(fiberDiameter.Split(' ')?[3]?.Trim().Replace(".", ","));
 
 			return res;
 		}

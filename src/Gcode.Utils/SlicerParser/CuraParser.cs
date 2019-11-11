@@ -24,10 +24,7 @@ namespace Gcode.Utils.SlicerParser
 			slicerInfo.Version = name.Split(' ')?[3];
 
 			var buildTime = fileContent.FirstOrDefault(x => x.StartsWith(";TIME"));
-			if (buildTime != null)
-			{
-				slicerInfo.EstimatedBuildTime = Convert.ToDecimal(buildTime?.Split(':')?[1].Replace(".",","));
-			}
+			if (buildTime != null) slicerInfo.EstimatedBuildTime = Convert.ToDecimal(buildTime.Split(':')?[1].Replace(".",","));
 
 			var filamentUsed = fileContent.FirstOrDefault(x => x.StartsWith(";Filament used"));
 

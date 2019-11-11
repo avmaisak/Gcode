@@ -26,10 +26,7 @@ namespace Gcode.Utils
 		/// <returns></returns>
 		public static int FrameCrc(this GcodeCommandFrame gcodeCommandFrame)
 		{
-			if (gcodeCommandFrame.N <= 0)
-			{
-				throw new Exception("Frame line number expected (>0)");
-			}
+			if (gcodeCommandFrame.N <= 0) throw new Exception("Frame line number expected (>0)");
 
 			var f = gcodeCommandFrame.ToString();
 			var check = 0;
@@ -46,10 +43,8 @@ namespace Gcode.Utils
 		public static int FrameCrc(this string gcodeCommandFrame)
 		{
 			var gcode = GcodeParser.ToGCode(gcodeCommandFrame);
-			if (gcode.N <= 0)
-			{
-				throw new Exception("Frame line number expected (>0)");
-			}
+			if (gcode.N <= 0) throw new Exception("Frame line number expected (>0)");
+
 			var f = gcodeCommandFrame;
 			var check = 0;
 			foreach (var ch in f)

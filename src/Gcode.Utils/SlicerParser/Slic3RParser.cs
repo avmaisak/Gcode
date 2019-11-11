@@ -40,7 +40,7 @@ namespace Gcode.Utils.SlicerParser
 
 			if (!string.IsNullOrWhiteSpace(filamentDiameter))
 			{
-				res.FilamentDiameter = Convert.ToDecimal(filamentDiameter?.Split('=')?[1].Replace(".",","));
+				res.FilamentDiameter = Convert.ToDecimal(filamentDiameter.Split('=')?[1].Replace(".",","));
 			}
 
 			if (res.FilamentUsedExtruder1 != null && res.FilamentUsedExtruder1 > 0 && res.FilamentDiameter != null && res.FilamentDiameter > 0)

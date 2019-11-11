@@ -19,7 +19,7 @@ namespace Gcode.Utils.SlicerParser
 
 			var res = new Simplify3dInfo
 			{
-				Name = name.Split(new[] { "Version" }, StringSplitOptions.RemoveEmptyEntries)[0]?.Split(' ')[4]?.Replace("(R)", string.Empty) ?? string.Empty,
+				Name = name.Split(new[] { "Version" }, StringSplitOptions.RemoveEmptyEntries)[0].Split(' ')[4]?.Replace("(R)", string.Empty) ?? string.Empty,
 				Version = name.Split(new[] { "Version" }, StringSplitOptions.RemoveEmptyEntries)[1].Trim(),
 				// Simplify3D does not provide edition
 				Edition = null,
@@ -38,12 +38,12 @@ namespace Gcode.Utils.SlicerParser
 				//  hours
 				if (buildTime.Contains("hour"))
 				{
-					hours = Convert.ToInt32(buildTime.Split(new[] { "hours" }, StringSplitOptions.RemoveEmptyEntries)?[0]?.Split(' ')?[5] ?? "0");
+					hours = Convert.ToInt32(buildTime.Split(new[] { "hours" }, StringSplitOptions.RemoveEmptyEntries)[0].Split(' ')?[5] ?? "0");
 				}
 
 				if (buildTime.Contains("minute"))
 				{
-					minutes = Convert.ToInt32(buildTime.Split(new[] { "minutes" }, StringSplitOptions.RemoveEmptyEntries)?[0]?.Split(' ')?[7] ?? "0");
+					minutes = Convert.ToInt32(buildTime.Split(new[] { "minutes" }, StringSplitOptions.RemoveEmptyEntries)[0].Split(' ')?[7] ?? "0");
 				}
 
 				res.EstimatedBuildTime = Convert.ToDecimal(hours) * (decimal) 60.00 + Convert.ToDecimal(minutes);
