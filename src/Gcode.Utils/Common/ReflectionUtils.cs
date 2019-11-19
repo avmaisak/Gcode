@@ -18,10 +18,7 @@ namespace Gcode.Utils.Common
 
 			var type = item.GetType();
 			var props = type.GetProperties();
-			if (props.Length == 0)
-			{
-				return result;
-			}
+			if (props.Length == 0) return result;
 
 			var propertiesOrdered =
 					(from property in type.GetProperties()
@@ -36,15 +33,8 @@ namespace Gcode.Utils.Common
 
 			var propResult = new List<PropertyInfo>();
 
-			if (propertiesOrdered.Any())
-			{
-				propResult.AddRange(propertiesOrdered);
-			}
-
-			if (propertiesUnordered.Any())
-			{
-				propResult.AddRange(propertiesUnordered);
-			}
+			if (propertiesOrdered.Any()) propResult.AddRange(propertiesOrdered);
+			if (propertiesUnordered.Any()) propResult.AddRange(propertiesUnordered);
 
 			result.AddRange(
 				from pi in propResult
