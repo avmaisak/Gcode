@@ -29,7 +29,7 @@ namespace Gcode.Test.Parser
 				Assert.IsTrue(res.FilamentUsedExtruder1Volume == (decimal)219.282);
 				Assert.IsTrue(res.FilamentUsedExtruder2 == null);
 				Assert.IsTrue(res.FilamentUsedExtruder2Volume == null);
-				Assert.IsTrue(res.FilamentDiameter == (decimal) 1.75);
+				Assert.IsTrue(res.FilamentDiameter == (decimal)1.75);
 			}
 		}
 		[TestMethod]
@@ -95,5 +95,27 @@ namespace Gcode.Test.Parser
 				Assert.IsTrue(res.FilamentUsedExtruder2Volume == null);
 			}
 		}
+
+		[TestMethod]
+		public void KisSlicerParserTest5()
+		{
+			var src = TestSuiteDataSource.GetDataSourceArray(@"kisslicer/newgcode.gcode");
+			var kisSlicerParser = new KisSlicerParser();
+			var res = kisSlicerParser.GetSlicerInfo(src);
+			Assert.IsNotNull(res);
+			Assert.IsTrue(res.Name == "KISSlicer");
+			Assert.IsTrue(res.Edition == "PREMIUM");
+			Assert.IsTrue(res.Version == "version 2 a 1.6.3 Win64");
+			Assert.IsTrue(res.EstimatedBuildTime == (decimal)4729.83);
+			Assert.IsTrue(res.EstimatedBuildCost == (decimal)33730.68);
+			Assert.IsTrue(res.TotalEstimatedPreCoolMinutes == (decimal)4727.64);
+
+			Assert.IsTrue(res.FilamentUsedExtruder1 == (decimal)2728700.91);
+			Assert.IsTrue(res.FilamentUsedExtruder1Volume == (decimal)6563.295);
+			Assert.IsTrue(res.FilamentUsedExtruder2 == (decimal)462165.46);
+			Assert.IsTrue(res.FilamentUsedExtruder2Volume == (decimal)1111.638);
+			Assert.IsTrue(res.FilamentDiameter == (decimal)1.75);
+		}
+
 	}
 }
