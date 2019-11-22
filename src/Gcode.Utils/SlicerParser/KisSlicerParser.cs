@@ -13,10 +13,7 @@ namespace Gcode.Utils.SlicerParser
 		public override KisSlicerInfo GetSlicerInfo(string[] fileContent)
 		{
 			var name = fileContent.FirstOrDefault(x => x.StartsWith("; KISSlicer "));
-			if (name == null)
-			{
-				return null;
-			}
+			if (name == null) return null;
 
 			var res = new KisSlicerInfo
 			{
@@ -25,22 +22,29 @@ namespace Gcode.Utils.SlicerParser
 				Edition = name.Split(';')[1]?.Split('-')[1]?.Trim() ?? string.Empty
 			};
 
-			if (string.IsNullOrWhiteSpace(res.Name))
-			{
-				return null;
-			}
+			if (string.IsNullOrWhiteSpace(res.Name)) return null;
 
-			var buildTimeStr = fileContent.FirstOrDefault(x => x.StartsWith("; Estimated Build Time:"));
-			if (buildTimeStr != null)
-			{
-				res.EstimatedBuildTime = Convert.ToDecimal(buildTimeStr.Trim().Split(':')?[1]?.Split(new[] { "minutes" }, StringSplitOptions.RemoveEmptyEntries)[0].Trim().Replace(".",","));
-			}
+			var buildTimeStr = fileContent.FirstOrDefault(x => 
+				x.StartsWith("; Estimated Build Time:") ||
+				x.StartsWith("; Estimated-in-GUI Build Time") 
+			);
 
-			var buildCostStr = fileContent.FirstOrDefault(x => x.StartsWith("; Estimated Build Cost:"));
-			if (buildCostStr != null)
-			{
-				res.EstimatedBuildCost = Convert.ToDecimal(buildCostStr.Split('$')?[1]?.Trim().Replace(".",","));
-			}
+			if (buildTimeStr != null) res.EstimatedBuildTime = 
+				Convert.ToDecimal(
+					buildTimeStr
+					.Trim()
+					.Split(':')?[1]?
+					.Split(new[] { "minutes" }, StringSplitOptions.RemoveEmptyEntries)[0]
+					.Trim()
+					.Replace(".",",")
+			);
+
+			var buildCostStr = fileContent.FirstOrDefault(x => 
+				x.StartsWith("; Estimated Build Cost:") ||
+				x.StartsWith("; Estimated-in-GUI Build Cost") 
+			);
+
+			if (buildCostStr != null) res.EstimatedBuildCost = Convert.ToDecimal(buildCostStr.Split('$')?[1]?.Trim().Replace(".",","));
 
 			var totalEstimatedPreCoolMinutes = fileContent.FirstOrDefault(x => x.StartsWith("; Total estimated (pre-cool) minutes:"));
 			if (totalEstimatedPreCoolMinutes != null)
@@ -51,7 +55,11 @@ namespace Gcode.Utils.SlicerParser
 			var filamentUsageExist = fileContent.FirstOrDefault(x => x.StartsWith("; Filament used per extruder:")) != null;
 			if (filamentUsageExist)
 			{
-				var filamentUsageExt1 = fileContent.FirstOrDefault(x => x.StartsWith(";    Ext 1 = "));
+				var filamentUsageExt1 = fileContent.FirstOrDefault(x => 
+					x.StartsWith(";    Ext 1 = ") ||
+					x.StartsWith(";    Ext #1  =") 
+				);
+
 				if (filamentUsageExt1 != null)
 				{
 					filamentUsageExt1 = filamentUsageExt1.TrimString();
@@ -73,7 +81,11 @@ namespace Gcode.Utils.SlicerParser
 					);
 				}
 
-				var filamentUsageExt2 = fileContent.FirstOrDefault(x => x.StartsWith(";    Ext 2 = "));
+				var filamentUsageExt2 = fileContent.FirstOrDefault(x => 
+					x.StartsWith(";    Ext 2 = ") ||
+					x.StartsWith(";    Ext #2  =")
+				);
+
 				if (filamentUsageExt2 != null)
 				{
 					res.FilamentUsedExtruder2  = Convert.ToDecimal(
