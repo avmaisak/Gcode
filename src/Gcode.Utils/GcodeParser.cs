@@ -34,23 +34,20 @@ namespace Gcode.Utils
 				//получить свойство кадра
 				var fieldInfo = gcodeCommandFrame.GetType().GetProperty(key);
 				//свойство есть
-				if (fieldInfo != null)
-				{
-					//получить информацию свойства поля кадра
-					var fileldInfoType = fieldInfo.PropertyType;
-					// тип универсален, и универсальный тип - Nullable
-					if (fileldInfoType.IsGenericType && fileldInfoType.GetGenericTypeDefinition() == typeof(Nullable<>))
-					{
-						//объект назначения
-						var obj = gcodeCommandFrame;
-						//значение поля
-						var fieldValue = value;
-						//свойства поля кадра
-						fileldInfoType = fileldInfoType.GetGenericArguments()[0];
-						//указание значения сегмента кадра
-						fieldInfo.SetValue(obj, Convert.ChangeType(fieldValue, fileldInfoType, Culture));
-					}
-				}
+				if (fieldInfo == null) continue;
+
+				//получить информацию свойства поля кадра
+				var fileldInfoType = fieldInfo.PropertyType;
+				// тип универсален, и универсальный тип - Nullable
+				if (!fileldInfoType.IsGenericType || fileldInfoType.GetGenericTypeDefinition() != typeof(Nullable<>)) continue;
+				//объект назначения
+				var obj = gcodeCommandFrame;
+				//значение поля
+				var fieldValue = value;
+				//свойства поля кадра
+				fileldInfoType = fileldInfoType.GetGenericArguments()[0];
+				//указание значения сегмента кадра
+				fieldInfo.SetValue(obj, Convert.ChangeType(fieldValue, fileldInfoType, Culture));
 			}
 			return gcodeCommandFrame;
 		}
@@ -76,7 +73,6 @@ namespace Gcode.Utils
 			//является комментарием
 			if (_rawFrame.IsGcodeComment())
 			{
-
 				gcodeCommandFrame.Comment = _rawFrame.ReplaceAtIndex(0, ' ').Trim();
 				return gcodeCommandFrame;
 			}
@@ -94,10 +90,7 @@ namespace Gcode.Utils
 
 			gcodeCommandFrame = ToGcodeCommandFrame(_rawFrame.ToKeyValuePair());
 
-			if (!string.IsNullOrWhiteSpace(frameComment))
-			{
-				gcodeCommandFrame.Comment = frameComment;
-			}
+			if (!string.IsNullOrWhiteSpace(frameComment)) gcodeCommandFrame.Comment = frameComment;
 
 			return gcodeCommandFrame;
 		}
@@ -128,25 +121,23 @@ namespace Gcode.Utils
 				var commandSeparator = " ";
 				var isNotEmpty = !string.IsNullOrWhiteSpace(objProp.Value?.Trim());
 
-				if (isNotEmpty)
+				if (!isNotEmpty) continue;
+				if (objProp.Key != "Comment")
 				{
-					if (objProp.Key != "Comment")
-					{
-						var commandKey = objProp.Key;
+					var commandKey = objProp.Key;
 
-						if (addedLines == 0) commandSeparator = string.Empty;
+					if (addedLines == 0) commandSeparator = string.Empty;
 
-						if (objProp.Key == "CheckSum" && !string.IsNullOrWhiteSpace(objProp.Value)) commandKey = "*";
+					if (objProp.Key == "CheckSum" && !string.IsNullOrWhiteSpace(objProp.Value)) commandKey = "*";
 
-						var cmdFrameSegmentStr = $"{commandSeparator}{commandKey}{objProp.Value}";
+					var cmdFrameSegmentStr = $"{commandSeparator}{commandKey}{objProp.Value}";
 
-						cmdSegmentStringBuilder.Append(cmdFrameSegmentStr);
-						addedLines++;
-					}
-					else
-					{
-						if (!ignoreComments) commentString = objProp.Value;
-					}
+					cmdSegmentStringBuilder.Append(cmdFrameSegmentStr);
+					addedLines++;
+				}
+				else
+				{
+					if (!ignoreComments) commentString = objProp.Value;
 				}
 			}
 
@@ -196,16 +187,13 @@ namespace Gcode.Utils
 
 			return sb.ToString();
 		}
+
 		/// <summary>
 		/// ToJson
 		/// </summary>
 		/// <param name="gcodeCommandFrame"></param>
 		/// <returns></returns>
-		public static string ToJson(this GcodeCommandFrame gcodeCommandFrame)
-		{
-			var resJson = ToStringCommand(gcodeCommandFrame);
-			return GcodeToJson(resJson);
-		}
+		public static string ToJson(this GcodeCommandFrame gcodeCommandFrame) => GcodeToJson(ToStringCommand(gcodeCommandFrame));
 		/// <summary>
 		/// Normalize
 		/// </summary>
@@ -221,12 +209,9 @@ namespace Gcode.Utils
 
 			if (_rawFrame.IsGcodeComment() || _rawFrame.IsEmptyComment() || _rawFrame.IsNullOrErrorFrame())
 			{
-				if (!string.IsNullOrWhiteSpace(_rawFrame))
-				{
-					_rawFrame = _rawFrame.Trim();
-					return _rawFrame;
-				}
-				return string.Empty;
+				if (string.IsNullOrWhiteSpace(_rawFrame)) return string.Empty;
+				_rawFrame = _rawFrame.Trim();
+				return _rawFrame;
 			}
 
 			if (_rawFrame.ContainsGcodeComment())
@@ -250,7 +235,7 @@ namespace Gcode.Utils
 				var isChar = char.IsLetter(charRawFrame);
 
 				var res = charRawFrame.ToString();
-				if (isChar && i > 0)res = $" {res}";
+				if (isChar && i > 0) res = $" {res}";
 				resultFrame.Add(res);
 			}
 
