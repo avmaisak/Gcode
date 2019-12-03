@@ -47,10 +47,8 @@ namespace Gcode.Utils
 
 			var f = gcodeCommandFrame;
 			var check = 0;
-			foreach (var ch in f)
-			{
-				check ^= ch & 0xff;
-			}
+
+			foreach (var ch in f) check ^= ch & 0xff;
 
 			check ^= 32;
 
