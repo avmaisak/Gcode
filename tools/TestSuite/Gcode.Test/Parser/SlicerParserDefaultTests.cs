@@ -8,6 +8,7 @@ namespace Gcode.Test.Parser
 	public class SlicerParserDefaultTests
 	{
 		[TestMethod]
+		[Ignore("Run this tests manually")]
 		public void SlicerCompareTest1()
 		{
 			var src = TestSuiteDataSource.GetDataSourceArray("100.gcode");

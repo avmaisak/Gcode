@@ -8,6 +8,7 @@ namespace Gcode.Test.Parser
 	/// Tests work only on windows platform (WiP)
 	/// </summary>
 	[TestClass]
+	[Ignore("Run this tests manually")]
 	public class KisSlicerParserTests
 	{
 		[TestMethod]

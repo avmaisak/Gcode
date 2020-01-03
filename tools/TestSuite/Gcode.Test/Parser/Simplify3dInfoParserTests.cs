@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Gcode.Test.Parser
 {
 	[TestClass]
+	[Ignore("Run this tests manually")]
 	public class Simplify3dInfoParserTests
 	{
 		[TestMethod]

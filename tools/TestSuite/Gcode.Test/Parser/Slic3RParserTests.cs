@@ -8,6 +8,7 @@ namespace Gcode.Test.Parser
 	public class Slic3RParserTests
 	{
 		[TestMethod]
+		[Ignore("Run this tests manually")]
 		public void Slic3RParserTest1()
 		{
 			string[] src = TestSuiteDataSource.GetDataSourceArray(@"slic3r\2.gcode");
