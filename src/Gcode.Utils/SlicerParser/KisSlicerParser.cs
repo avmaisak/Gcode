@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Gcode.Utils.Entity;
+using Gcode.Utils.Entity.Slicer;
 using LibBase.Extensions;
 
 namespace Gcode.Utils.SlicerParser

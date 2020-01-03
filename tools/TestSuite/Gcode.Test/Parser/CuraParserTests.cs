@@ -5,9 +5,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Gcode.Test.Parser
 {
 	[TestClass]
+	[Ignore("Run this tests manually")]
 	public class CuraParserTests
 	{
-	[TestMethod]
+		[TestMethod]
 		public void CuraParserTest1()
 		{
 			// Before running tests, unpack \tools\TestData\cura\cura.7z file!
@@ -20,7 +21,7 @@ namespace Gcode.Test.Parser
 				Assert.IsTrue(res.Name == "Cura_SteamEngine");
 				Assert.IsTrue(res.Version == "4.0.0");
 				Assert.IsTrue(res.EstimatedBuildTime == 762088);
-				Assert.IsTrue(res.FilamentUsedExtruder1 == (decimal) 181555.00);
+				Assert.IsTrue(res.FilamentUsedExtruder1 == (decimal)181555.00);
 			}
 		}
 	}

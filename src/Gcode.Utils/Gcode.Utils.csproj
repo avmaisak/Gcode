@@ -15,7 +15,7 @@
     <Copyright>Anton Maisak</Copyright>
     <AssemblyVersion>0.2.0.12</AssemblyVersion>
     <PackageReleaseNotes></PackageReleaseNotes>
-    <Version>0.2.12</Version>
+    <Version>0.2.13</Version>
     <FileVersion>0.2.0.12</FileVersion>
     <PackageIconUrl>https://raw.githubusercontent.com/avmaisak/Gcode/master/misc/design/logo/logo.png</PackageIconUrl>
   </PropertyGroup>
