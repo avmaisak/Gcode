@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gcode.Utils", "..\..\src\Gc
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{69BBAAAE-D6BC-4CE7-B760-2E65E82EC221}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{654689F9-DEDE-4B2C-9EBE-CAC4D3D278BE}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{654689F9-DEDE-4B2C-9EBE-CAC4D3D278BE}"
 	ProjectSection(SolutionItems) = preProject
 		..\..\README.md = ..\..\README.md
 	EndProjectSection
