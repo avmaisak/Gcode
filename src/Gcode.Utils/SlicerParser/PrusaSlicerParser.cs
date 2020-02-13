@@ -23,13 +23,13 @@ namespace Gcode.Utils.SlicerParser
 			var filamentUsed = fileContent.Where(x => x.StartsWith("; filament used [mm] = ")).ToArray();
 			if (filamentUsed.Length == 1 && filamentUsed[0] != null)
 			{
-				res.FilamentUsedExtruder1 = Convert.ToDecimal(filamentUsed[0].Split('=')[1].Split(',')[0].Trim().Replace(".",","));
+				res.FilamentUsedExtruder1 = Convert.ToDecimal(filamentUsed[0].Split(';')[1].Split('=')[1].Trim().Replace(".",","));
 			}
 
 			if (filamentUsed.Length == 2 && filamentUsed[1] != null)
 			{
 				// filament used
-				res.FilamentUsedExtruder2 = Convert.ToDecimal(filamentUsed[1].Split('=')[1]?.Split('=')[1].Split(','));
+				res.FilamentUsedExtruder2 = Convert.ToDecimal(filamentUsed[1].Split(';')[1].Split('=')[1].Trim().Replace(".",","));
 			}
 
 			var filamentDiameter = fileContent.FirstOrDefault(x => x.StartsWith("; filament_diameter"));
