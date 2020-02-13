@@ -1,6 +1,7 @@
 ﻿using System.IO;
 
-namespace Gcode.Test.Infrastructure {
+namespace Gcode.Test.Infrastructure
+{
 	public static class TestSuiteDataSource
 	{
 		private static readonly string InternalTestFolder = $@"{Directory.GetCurrentDirectory()}\..\..\..\..\..\TestData\";
@@ -15,15 +16,11 @@ namespace Gcode.Test.Infrastructure {
 			"G1 X553.44 Y251.064 E0.01052 F2196",
 			"M115"
 		};
-
-		public static string GetDataSource(string fileName)
+		public static string GetDataSource(string fileName) => File.ReadAllText($@"{InternalTestFolder}{fileName}");
+		public static string[] GetDataSourceArray(string fileName, bool external = false)
 		{
-			return File.ReadAllText($@"{InternalTestFolder}{fileName}");
-		}
-
-		public static string[] GetDataSourceArray(string fileName)
-		{
-			return File.ReadAllLines($"{InternalTestFolder}{fileName}");
+			if (!external) return File.ReadAllLines($"{InternalTestFolder}{fileName}");
+			return File.ReadAllLines(fileName);
 		}
 	}
 }
