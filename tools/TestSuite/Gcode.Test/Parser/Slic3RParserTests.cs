@@ -5,10 +5,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Gcode.Test.Parser
 {
 	[TestClass]
+	[Ignore("Run this tests manually")]
 	public class Slic3RParserTests
 	{
 		[TestMethod]
-		[Ignore("Run this tests manually")]
 		public void Slic3RParserTest1()
 		{
 			string[] src = TestSuiteDataSource.GetDataSourceArray(@"slic3r\2.gcode");
@@ -19,8 +19,8 @@ namespace Gcode.Test.Parser
 				Assert.IsNotNull(res);
 				Assert.IsTrue(res.Edition == string.Empty);
 				Assert.IsTrue(res.Version == "1.3.0");
-				Assert.IsTrue(res.FilamentUsedExtruder1 == (decimal) 675947.4);
-				Assert.IsTrue(res.FilamentDiameter == (decimal) 1.75);
+				Assert.IsTrue(res.FilamentUsedExtruder1 == (decimal)675947.4);
+				Assert.IsTrue(res.FilamentDiameter == (decimal)1.75);
 				Assert.IsTrue(res.FilamentUsedExtruder1Volume > 0);
 			}
 		}

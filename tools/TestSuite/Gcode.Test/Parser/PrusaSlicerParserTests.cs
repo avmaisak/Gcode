@@ -20,9 +20,9 @@ namespace Gcode.Test.Parser
 				Assert.IsNotNull(res);
 				Assert.IsTrue(res.Edition == string.Empty);
 				Assert.IsTrue(res.Version == "2.2.0-alpha2+win64");
-				Assert.IsTrue(res.FilamentUsedExtruder1 == (decimal) 11773.6);
-				Assert.IsTrue(res.FilamentDiameter == (decimal) 1.75);
-				Assert.IsTrue(res.FilamentUsedExtruder1Volume  == (decimal) 20603.800);
+				Assert.IsTrue(res.FilamentUsedExtruder1 == (decimal)11773.6);
+				Assert.IsTrue(res.FilamentDiameter == (decimal)1.75);
+				Assert.IsTrue(res.FilamentUsedExtruder1Volume == (decimal)20603.800);
 			}
 		}
 		[TestMethod]
@@ -36,9 +36,25 @@ namespace Gcode.Test.Parser
 				Assert.IsNotNull(res);
 				Assert.IsTrue(res.Edition == string.Empty);
 				Assert.IsTrue(res.Version == "2.2.0-alpha2+win64");
-				Assert.IsTrue(res.FilamentUsedExtruder1 == (decimal) 912.1);
-				Assert.IsTrue(res.FilamentDiameter == (decimal) 1.75);
-				Assert.IsTrue(res.FilamentUsedExtruder1Volume  == (decimal) 1596.175);
+				Assert.IsTrue(res.FilamentUsedExtruder1 == (decimal)912.1);
+				Assert.IsTrue(res.FilamentDiameter == (decimal)1.75);
+				Assert.IsTrue(res.FilamentUsedExtruder1Volume == (decimal)1596.175);
+			}
+		}
+		[TestMethod]
+		public void PrusaSlicerParserTest3()
+		{
+			string[] src = TestSuiteDataSource.GetDataSourceArray(@"prusa_slicer\v2alpha4\testtest.gcode");
+			if (src?.Length > 0)
+			{
+				var parser = new PrusaSlicerParser();
+				var res = parser.GetSlicerInfo(src);
+				Assert.IsNotNull(res);
+				Assert.IsTrue(res.Edition == string.Empty);
+				Assert.IsTrue(res.Version == "2.2.0-alpha4+win64");
+				Assert.IsTrue(res.FilamentUsedExtruder1 == (decimal)10604.9);
+				Assert.IsTrue(res.FilamentUsedExtruder2 == (decimal)62.3);
+				Assert.IsTrue(res.FilamentDiameter == (decimal)1.75);
 			}
 		}
 	}
