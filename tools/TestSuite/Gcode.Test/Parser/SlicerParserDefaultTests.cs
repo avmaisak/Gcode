@@ -5,10 +5,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Gcode.Test.Parser
 {
 	[TestClass]
+	[Ignore("Run this tests manually")]
 	public class SlicerParserDefaultTests
 	{
 		[TestMethod]
-		[Ignore("Run this tests manually")]
 		public void SlicerCompareTest1()
 		{
 			var src = TestSuiteDataSource.GetDataSourceArray("100.gcode");

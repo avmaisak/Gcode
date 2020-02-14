@@ -4,7 +4,7 @@ using Gcode.Utils.Entity.Slicer;
 
 namespace Gcode.Utils.SlicerParser
 {
-	public class PrusaSlicerParser: SlicerParserBase<Slic3RInfo>
+	public class PrusaSlicerParser : SlicerParserBase<Slic3RInfo>
 	{
 		public override Slic3RInfo GetSlicerInfo(string[] fileContent)
 		{
@@ -23,14 +23,34 @@ namespace Gcode.Utils.SlicerParser
 			var filamentUsed = fileContent.Where(x => x.StartsWith("; filament used [mm] = ")).ToArray();
 			if (filamentUsed.Length == 1 && filamentUsed[0] != null)
 			{
-				res.FilamentUsedExtruder1 = Convert.ToDecimal(filamentUsed[0].Split(';')[1].Split('=')[1].Trim().Replace(".",","));
+				var result = filamentUsed[0].Split(';')[1].Split('=')[1].Trim().Replace(".", ",");
+				// two extruders
+				if (result.Contains(" "))
+				{
+					var resultArray = result.Split(' ');
+					if (resultArray.Length == 2)
+					{
+						var filamentUsedExtruder1 = resultArray[0].Trim().Replace(".", ",");
+						var filamentUsedExtruder2 = resultArray[1].Trim().Replace(".", ",");
+
+						if (filamentUsedExtruder1.EndsWith(",")) filamentUsedExtruder1 = filamentUsedExtruder1.Remove(filamentUsedExtruder1.Length - 1);
+
+						res.FilamentUsedExtruder1 = Convert.ToDecimal(filamentUsedExtruder1);
+						res.FilamentUsedExtruder2 = Convert.ToDecimal(filamentUsedExtruder2);
+					}
+					// res.FilamentUsedExtruder2 = Convert.ToDecimal(filamentUsed[1].Split(';')[1].Split('=')[1].Trim().Replace(".",","));
+				}
+				else
+				{
+					res.FilamentUsedExtruder1 = Convert.ToDecimal(result);
+				}
 			}
 
-			if (filamentUsed.Length == 2 && filamentUsed[1] != null)
-			{
-				// filament used
-				res.FilamentUsedExtruder2 = Convert.ToDecimal(filamentUsed[1].Split(';')[1].Split('=')[1].Trim().Replace(".",","));
-			}
+			//if (filamentUsed.Length == 2 && filamentUsed[1] != null)
+			//{
+			//	// filament used
+			//	res.FilamentUsedExtruder2 = Convert.ToDecimal(filamentUsed[1].Split(';')[1].Split('=')[1].Trim().Replace(".",","));
+			//}
 
 			var filamentDiameter = fileContent.FirstOrDefault(x => x.StartsWith("; filament_diameter"));
 
@@ -46,7 +66,7 @@ namespace Gcode.Utils.SlicerParser
 					if (diameter.Contains(",")) diameter = diameter.Split(',')[0];
 					res.FilamentDiameter = Convert.ToDecimal(diameter.Replace(".", ","));
 				}
-				
+
 			}
 
 			if (res.FilamentUsedExtruder1 != null && res.FilamentUsedExtruder1 > 0 && res.FilamentDiameter != null && res.FilamentDiameter > 0)
