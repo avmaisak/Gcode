@@ -70,15 +70,34 @@ namespace Gcode.Utils.SlicerParser
 			}
 
 			if (res.FilamentUsedExtruder1 != null && res.FilamentUsedExtruder1 > 0 && res.FilamentDiameter != null && res.FilamentDiameter > 0)
-			{
 				// обьем = сечение * длину
 				res.FilamentUsedExtruder1Volume = res.FilamentDiameter * res.FilamentUsedExtruder1;
-			}
+
 
 			if (res.FilamentUsedExtruder2 != null && res.FilamentUsedExtruder2 > 0 && res.FilamentDiameter != null && res.FilamentDiameter > 0)
-			{
 				// обьем = сечение * длину
 				res.FilamentUsedExtruder2Volume = res.FilamentDiameter * res.FilamentUsedExtruder2;
+
+			// estimated printing time
+			var buildTimeStr = fileContent.FirstOrDefault(x => x.StartsWith("; estimated printing time"));
+
+			if (!string.IsNullOrWhiteSpace(buildTimeStr))
+			{
+				var buildTime = buildTimeStr.Split('=')[1]?.Trim();
+				if (!string.IsNullOrWhiteSpace(buildTime))
+				{
+					var resArr = buildTime.Split(' ');
+					var hours = 0;
+					var minutes = 0;
+					var seconds = 0;
+
+					if (resArr.Where(x => x.Contains("h"))?.Count() > 0) hours = Convert.ToInt32(resArr?.FirstOrDefault(x => x.Contains("h"))?.Split('h')?[0] ?? "0");
+					if (resArr.Where(x => x.Contains("m"))?.Count() > 0) minutes = Convert.ToInt32(resArr?.FirstOrDefault(x => x.Contains("m"))?.Split('m')?[0] ?? "0");
+					if (resArr.Where(x => x.Contains("s"))?.Count() > 0) seconds = Convert.ToInt32(resArr?.FirstOrDefault(x => x.Contains("s"))?.Split('s')?[0] ?? "0");
+
+					var spanDuration = new TimeSpan(0, hours, minutes, seconds);
+					res.EstimatedBuildTime = Math.Round(Convert.ToDecimal(spanDuration.TotalMinutes), 2);
+				}
 			}
 
 			return res;
