@@ -23,6 +23,7 @@ namespace Gcode.Test.Parser
 				Assert.IsTrue(res.FilamentUsedExtruder1 == (decimal)11773.6);
 				Assert.IsTrue(res.FilamentDiameter == (decimal)1.75);
 				Assert.IsTrue(res.FilamentUsedExtruder1Volume == (decimal)20603.800);
+				Assert.IsTrue(res.EstimatedBuildTime == (decimal)321.17);
 			}
 		}
 		[TestMethod]
@@ -39,6 +40,7 @@ namespace Gcode.Test.Parser
 				Assert.IsTrue(res.FilamentUsedExtruder1 == (decimal)912.1);
 				Assert.IsTrue(res.FilamentDiameter == (decimal)1.75);
 				Assert.IsTrue(res.FilamentUsedExtruder1Volume == (decimal)1596.175);
+				Assert.IsTrue(res.EstimatedBuildTime == (decimal)37.35);
 			}
 		}
 		[TestMethod]
@@ -55,6 +57,7 @@ namespace Gcode.Test.Parser
 				Assert.IsTrue(res.FilamentUsedExtruder1 == (decimal)10604.9);
 				Assert.IsTrue(res.FilamentUsedExtruder2 == (decimal)62.3);
 				Assert.IsTrue(res.FilamentDiameter == (decimal)1.75);
+				Assert.IsTrue(res.EstimatedBuildTime == (decimal)123.25);
 			}
 		}
 	}
