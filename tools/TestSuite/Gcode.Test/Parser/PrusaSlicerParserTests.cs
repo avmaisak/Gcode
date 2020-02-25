@@ -60,5 +60,22 @@ namespace Gcode.Test.Parser
 				Assert.IsTrue(res.EstimatedBuildTime == (decimal)123.25);
 			}
 		}
+		[TestMethod]
+		public void PrusaSlicerParserTest4()
+		{
+			string[] src = TestSuiteDataSource.GetDataSourceArray(@"prusa_slicer\2.2.0-beta\test.gcode");
+			if (src?.Length > 0)
+			{
+				var parser = new PrusaSlicerParser();
+				var res = parser.GetSlicerInfo(src);
+				Assert.IsNotNull(res);
+				Assert.IsTrue(res.Edition == string.Empty);
+				Assert.IsTrue(res.Version == "2.2.0-beta+win64");
+				Assert.IsTrue(res.FilamentUsedExtruder1 == (decimal)636.7);
+				Assert.IsTrue(res.FilamentUsedExtruder2 == null);
+				Assert.IsTrue(res.FilamentDiameter == (decimal)1.75);
+				Assert.IsTrue(res.EstimatedBuildTime == (decimal)19.92);
+			}
+		}
 	}
 }
