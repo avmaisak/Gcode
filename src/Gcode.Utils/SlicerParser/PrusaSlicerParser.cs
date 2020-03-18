@@ -20,9 +20,10 @@ namespace Gcode.Utils.SlicerParser
 				Edition = string.Empty,
 			};
 
-			var filamentUsed = fileContent.Where(x => x.StartsWith("; filament used [mm] = ")).ToArray();
+			var filamentUsed = fileContent.Where(x => x.StartsWith("; filament used [cm3] = ")).ToArray();
 			if (filamentUsed.Length == 1 && filamentUsed[0] != null)
 			{
+
 				var result = filamentUsed[0].Split(';')[1].Split('=')[1].Trim().Replace(".", ",");
 				// two extruders
 				if (result.Contains(" "))
@@ -45,12 +46,6 @@ namespace Gcode.Utils.SlicerParser
 					res.FilamentUsedExtruder1 = Convert.ToDecimal(result);
 				}
 			}
-
-			//if (filamentUsed.Length == 2 && filamentUsed[1] != null)
-			//{
-			//	// filament used
-			//	res.FilamentUsedExtruder2 = Convert.ToDecimal(filamentUsed[1].Split(';')[1].Split('=')[1].Trim().Replace(".",","));
-			//}
 
 			var filamentDiameter = fileContent.FirstOrDefault(x => x.StartsWith("; filament_diameter"));
 
