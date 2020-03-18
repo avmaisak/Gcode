@@ -20,7 +20,7 @@ namespace Gcode.Utils.SlicerParser
 				Edition = string.Empty,
 			};
 
-			var filamentUsed = fileContent.Where(x => x.Contains("; filament used [cm3] = ")).ToArray();
+			var filamentUsed = fileContent.Where(x => x.StartsWith("; filament used [cm3] = ")).ToArray();
 			if (filamentUsed.Length == 1 && filamentUsed[0] != null)
 			{
 
