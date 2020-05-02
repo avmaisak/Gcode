@@ -13,10 +13,10 @@
     <PackageTags>gcode 3d-printing reprap reprap-3d-printer marlin marlin-firmware repitier repitier-firmware json json-parsing gcode-json cura kisslicer slic3r simplify3d</PackageTags>
     <RepositoryType>git</RepositoryType>
     <Copyright>Anton Maisak</Copyright>
-    <AssemblyVersion>0.2.0.19</AssemblyVersion>
+    <AssemblyVersion>0.2.0.20</AssemblyVersion>
     <PackageReleaseNotes></PackageReleaseNotes>
-    <Version>0.2.19</Version>
-    <FileVersion>0.2.0.19</FileVersion>
+    <Version>0.2.20</Version>
+    <FileVersion>0.2.0.20</FileVersion>
     <PackageIconUrl></PackageIconUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageIcon>logo.png</PackageIcon>
