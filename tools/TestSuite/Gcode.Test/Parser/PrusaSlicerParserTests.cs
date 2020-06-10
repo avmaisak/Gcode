@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Gcode.Test.Parser
 {
 	[TestClass]
-	// [Ignore("Run this tests manually")]
+	[Ignore("Run this tests manually")]
 	public class PrusaSlicerParserTests
 	{
 		[TestMethod]
