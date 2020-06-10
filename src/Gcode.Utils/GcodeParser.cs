@@ -14,10 +14,8 @@ namespace Gcode.Utils
 	/// </summary>
 	public static class GcodeParser
 	{
-		#region private
 		private static readonly CultureInfo Culture = CultureInfo.InvariantCulture;
 		private static string _rawFrame;
-		private const string CommentChar = ";";
 		/// <summary>
 		/// To Gcode CommandFrame
 		/// </summary>
@@ -27,31 +25,21 @@ namespace Gcode.Utils
 			var gcodeCommandFrame = new GcodeCommandFrame();
 			foreach (var frameSegment in frameSegments)
 			{
-				//команда
-				var key = frameSegment.Key;
-				//значение
-				var value = frameSegment.Value;
 				//получить свойство кадра
-				var fieldInfo = gcodeCommandFrame.GetType().GetProperty(key);
+				var fieldInfo = gcodeCommandFrame.GetType().GetProperty(frameSegment.Key);
 				//свойство есть
 				if (fieldInfo == null) continue;
-
 				//получить информацию свойства поля кадра
 				var fileldInfoType = fieldInfo.PropertyType;
 				// тип универсален, и универсальный тип - Nullable
 				if (!fileldInfoType.IsGenericType || fileldInfoType.GetGenericTypeDefinition() != typeof(Nullable<>)) continue;
-				//объект назначения
-				var obj = gcodeCommandFrame;
-				//значение поля
-				var fieldValue = value;
 				//свойства поля кадра
 				fileldInfoType = fileldInfoType.GetGenericArguments()[0];
 				//указание значения сегмента кадра
-				fieldInfo.SetValue(obj, Convert.ChangeType(fieldValue, fileldInfoType, Culture));
+				fieldInfo.SetValue(gcodeCommandFrame, Convert.ChangeType(frameSegment.Value, fileldInfoType, Culture));
 			}
 			return gcodeCommandFrame;
 		}
-		#endregion
 		/// <summary>
 		/// To GCode
 		/// </summary>
@@ -80,7 +68,7 @@ namespace Gcode.Utils
 			//содержит комментарий
 			if (_rawFrame.ContainsGcodeComment())
 			{
-				var r = _rawFrame.Split(CommentChar);
+				var r = _rawFrame.Split(Resources.CommentChar);
 				if (r.Length == 2)
 				{
 					_rawFrame = r[0].Trim();
@@ -122,27 +110,23 @@ namespace Gcode.Utils
 				var isNotEmpty = !string.IsNullOrWhiteSpace(objProp.Value?.Trim());
 
 				if (!isNotEmpty) continue;
-				if (objProp.Key != "Comment")
+				if (objProp.Key != Resources.CommentTag)
 				{
 					var commandKey = objProp.Key;
 
 					if (addedLines == 0) commandSeparator = string.Empty;
 
-					if (objProp.Key == "CheckSum" && !string.IsNullOrWhiteSpace(objProp.Value)) commandKey = "*";
+					if (objProp.Key == Resources.CheckSumTag && !string.IsNullOrWhiteSpace(objProp.Value)) commandKey = "*";
 
 					var cmdFrameSegmentStr = $"{commandSeparator}{commandKey}{objProp.Value}";
 
 					cmdSegmentStringBuilder.Append(cmdFrameSegmentStr);
 					addedLines++;
 				}
-				else
-				{
-					if (!ignoreComments) commentString = objProp.Value;
-				}
+				else if (!ignoreComments) commentString = objProp.Value;
 			}
 
-			var res = !string.IsNullOrWhiteSpace(commentString) ? $"{cmdSegmentStringBuilder} ;{commentString}" : cmdSegmentStringBuilder.ToString();
-			return res.Trim();
+			return (!string.IsNullOrWhiteSpace(commentString) ? $"{cmdSegmentStringBuilder} ;{commentString}" : cmdSegmentStringBuilder.ToString()).Trim();
 		}
 		/// <summary>
 		/// ToJson
@@ -154,7 +138,7 @@ namespace Gcode.Utils
 			const string objJsonStart = "{";
 			const string objJsonEnd = "}";
 
-			if (_rawFrame.IsGcodeComment() || _rawFrame.IsNullOrErrorFrame()) return $"{{Comment:{raw.Replace(";", null).Replace("\r", null).Trim()}}}";
+			if (_rawFrame.IsGcodeComment() || _rawFrame.IsNullOrErrorFrame()) return $"{{{Resources.CommentTag}:{raw.Replace(";", null).Replace("\r", null).Trim()}}}";
 
 			var commentString = string.Empty;
 
@@ -162,7 +146,7 @@ namespace Gcode.Utils
 			{
 				var arr = _rawFrame.Split(";");
 				_rawFrame = arr[0].Trim();
-				commentString = $",\"Comment\":\"{arr[1].Trim().Replace("\r", null)}\"";
+				commentString = $",\"{Resources.CommentTag}\":\"{arr[1].Trim().Replace("\r", null)}\"";
 			}
 
 			var segments = _rawFrame.ToKeyValuePair();
@@ -254,7 +238,7 @@ namespace Gcode.Utils
 		public static bool ContainsGcodeComment(this string raw)
 		{
 			_rawFrame = raw.Trim();
-			return !_rawFrame.StartsWith(CommentChar) && _rawFrame.Contains(CommentChar);
+			return !_rawFrame.StartsWith(Resources.CommentChar) && _rawFrame.Contains(Resources.CommentChar);
 		}
 		/// <summary>
 		/// IsComment
@@ -264,7 +248,7 @@ namespace Gcode.Utils
 		public static bool IsGcodeComment(this string raw)
 		{
 			_rawFrame = raw.Trim();
-			return !_rawFrame.IsNullOrErrorFrame() && _rawFrame.StartsWith(CommentChar);
+			return !_rawFrame.IsNullOrErrorFrame() && _rawFrame.StartsWith(Resources.CommentChar);
 		}
 		/// <summary>
 		/// Is Null Or Error Frame
@@ -284,7 +268,7 @@ namespace Gcode.Utils
 		public static bool IsEmptyComment(this string raw)
 		{
 			_rawFrame = raw.Trim();
-			return _rawFrame.Length == 1 && _rawFrame == CommentChar;
+			return _rawFrame.Length == 1 && _rawFrame == Resources.CommentChar;
 		}
 
 		/// <summary>
