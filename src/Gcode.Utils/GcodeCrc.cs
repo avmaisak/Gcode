@@ -1,5 +1,4 @@
-﻿using System;
-using Gcode.Utils.Entity;
+﻿using Gcode.Utils.Entity;
 
 namespace Gcode.Utils
 {
@@ -26,30 +25,26 @@ namespace Gcode.Utils
 		/// <returns></returns>
 		public static int FrameCrc(this GcodeCommandFrame gcodeCommandFrame)
 		{
-			if (gcodeCommandFrame.N <= 0) throw new Exception("Frame line number expected (>0)");
-
-			var f = gcodeCommandFrame.ToString();
-			var check = 0;
-
-			foreach (var ch in f) check ^= ch & 0xff;
-
-			check ^= 32;
-
-			return check;
+			if (gcodeCommandFrame.N <= 0) throw new GcodeException(Resources.FrameLineNumExpected);
+			return SetCheckSum(gcodeCommandFrame.ToString());
 		}
 		// ReSharper disable once UnusedMember.Global
 		public static int FrameCrc(this string gcodeCommandFrame)
 		{
 			var gcode = GcodeParser.ToGCode(gcodeCommandFrame);
-			if (gcode.N <= 0) throw new Exception("Frame line number expected (>0)");
-
-			var f = gcodeCommandFrame;
+			if (gcode.N <= 0) throw new GcodeException(Resources.FrameLineNumExpected);
+			return SetCheckSum(gcodeCommandFrame);
+		}
+		/// <summary>
+		/// Set CheckSum.
+		/// </summary>
+		/// <param name="rawFrame"></param>
+		/// <returns></returns>
+		private static int SetCheckSum(string rawFrame)
+		{
 			var check = 0;
-
-			foreach (var ch in f) check ^= ch & 0xff;
-
+			foreach (var ch in rawFrame) check ^= ch & 0xff;
 			check ^= 32;
-
 			return check;
 		}
 	}
