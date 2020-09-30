@@ -6,6 +6,6 @@ namespace Gcode.Utils
 	/// GcodeException.
 	/// </summary>
 	public class GcodeException : Exception { 
-		public GcodeException(string message): base (message: message) {}
+		public GcodeException(string message): base (message) {}
 	}
 }
