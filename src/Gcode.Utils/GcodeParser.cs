@@ -23,10 +23,10 @@ namespace Gcode.Utils
 		private static GcodeCommandFrame ToGcodeCommandFrame(IEnumerable<KeyValuePair<string, string>> frameSegments)
 		{
 			var gcodeCommandFrame = new GcodeCommandFrame();
-			foreach (var frameSegment in frameSegments)
+			foreach (var (key, value) in frameSegments)
 			{
 				//получить свойство кадра
-				var fieldInfo = gcodeCommandFrame.GetType().GetProperty(frameSegment.Key);
+				var fieldInfo = gcodeCommandFrame.GetType().GetProperty(key);
 				//свойство есть
 				if (fieldInfo == null) continue;
 				//получить информацию свойства поля кадра
@@ -36,7 +36,7 @@ namespace Gcode.Utils
 				//свойства поля кадра
 				fileldInfoType = fileldInfoType.GetGenericArguments()[0];
 				//указание значения сегмента кадра
-				fieldInfo.SetValue(gcodeCommandFrame, Convert.ChangeType(frameSegment.Value, fileldInfoType, Culture));
+				fieldInfo.SetValue(gcodeCommandFrame, Convert.ChangeType(value, fileldInfoType, Culture));
 			}
 			return gcodeCommandFrame;
 		}
@@ -135,8 +135,6 @@ namespace Gcode.Utils
 		public static string GcodeToJson(this string raw)
 		{
 			_rawFrame = NormalizeGcodeRawFrame(raw);
-			const string objJsonStart = "{";
-			const string objJsonEnd = "}";
 
 			if (_rawFrame.IsGcodeComment() || _rawFrame.IsNullOrErrorFrame()) return $"{{{Resources.CommentTag}:{raw.Replace(";", null).Replace("\r", null).Trim()}}}";
 
@@ -153,21 +151,21 @@ namespace Gcode.Utils
 			var segmentsKeyValuePair = segments as KeyValuePair<string, string>[] ?? segments.ToArray();
 
 			var sb = new StringBuilder();
-			sb.Append(objJsonStart);
+			sb.Append("{");
 			for (var i = 0; i < segmentsKeyValuePair.Length; i++)
 			{
 				var sep = ",";
 				if (i == segmentsKeyValuePair.Length - 1) sep = string.Empty;
 
-				var segment = segmentsKeyValuePair[i];
-				var jsonObjLine = $"\"{segment.Key}\":\"{segment.Value}\"{sep}";
+				var (key, value) = segmentsKeyValuePair[i];
+				var jsonObjLine = $"\"{key}\":\"{value}\"{sep}";
 
 				sb.Append(jsonObjLine.Trim());
 			}
 
 			if (!string.IsNullOrWhiteSpace(commentString)) sb.Append(commentString);
 
-			sb.Append(objJsonEnd);
+			sb.Append( "}");
 
 			return sb.ToString();
 		}

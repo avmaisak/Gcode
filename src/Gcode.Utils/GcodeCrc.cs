@@ -1,4 +1,5 @@
-﻿using Gcode.Utils.Entity;
+﻿using System.Linq;
+using Gcode.Utils.Entity;
 
 namespace Gcode.Utils
 {
@@ -42,8 +43,7 @@ namespace Gcode.Utils
 		/// <returns></returns>
 		private static int SetCheckSum(string rawFrame)
 		{
-			var check = 0;
-			foreach (var ch in rawFrame) check ^= ch & 0xff;
+			var check = rawFrame.Aggregate(0, (current, ch) => current ^ ch & 0xff);
 			check ^= 32;
 			return check;
 		}
